@@ -1,0 +1,84 @@
+textarea.appoeditor {
+    display: none;
+}
+
+div.containerAppoeditor {
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+div.containerAppoeditor nav.navButton {
+    width: 100%;
+    height: auto;
+    z-index: inherit;
+}
+
+div.containerAppoeditor div.inlineAppoeditor {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    padding: 15px;
+    box-shadow: 3px 3px 10px 1px #dedede;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+div.containerAppoeditor div.separator {
+    border: 0;
+    border-left: 2px solid #FFF;
+    display: inline-block;
+    vertical-align: top;
+    height: 31px;
+    margin: 0;
+}
+
+div.result {
+    padding: 20px;
+    float: right;
+    width: 500px;
+    min-height: 500px;
+    margin: 0 20px;
+    background: #999da1;
+    color: #FFF;
+}
+
+.color-group {
+    width: 5%;
+    float: left;
+    display: block;
+}
+
+.color-block {
+    float: left;
+    display: block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+}
+
+.color-block div {
+    position: absolute;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s;
+
+}
+
+.color-block div:hover {
+    transition-delay: 0.2s;
+    transform: scale(1.5);
+    z-index: 4;
+}
+
+.color-block div.active {
+    transform: scale(1.5);
+    z-index: 4;
+}
+
+.btnLetterSize {
+    display: inline-block;
+    width: 50%;
+    padding: .25rem 1rem;
+}
