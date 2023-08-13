@@ -70,8 +70,8 @@ if (checkAjaxRequest()) {
     }
 
     //Github links
-    $gitHub = 'https://github.com/YonaSmile/';
-    $gitHubUserContent = 'https://raw.githubusercontent.com/YonaSmile/';
+    $gitHub = 'https://github.com/toutouieWebmaster/';
+    $gitHubUserContent = 'https://raw.githubusercontent.com/toutouieWebmaster/';
     //$gitHubAccessToken = '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';
 
     //Plugin version
