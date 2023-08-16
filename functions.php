@@ -2674,9 +2674,9 @@ function updateDB()
                     'fromEmail' => 'system@aoe-communication.com',
                     'fromName' => 'APPOE System - ' . WEB_TITLE,
                     'toName' => 'Admin',
-                    'toEmail' => 'yona@aoe-communication.com',
+                    'toEmail' => 'esther@pp-communication.fr',
                     'object' => 'Erreur de mise à jour de la base de données',
-                    'message' => '<p>Le site <strong>' . WEB_TITLE . '</strong> à rencontré un problème de mise à jour de la base de données.</p><p>' . implode('<br>', $updateError) . '</p>'
+                    'message' => '<p>Le site <strong>' . WEB_TITLE . '</strong> a rencontré un problème de mise à jour de la base de données.</p><p>' . implode('<br>', $updateError) . '</p>'
                 );
                 sendMail($data);
 
