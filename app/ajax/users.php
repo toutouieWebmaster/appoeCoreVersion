@@ -1,13 +1,15 @@
 <?php
 require_once('header.php');
 
+use App\Users;
+
 if (checkAjaxRequest()) {
 
     if (getUserIdSession()) {
 
         //Ban user
         if (!empty($_POST['idDeleteUser'])) {
-            $User = new \App\Users($_POST['idDeleteUser']);
+            $User = new Users($_POST['idDeleteUser']);
             if ($User->delete()) {
                 echo json_encode(true);
             }
@@ -16,7 +18,7 @@ if (checkAjaxRequest()) {
 
         //Valide user
         if (!empty($_POST['idValideUser'])) {
-            $User = new \App\Users($_POST['idValideUser']);
+            $User = new Users($_POST['idValideUser']);
             $User->setStatut(1);
             if ($User->update()) {
                 echo json_encode(true);

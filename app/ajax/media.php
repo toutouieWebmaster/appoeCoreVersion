@@ -1,8 +1,10 @@
 <?php
 require_once('../main.php');
 
+use App\File;
 use App\FileContent;
 use App\Media;
+use App\Plugin\Cms\CmsContent;
 
 if (checkAjaxRequest()) {
 
@@ -181,7 +183,7 @@ if (checkAjaxRequest()) {
 
                         if (class_exists('App\Plugin\Cms\Cms')) {
 
-                            $CmsContent = new \App\Plugin\Cms\CmsContent();
+                            $CmsContent = new CmsContent();
                             if (!$CmsContent->renameFilename(WEB_DIR_INCLUDE . $_POST['oldName'], WEB_DIR_INCLUDE . $_POST['newName'])) {
                                 echo trans('Impossible de renommer les fichiers dans les pages');
                                 exit();
@@ -212,7 +214,7 @@ if (checkAjaxRequest()) {
                 if (isImage(FILE_DIR_PATH . $includeFile)) {
                     $html .= '<img src="' . WEB_DIR_INCLUDE . $includeFile . '" class="img-fluid seeOnOverlay seeDataOnHover" data-originsrc="' . WEB_DIR_INCLUDE . $includeFile . '">';
                 } else {
-                    $html .= '<span class="contentOnHover">' . $includeFile . '</span><a href="' . WEB_DIR_INCLUDE . $includeFile . '" target="_blank"><img src = "' . getImgAccordingExtension(getFileExtension($includeFile)) . '" class="img-fluid seeDataOnHover"></a>';
+                    $html .= '<span class="contentOnHover">' . $includeFile . '</span><a href="' . WEB_DIR_INCLUDE . $includeFile . '" target="_blank"><img src = "' . getImgAccordingExtension(getFileExtension($includeFile)) . '" class="img-fluid seeDataOnHover" alt="APPOEmedia"></a>';
                 }
 
                 $html .= '<button class="btn btn-sm littleBtn addLittleBtn selectParentOnClick bgColorPrimary"><i class="fas fa-plus"></i></button>';
@@ -225,7 +227,7 @@ if (checkAjaxRequest()) {
         }
 
         if (!empty($_POST['deleteDefinitelyImageByName']) && !empty($_POST['filename'])) {
-            $File = new \App\File();
+            $File = new File();
             $File->setName($_POST['filename']);
             $fileDeleted = $File->deleteFileByPath();
 

@@ -93,7 +93,7 @@ const FILE_TEMPLATE_POSITIONS = array(
     5 => 'En tête'
 );
 
-/ accessible roles
+// APPOE accessible roles
 const ROLES = array(
     1 => 'Abonné',
     2 => 'Rédacteur',

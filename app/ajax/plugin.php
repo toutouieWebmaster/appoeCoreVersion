@@ -171,7 +171,7 @@ if (checkAjaxRequest()) {
         $dbFileName = 'db-' . date('H_i');
         DB::backup($dbFolderName, $dbFileName);
         $urlFile = WEB_APP_URL . 'backup/' . $dbFolderName . '/' . $dbFileName . '.sql.gz';
-        echo trans('Tables enregistrées') . '. <a href="' . $urlFile . '"> ' . trans('Télécharger') . '</a>';// . '.' . (count($optimizeTables) > 0 ? '<br><strong>Tables supprimées:</strong> ' . implode(', ', $optimizeTables) : '');
+        echo trans('Tables enregistrées') . '. <a href="' . $urlFile . '"> ' . trans('Télécharger') . '</a>';// . '.' . (count($optimizeTables) > 0 ? '<br><strong>Tables supprimées :</strong> ' . implode(', ', $optimizeTables) : '');
         exit();
     }
 
