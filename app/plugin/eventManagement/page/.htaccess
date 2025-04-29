@@ -1,0 +1,15 @@
+Options +FollowSymlinks
+RewriteEngine On
+RewriteBase /app/plugin/eventManagement/page/
+RewriteRule ^allAuteurs/$  allAuteurs.php [L]
+RewriteRule ^auteur/([0-9]+)/$  updateAuteur.php?id=$1 [L]
+RewriteRule ^addAuteur/$  addAuteur.php [L]
+RewriteRule ^allEvents/$  allEvents.php [L]
+RewriteRule ^event/([0-9]+)/$  event.php?id=$1 [L]
+RewriteRule ^addEvent/$  addEvent.php [L]
+RewriteRule ^event/update/([0-9]+)/$  updateEvent.php?id=$1 [L]
+
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule (.*) /app/lib/assets/404.php

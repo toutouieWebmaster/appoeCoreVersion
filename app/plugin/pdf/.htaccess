@@ -1,0 +1,12 @@
+Options +FollowSymlinks
+RewriteEngine On
+RewriteBase /app/plugin/pdf/
+RewriteRule ^print/?$  index.php [QSA,L]
+
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule (.*) /app/lib/assets/404.php
+
+ErrorDocument 403 /app/lib/assets/404.php
+ErrorDocument 404 /app/lib/assets/404.php

@@ -1,0 +1,20 @@
+Options +FollowSymlinks
+RewriteEngine On
+RewriteBase /app/plugin/shop/page/
+RewriteRule ^addProduct/$  addProduct.php [L]
+RewriteRule ^addStock/$  addStock.php [L]
+RewriteRule ^commandes/$  commandes.php [L]
+RewriteRule ^products/$  products.php [L]
+RewriteRule ^stock/$  stock.php [L]
+RewriteRule ^shopArchives/$  shopArchives.php [L]
+RewriteRule ^updateProduct/([0-9]+)/$  updateProduct.php?id=$1 [L]
+RewriteRule ^updateProductData/([0-9]+)/$  updateProductData.php?id=$1 [L]
+RewriteRule ^updateStock/([0-9]+)/$  updateStock.php?id=$1 [L]
+
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule (.*) /app/lib/assets/404.php
+
+ErrorDocument 403 /app/lib/assets/404.php
+ErrorDocument 404 /app/lib/assets/404.php

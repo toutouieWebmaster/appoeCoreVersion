@@ -1,0 +1,8 @@
+[23-Apr-2025 13:41:28 Europe/Paris] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in C:\xampp\htdocs\APPOE\app\plugin\interactiveMap\page\updateInterMap.php on line 205
+[23-Apr-2025 13:41:57 Europe/Paris] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in C:\xampp\htdocs\APPOE\app\plugin\interactiveMap\page\updateInterMap.php on line 205
+[29-Apr-2025 08:19:13 Europe/Paris] Command: "C:/xampp/mysql/bin/mysqldump.exe" --no-tablespace --opt -h"127.0.0.1" -u"root" --password="" "appoe" | gzip > "C:\xampp\htdocs\APPOE\app\backup\2025-04-29\db.sql.gz"
+[29-Apr-2025 08:19:13 Europe/Paris] Return var: 255
+[29-Apr-2025 08:19:13 Europe/Paris] Output: Array
+(
+)
+
