@@ -1,5 +1,5 @@
 const WEB_PROTOCOL_URL = window.location.protocol;
-const WEB_DIR_URL = WEB_PROTOCOL_URL + '//' + window.location.hostname + '/' + 'APPOE' + '/';
+const WEB_DIR_URL = WEB_PROTOCOL_URL + '//' + window.location.hostname + '/';
 const WEB_APP_URL = WEB_DIR_URL + 'app/';
 const WEB_PLUGIN_URL = WEB_APP_URL + 'plugin/';
 
