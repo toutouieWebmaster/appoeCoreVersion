@@ -299,8 +299,7 @@ final class DB
         $dbPass = escapeshellarg(DBPASS);
         $fileEscaped = escapeshellarg($file);
 
-        // POUR LOCAL UNIQUEMENT !!
-        $mysqldumpPath = "C:/xampp/mysql/bin/mysqldump.exe";
+        $mysqldumpPath = "mysqldump";
 
         $command = sprintf(
             '"%s" --no-tablespace --opt -h%s -u%s --password=%s %s | gzip > %s',
