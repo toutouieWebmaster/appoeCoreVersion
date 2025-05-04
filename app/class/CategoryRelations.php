@@ -6,7 +6,7 @@ use PDO;
 
 class CategoryRelations
 {
-    private $id;
+    private int $id;
     private $type;
     private $typeId;
     private $categoryId;
@@ -92,7 +92,7 @@ class CategoryRelations
     }
 
     /**
-     * @return null
+     * @return mixed
      */
     public function getData()
     {

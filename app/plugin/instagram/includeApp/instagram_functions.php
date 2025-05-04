@@ -1,5 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/app/main.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/main.php');
 
 \App\Hook::add_action('core_admin_after_dashboard','instagram_dashboard', 10);
 
@@ -66,7 +66,7 @@ function instagram_dashboard()
 
                     let username = $('#instagramContainer').data('instagram-username');
 
-                    $.post('/app/plugin/instagram/process/ajaxProcess.php', {updateTimeline: 'OK'}).done(function (data) {
+                    $.post('/APPOE/app/plugin/instagram/process/ajaxProcess.php', {updateTimeline: 'OK'}).done(function (data) {
                         if (data == 'true' || data === true) {
 
                             $button.remove();

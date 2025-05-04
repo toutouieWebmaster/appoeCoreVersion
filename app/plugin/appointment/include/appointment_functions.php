@@ -1381,7 +1381,7 @@ function appointment_sendInfosEmail($idRdv, $url = null, $fromAdmin = false)
 
                 if (!$fromAdmin) {
 
-                    $defaultEmail = getOptionData('defaultEmail');
+                    $defaultEmail = getOption('DATA', 'defaultEmail');
                     if ($defaultEmail && !empty($defaultEmail)) {
 
                         $message = '<h2>Nouveau RDV chez ' . $Agenda->getName() . '</h2>';
@@ -1653,10 +1653,8 @@ function appointment_rdvType_getBtns($idAgenda)
 function appointment_dates_get($idAgenda, $idRdvType)
 {
     $numberOfDays = 90;
-    $counter = 0;
     $Date = new DateTime();
-    $NextWeek = new DateTime();
-    $NextWeek->add(new DateInterval('P7D'));
+    $NextWeek = (clone $Date)->add(new DateInterval('P7D'));
 
     $html = '<section id="agendaDatesRdv" class="appointmentAppoe"><h2>' . (getOption('APPOINTMENT', 'dateTitle') ?: APPOINTMENT_DATES_CHOICE_TITLE) . '</h2>';
     $html .= '<button id="appointmentPrevWeek">‹</button> <button id="appointmentCurrentWeek" style="color:#ff394f !important;">•</button> <button id="appointmentNextWeek">›</button> ';
@@ -1676,24 +1674,25 @@ function appointment_dates_get($idAgenda, $idRdvType)
     $Exception->setDate($Date->format('Y-m-d'));
     $allExceptions = $Exception->showAllFromDate();
 
-    while ($counter <= $numberOfDays) {
+    for ($counter = 0; $counter <= $numberOfDays; $counter++) {
+        $dateStr = $Date->format('l-d-F');
+        list($dayName, $dayNum, $monthName) = explode('-', $dateStr);
 
-        $time = strtotime($Date->format('Y-m-d'));
-        list($dayName, $dayNum, $monthName) = explode('-', strftime('%A-%d-%B', $time));
-        $current = $Date->format('Y-m-d') == date('Y-m-d') ? 'D-day' : '';
+        $current = ($Date->format('Y-m-d') == (new DateTime())->format('Y-m-d')) ? 'D-day' : '';
         $disabledDay = !appointment_isAvailableDay($Date->format('Y-m-d'), $allAvailabilities, $allExceptions) ? 'disabledDay' : '';
 
         $html .= '<div data-id-agenda="' . $idAgenda . '" data-id-rdv-type="' . $RdvType->getId() . '" data-rdv-duration="' . $RdvType->getDuration() . '" 
         data-date-choice="' . $Date->format('Y-m-d') . '" class="dayBox ' . $current . ' ' . $disabledDay . '" 
-        data-date-reminder="' . displayCompleteDate($Date->format('Y-m-d')) . '"><span class="day">' . ucwords($dayName) . '</span><span class="date">' . $dayNum . '</span>
-        <span class="month">' . ucwords($monthName) . '</span></div>';
+        data-date-reminder="' . displayCompleteDate($Date->format('Y-m-d')) . '">
+            <span class="day">' . ucwords($dayName) . '</span>
+            <span class="date">' . $dayNum . '</span>
+            <span class="month">' . ucwords($monthName) . '</span>
+        </div>';
 
         $Date->add(new DateInterval('P1D'));
-        $counter++;
     }
 
     $html .= '</div></section>';
-    //$html .= appointment_availabilities_get($idAgenda, date('Y-m-d'), $rdvTypeDuration);
     return $html;
 }
 

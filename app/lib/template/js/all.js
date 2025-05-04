@@ -55,7 +55,7 @@ function showInfoModal(title, message, options = {}) {
 }
 
 function setPreference(type, key, val) {
-    return $.post('/app/ajax/config.php', {
+    return $.post('/APPOE/app/ajax/config.php', {
         type: type,
         key: key,
         val: val
@@ -108,7 +108,7 @@ function closeMediaDetails() {
 }
 
 function getMedia($container) {
-    $($container).html(loaderHtml() + ' Chargement des medias').load('/app/ajax/getMedia.php', function () {
+    $($container).html(loaderHtml() + ' Chargement des medias').load('/APPOE/app/ajax/getMedia.php', function () {
         shortAccessLibrary();
         $('#libraryModal').css('overflow', 'auto');
         $($container).fadeIn();

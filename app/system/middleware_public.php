@@ -1,5 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/app/main.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/main.php');
 includePluginsFiles();
 require_once(WEB_SYSTEM_PATH . 'control_public.php');
 require_once(WEB_SYSTEM_PATH . 'auth_user.php');
@@ -140,8 +140,8 @@ if (DB::checkTable(TABLEPREFIX . 'appoe_plugin_cms')) {
     }
 
     //Create menu
-    $maintenance = getOptionPreference('maintenance');
-    $cacheProcess = getOptionPreference('cacheProcess');
+    $maintenance = getOption('PREFERENCE', 'maintenance');
+    $cacheProcess = getOption('PREFERENCE', 'cacheProcess');
     if (empty($_SESSION['MENU']) || getSessionLang() !== LANG
         || 'true' === $maintenance
         || 'false' === $cacheProcess) {

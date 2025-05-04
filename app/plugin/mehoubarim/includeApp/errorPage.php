@@ -1,5 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/app/main.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/main.php');
 require_once(WEB_PLUGIN_PATH . 'mehoubarim/include/mehoubarim_functions.php');
 
 use App\ShinouiKatan;
@@ -19,7 +19,7 @@ if (in_array('app', $mehoubarim_url_parts) && in_array('page', $mehoubarim_url_p
     if (true !== $mehoubarim && false !== $mehoubarim) {
         $message = trans('Cette page est en ce moment manipulée par') . ' <strong>' . getUserEntitled(ShinouiKatan::Decrypter($mehoubarim)) . '</strong>';
 
-        if (getOptionPreference('sharingWork') === 'true') {
+        if (getOption('PREFERENCE', 'sharingWork') === 'true') {
             define('MEHOUBARIM_MSG', $message);
 
         } else {

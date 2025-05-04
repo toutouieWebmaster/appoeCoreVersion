@@ -1,11 +1,11 @@
 $(document).ready(function () {
 
     $('select#type').on('change', function () {
-        var categoryType = $("select#type option:selected").text();
-        var $categoryTypeInput = $('#categoryTypeForm');
+        let categoryType = $("select#type option:selected").text();
+        let $categoryTypeInput = $('#categoryTypeForm');
         $categoryTypeInput.html('<i class="fas fa-circle-notch fa-spin"></i> Chargement');
         $.post(
-            '/app/ajax/categories.php',
+            '/APPOE/app/ajax/categories.php',
             {
                 getCategoriesByType: 'OK',
                 categoryType: categoryType
@@ -20,17 +20,17 @@ $(document).ready(function () {
 
     $('.categoryInput').on('input', function () {
 
-        var $parent = $(this).closest('div.fileContent');
-        var idCategory = $parent.data('idcategory');
-        var catName = $parent.find('input[data-column="name"]').val();
-        var catPos = $parent.find('input[data-column="position"]').val();
-        var $inputInfo = $parent.find('small.inputInfo');
+        let $parent = $(this).closest('div.fileContent');
+        let idCategory = $parent.data('idcategory');
+        let catName = $parent.find('input[data-column="name"]').val();
+        let catPos = $parent.find('input[data-column="position"]').val();
+        let $inputInfo = $parent.find('small.inputInfo');
         $inputInfo.html('');
 
         if (catName.length > 0 && catPos > 0) {
             busyApp();
             $.post(
-                '/app/ajax/categories.php',
+                '/APPOE/app/ajax/categories.php',
                 {
                     updateCategoryName: 'OK',
                     idCategory: idCategory,
@@ -54,11 +54,11 @@ $(document).ready(function () {
 
     $('.retaureCategory').on('click', function () {
 
-        var $btn = $(this);
-        var idCategory = $btn.data('restaureid');
+        let $btn = $(this);
+        let idCategory = $btn.data('restaureid');
 
         $.post(
-            '/app/ajax/categories.php',
+            '/APPOE/app/ajax/categories.php',
             {
                 restaureCategory: 'OK',
                 idCategoryToRestaure: idCategory
@@ -76,12 +76,12 @@ $(document).ready(function () {
         if (confirm('Vous allez supprimer cette catégorie')) {
             busyApp();
 
-            var $parent = $(this).closest('div.fileContent');
-            var idCategory = $parent.data('idcategory');
-            var $btn = $(this);
+            let $parent = $(this).closest('div.fileContent');
+            let idCategory = $parent.data('idcategory');
+            let $btn = $(this);
 
             $.post(
-                '/app/ajax/categories.php',
+                '/APPOE/app/ajax/categories.php',
                 {
                     deleteCategory: 'OK',
                     idCategory: idCategory

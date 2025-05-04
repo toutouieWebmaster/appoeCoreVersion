@@ -1,5 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/app/main.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/main.php');
 includePluginsFiles();
 require_once(WEB_SYSTEM_PATH . 'auth_user.php');
 ?>
@@ -24,7 +24,7 @@ require_once(WEB_SYSTEM_PATH . 'auth_user.php');
                    placeholder="<?= trans('Mot de passe'); ?>">
             <?= getFieldsControls(); ?>
             <button type="submit" name="APPOECONNEXION" id="login-button"><?= trans('Connexion'); ?></button>
-            <p class="return"><a href="/">‹ Revenir au site</a><img src="<?= getLogo(APP_IMG_URL . 'appoe-logo-white-sm.png'); ?>" alt="APPOE" style="width: 25px;height: 100%;"></p>
+            <p class="return"><a href="/APPOE/">‹ Revenir au site</a><img src="<?= getLogo(APP_IMG_URL . 'appoe-logo-white-sm.png'); ?>" alt="APPOE" style="width: 25px;height: 100%;"></p>
             <span style="color:#000;"><?php App\Flash::display(); ?></span>
         </form>
     </div>

@@ -1,6 +1,6 @@
 Options +FollowSymlinks
 RewriteEngine On
-RewriteBase /app/plugin/shop/page/
+RewriteBase /APPOE/app/plugin/shop/page/
 RewriteRule ^addProduct/$  addProduct.php [L]
 RewriteRule ^addStock/$  addStock.php [L]
 RewriteRule ^commandes/$  commandes.php [L]

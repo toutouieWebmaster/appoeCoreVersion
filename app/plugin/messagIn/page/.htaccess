@@ -1,6 +1,6 @@
 Options +FollowSymlinks
 RewriteEngine On
-RewriteBase /app/plugin/messagIn/page/
+RewriteBase /APPOE/app/plugin/messagIn/page/
 RewriteRule ^allMessages/$  allMessages.php [L]
 RewriteRule ^addMessage/$  addMessage.php [L]
 

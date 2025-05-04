@@ -66,7 +66,7 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                 event.stopPropagation();
                 event.preventDefault();
 
-                var id_commande = $(this).data('commandeid');
+                let id_commande = $(this).data('commandeid');
 
                 if (confirm('<?= trans('Vous allez annuler / archiver cette commande'); ?>')) {
                     cancelCommande(id_commande).done(function (data) {
@@ -78,8 +78,8 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
             });
 
             $('body').on('click', 'button.changeCommandeEtat', function () {
-                var id_commande = $(this).data('commandeid');
-                var deliveryState = $(this).data('deliverystate');
+                let id_commande = $(this).data('commandeid');
+                let deliveryState = $(this).data('deliverystate');
                 if ($(this).hasClass('changeCommandeEtat')) {
                     $('#modalInfo').modal('hide');
                     changeCommandeDeliveryState(id_commande, deliveryState);
@@ -89,8 +89,8 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
             $('tr.seeCommandeDetails').on('click', function (event) {
                 event.preventDefault();
 
-                var transport = parseFloat($(this).find('.transportPrice').text());
-                var id_commande = $(this).data('commandeid');
+                let transport = parseFloat($(this).find('.transportPrice').text());
+                let id_commande = $(this).data('commandeid');
 
                 getCommandeDetails(id_commande, transport);
 
@@ -98,7 +98,7 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                 event.stopPropagation();
                 event.preventDefault();
 
-                var id_commande = $(this).data('commandeid');
+                let id_commande = $(this).data('commandeid');
 
                 getEtatChoise(id_commande);
                 return false;

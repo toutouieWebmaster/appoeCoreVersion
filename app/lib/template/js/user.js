@@ -7,7 +7,7 @@ $(document).ready(function () {
             var idUser = $btn.data('iduser');
 
             $.post(
-                '/app/ajax/users.php',
+                '/APPOE/app/ajax/users.php',
                 {
                     idDeleteUser: idUser
                 },
@@ -52,7 +52,7 @@ $(document).ready(function () {
             var idUser = $btn.data('iduser');
 
             $.post(
-                '/app/ajax/users.php',
+                '/APPOE/app/ajax/users.php',
                 {
                     idValideUser: idUser
                 },

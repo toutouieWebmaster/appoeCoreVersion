@@ -1,5 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/app/main.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/main.php');
 use App\Category;
 
 $Category = new Category();
@@ -44,7 +44,7 @@ $listCatgories = extractFromObjToArrForList($allCategory, 'id');
                         <div class="tab-pane fade" id="nav-newFiles" role="tabpanel"
                              aria-labelledby="nav-profile-tab">
                             <div class="container-fluid">
-                                <form class="row" id="mediaLibraryForm" action="/app/ajax/media.php" method="post"
+                                <form class="row" id="mediaLibraryForm" action="/APPOE/app/ajax/media.php" method="post"
                                       enctype="multipart/form-data">
                                     <div class="col-12 col-lg-6 my-2">
                                         <?= \App\Form::file('Importer des médias', 'inputFile[]', false, 'multiple', '', 'Choisissez...', false); ?>
@@ -91,4 +91,4 @@ $listCatgories = extractFromObjToArrForList($allCategory, 'id');
         </div>
     </div>
 </div>
-<script type="text/javascript" src="/app/lib/template/js/media.js"></script>
+<script type="text/javascript" src="/APPOE/app/lib/template/js/media.js"></script>

@@ -16,7 +16,7 @@ function shop_financial(x) {
 
 function changeCommandeDeliveryState(id_commande, deliveryState) {
     $.post(
-        '/app/plugin/shop/process/ajaxProcess.php',
+        '/APPOE/app/plugin/shop/process/ajaxProcess.php',
         {
             commandeChangeDeliveryState: 'OK',
             commandeID: id_commande,
@@ -41,7 +41,7 @@ function getCommandeDetails(id_commande, transport) {
     let $modalInfoBody = $('#modalInfo div#modalBody');
 
     $.getJSON(
-        '/app/plugin/shop/process/ajaxProcess.php',
+        '/APPOE/app/plugin/shop/process/ajaxProcess.php',
         {
             GETCOMMANDDETAILS: 'OK',
             commandeID: id_commande
@@ -77,7 +77,7 @@ function getCommandeDetails(id_commande, transport) {
 //Get stock limit for product
 function getStockLimit(idProduct) {
     return $.post(
-        '/app/plugin/shop/process/shipping.php',
+        '/APPOE/app/plugin/shop/process/shipping.php',
         {
             GETLIMITSTOCK: 'OK',
             idProduct: idProduct
@@ -87,7 +87,7 @@ function getStockLimit(idProduct) {
 //Add product to shopping card
 function addToShoppingCard(Product) {
     return $.post(
-        '/app/plugin/shop/process/shipping.php',
+        '/APPOE/app/plugin/shop/process/shipping.php',
         {
             ADDPRODUCTTOCARD: 'OK',
             idProduct: Product.idProduct,
@@ -102,7 +102,7 @@ function addToShoppingCard(Product) {
 //Get count of shipping card
 function getCountShippingCard() {
     return $.post(
-        '/app/plugin/shop/process/shipping.php',
+        '/APPOE/app/plugin/shop/process/shipping.php',
         {
             GETCOUNTSHIPPINGCARD: 'OK'
         });
@@ -111,7 +111,7 @@ function getCountShippingCard() {
 //Clear product from shopping card
 function clearShoppingProduct(idProduct) {
     return $.post(
-        '/app/plugin/shop/process/shipping.php',
+        '/APPOE/app/plugin/shop/process/shipping.php',
         {
             CLEARSHIPPINGPRODUCT: 'DESTROY',
             idProduct: idProduct
@@ -122,7 +122,7 @@ function clearShoppingProduct(idProduct) {
 function clearShoppingCard() {
 
     return $.post(
-        '/app/plugin/shop/process/shipping.php',
+        '/APPOE/app/plugin/shop/process/shipping.php',
         {
             CLEARSHIPPINGCARD: 'DESTROY_ALL'
         });
@@ -131,7 +131,7 @@ function clearShoppingCard() {
 //validate order
 function validateCommande(idCommande) {
     return $.post(
-        '/app/plugin/shop/process/shipping.php',
+        '/APPOE/app/plugin/shop/process/shipping.php',
         {
             VALIDATECOMMANDE: 'OK',
             idCommande: idCommande
@@ -141,7 +141,7 @@ function validateCommande(idCommande) {
 //Clear Command
 function clearCommande() {
     return $.post(
-        '/app/plugin/shop/process/shipping.php',
+        '/APPOE/app/plugin/shop/process/shipping.php',
         {
             CLEARCOMMANDE: 'DESTROY'
         });
@@ -150,7 +150,7 @@ function clearCommande() {
 //Cancel Command
 function cancelCommande(idCommande) {
     return $.post(
-        '/app/plugin/shop/process/shipping.php',
+        '/APPOE/app/plugin/shop/process/shipping.php',
         {
             CANCELCOMMANDE: 'OK',
             commandeId: idCommande
@@ -159,21 +159,21 @@ function cancelCommande(idCommande) {
 
 //checkout save client
 function saveClientInfos(data) {
-    return $.post('/app/plugin/shop/process/shipping.php', data);
+    return $.post('/APPOE/app/plugin/shop/process/shipping.php', data);
 }
 
 //checkout auth client
 function authClient(data) {
-    return $.post('/app/plugin/shop/process/shipping.php', data);
+    return $.post('/APPOE/app/plugin/shop/process/shipping.php', data);
 }
 
 function addMetaProduct(data) {
-    return $.post('/app/plugin/shop/process/ajaxProcess.php', data)
+    return $.post('/APPOE/app/plugin/shop/process/ajaxProcess.php', data)
 }
 
 function deleteMetaProduct(idMetaProduct) {
     return $.post(
-        '/app/plugin/shop/process/ajaxProcess.php',
+        '/APPOE/app/plugin/shop/process/ajaxProcess.php',
         {
             DELETEMETAPRODUCT: 'OK',
             idMetaProduct: idMetaProduct

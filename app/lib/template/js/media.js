@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     if ($('#allMediaModalContainer').length) {
-        $('#allMediaModalContainer').load('/app/ajax/media.php?getAllMedia');
+        $('#allMediaModalContainer').load('/APPOE/app/ajax/media.php?getAllMedia');
 
         $(document.body).on('submit', 'form#mediaLibraryForm', function (event) {
             event.preventDefault();
@@ -78,7 +78,7 @@ $(document).ready(function () {
                 });
 
                 $mediaDetails.html('<div class="p-3">' + loaderHtml() + '</div>');
-                $mediaDetails.load('/app/ajax/getMediaDetails.php?fileId=' + id);
+                $mediaDetails.load('/APPOE/app/ajax/getMediaDetails.php?fileId=' + id);
                 $mediaDetails.attr('data-file-id', id);
             }
         });
@@ -161,7 +161,7 @@ $(document).ready(function () {
             let newName = $form.find('input[name="filename"]').val();
 
             $.post(
-                '/app/ajax/media.php',
+                '/APPOE/app/ajax/media.php',
                 {
                     renameMediaFile: 'OK',
                     idImage: id,
@@ -238,7 +238,7 @@ $(document).ready(function () {
 
             delay(function () {
                 $.post(
-                    '/app/ajax/media.php',
+                    '/APPOE/app/ajax/media.php',
                     {
                         updateDetailsImg: 'OK',
                         idImage: idImage,
@@ -276,7 +276,7 @@ $(document).ready(function () {
                 var thumbWidth = $btn.data('thumbwidth');
 
                 $.post(
-                    '/app/ajax/media.php',
+                    '/APPOE/app/ajax/media.php',
                     {
                         deleteImage: 'OK',
                         idImage: idImage,

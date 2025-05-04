@@ -19,7 +19,7 @@ if (!empty($_GET['id'])):
                             ?>
                         </div>
                         <div class="col-md-12 col-lg-6 my-2">
-                            <?= \App\Form::text('Email', 'email', 'email', $UpdateUser->getEmail(), false); ?>
+                            <?= \App\Form::text('Email', 'email', 'email', $UpdateUser->getEmail()); ?>
                         </div>
                         <div class="col-md-12 col-lg-6 my-2">
                             <?= \App\Form::text('Nom', 'nom', 'text', $UpdateUser->getNom(), true, 40); ?>
@@ -69,7 +69,7 @@ if (!empty($_GET['id'])):
                 </form>
             </div>
         </div>
-        <script type="text/javascript" src="/app/lib/template/js/user.js"></script>
+        <script type="text/javascript" src="/APPOE/app/lib/template/js/user.js"></script>
     <?php else:
         echo getContainerErrorMsg(trans('Cet utilisateur n\'existe pas'));
     endif;

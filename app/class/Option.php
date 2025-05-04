@@ -206,9 +206,9 @@ class Option
     }
 
     /**
-     * @return false
+     * @return mixed|false
      */
-    public function getValByKey()
+    public function getValByKey(): mixed
     {
         if ($option = $this->showByKey()) {
             return $option->val;

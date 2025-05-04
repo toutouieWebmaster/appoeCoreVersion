@@ -6,27 +6,24 @@ class AppLogging
     /**
      * @var false|string
      */
-    private $date;
+    private string|false $date;
     /**
      * @var bool
      */
-    private $user;
+    private bool $user;
     /**
      * @var string
      */
-    private $userName;
+    private string $userName;
+
     /**
      * @var string
      */
-    private $message;
+    private string $logFile = 'applog.log';
     /**
-     * @var string
+     * @var string|null
      */
-    private $logFile = 'applog.log';
-    /**
-     * @var string
-     */
-    private $pathLogFile = null;
+    private ?string $pathLogFile = null;
 
 
     /**
@@ -46,7 +43,7 @@ class AppLogging
     /**
      * @return bool
      */
-    private function checkLogFile()
+    private function checkLogFile(): bool
     {
 
         if (!file_exists(WEB_SYSTEM_PATH . $this->logFile)) {
@@ -61,12 +58,12 @@ class AppLogging
      * @param $text
      * @return bool
      */
-    public function write($text)
+    public function write($text): bool
     {
         if (!is_null($this->pathLogFile)) {
-            $this->message = '[' . $this->date . '] | ' . $this->user . ' | ' . $this->userName . ' | ' . $text . ';' . PHP_EOL;
+            $message = '[' . $this->date . '] | ' . $this->user . ' | ' . $this->userName . ' | ' . $text . ';' . PHP_EOL;
 
-            $lastLine = $this->getLineInfos($this->tailCustom($this->pathLogFile, 1));
+            $lastLine = $this->getLineInfos($this->tailCustom($this->pathLogFile));
             if ($lastLine) {
 
                 if ($this->user == $lastLine['userId']
@@ -76,7 +73,7 @@ class AppLogging
             }
 
             $appLogFile = fopen($this->pathLogFile, 'a');
-            fwrite($appLogFile, $this->message);
+            fwrite($appLogFile, $message);
             fclose($appLogFile);
             return true;
         }
@@ -84,13 +81,13 @@ class AppLogging
     }
 
     /**
-     * @param $line
+     * @param mixed $line
      * @return array|bool
      */
-    public function getLineInfos($line)
+    public function getLineInfos(mixed $line): bool|array
     {
 
-        if (!empty($line) && false !== strpos($line, '|')) {
+        if (!empty($line) && str_contains($line, '|')) {
             list($time, $userId, $userName, $text) = array_map('trim', explode('|', $line));
             return compact('time', 'userId', 'userName', 'text');
         }
@@ -98,12 +95,12 @@ class AppLogging
     }
 
     /**
-     * @param $filepath
+     * @param string $filepath
      * @param int $lines
      * @param bool $adaptive
-     * @return bool|string
+     * @return string|false
      */
-    public function tailCustom($filepath, $lines = 1, $adaptive = true)
+    public function tailCustom(string $filepath, int $lines = 1, bool $adaptive = true): string|false
     {
         // Open file
         $f = @fopen($filepath, "rb");
@@ -123,7 +120,6 @@ class AppLogging
 
         // Start reading
         $output = '';
-        $chunk = '';
 
         // While we would like more
         while (ftell($f) > 0 && $lines >= 0) {

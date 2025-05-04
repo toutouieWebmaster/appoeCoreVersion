@@ -3,7 +3,7 @@ function tracker_getVisites(dateStart = null, dateEnd = null) {
     let $icon = $('#refreshTracker').find('i');
     $icon.addClass('fa-spin');
 
-    let url = '/app/plugin/tracker/tracker_dashboard.php';
+    let url = '/APPOE/app/plugin/tracker/tracker_dashboard.php';
     url += !empty(dateStart) || !empty(dateEnd) ? '?' : '';
     url += !empty(dateStart) ? 'dateStart=' + dateStart : '';
     url += !empty(dateStart) && !empty(dateEnd) ? '&' : '';

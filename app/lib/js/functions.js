@@ -1,28 +1,23 @@
 const WEB_PROTOCOL_URL = window.location.protocol;
-const WEB_DIR_URL = WEB_PROTOCOL_URL + '//' + window.location.hostname + '/' + 'APPOE' + '/';
+const WEB_DIR_URL = WEB_PROTOCOL_URL + '//' + window.location.hostname + '/' + 'APPOE/';
 const WEB_APP_URL = WEB_DIR_URL + 'app/';
 const WEB_PLUGIN_URL = WEB_APP_URL + 'plugin/';
 
 function convertToSlug(str) {
-    str = str.replace(/^\s+|\s+$/g, ''); // trim
-    str = str.toLowerCase();
-
-    // remove accents, swap ñ for n, etc
-    var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
-    var to = "aaaaaeeeeeiiiiooooouuuunc------";
-    for (var i = 0, l = from.length; i < l; i++) {
-        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-    }
-
-    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-        .replace(/\s+/g, '-') // collapse whitespace and replace by -
-        .replace(/-+/g, '-'); // collapse dashes
-
-    return str;
+    return str
+        .trim()
+        .toLowerCase()
+        .normalize('NFD') // décompose les caractères accentués en base + diacritiques
+        .replace(/[\u0300-\u036f]/g, '') // supprime les diacritiques
+        .replace(/ñ/g, 'n')
+        .replace(/ç/g, 'c')
+        .replace(/[^a-z0-9 -]/g, '') // supprime les caractères non valides
+        .replace(/\s+/g, '-')        // remplace les espaces par des tirets
+        .replace(/-+/g, '-');        // supprime les tirets en trop
 }
 
 function setLang(lang, interface_lang = false) {
-    return $.post('/app/ajax/lang.php',
+    return $.post('/APPOE/app/ajax/lang.php',
         {
             lang: lang,
             interfaceLang: !interface_lang ? 'content' : 'interface'
@@ -40,7 +35,7 @@ function PopupBlocked() {
 }
 
 function showExternalLink() {
-    $('a').filter(function (index) {
+    $('a').filter(function () {
         return $('img', this).length !== 1 && $(this).attr('target') === '_blank' && !$(this).hasClass('fa') && !$(this).is('[class*="icon"]');
     }).append('<img style="margin-left: 3px;width: 10px;height: 10px;vertical-align: text-top;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAoJJREFUeJzt3PFN3DAUgPGvqAPcCNmAblBGuBFugzICG5QNjk7Q6wRlA7IBbABM0P4REOFwLsbPfvaz3idFgkiJyU/JiZgQ8DzP83ppAH4D/wosj8CF3qHU6ZoyeHPEd52VPJoKbbT33xvgQXvAL9oDKjQAW9LPxh8r2/Zolq0965+D3kIxeA640BLeU2Cdd9QS3g1wFVjvzTqFBw54sjU8cMDFYvDAAYPF4kEE4NeIATfAOfo30iPwJ/M+98AusP7XwnpRG+AnZW/O15brjMfzmTPvteRLeADuFwbUXO5jf+CVUvBAAPh3YUDtJcfkQCoeJALuFgasgSf93JXgQSLgIbDRjvJzbbmT4kEi4PFnn/ocW4Zy4EEi4PEGV58ctHa58CACsLcZadXf86AvwBJ4TykbWbyEc16284aU/VkDLIX32pa3ucEhZgNLgKXxkrIC2CQe2ABsFg/aB2waD9oGbB4P2gU0gQdtAprBg/YATeFBW4Dm8KAdQJN40AagWTyoD1gK7wK4Y3pMdy/c18lqApY88+6O9vktwz6D1QIsfdkWOa5WJlTVZ5Jz1QKgWTyoD2gaD+oCmseDeoBd4EEdwG7wQB+wKzzQBbykMzzQBQw9nGQaD3QBb4Dn2ffm8SDuGelcPTDdf+5evjYxs7KWJiBMcLVnuLNW+07EfA4ozAGFOaAwBxTmgMIcUJgDCnNAYQ4ozAGFOaAwBxTmgMJiAKP+uaTxVI/hlvfPkHx46aDBLvn4bEyWl2iEJlRH4Pvs+w0T4oFpQtRaW8JPYo2lBhwIv3SrpyXn20CCtfLehBLLiNLrC7b0dyYeUH73w8B0ut9iF3NkgjP/J1TP87zW+g9xQCOTh4NeSQAAAABJRU5ErkJggg==">');
 }
@@ -114,30 +109,23 @@ function setCookie(name, value, days) {
 }
 
 function getCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-    }
-    return null;
+    const cookies = document.cookie.split('; ').map(c => c.split('='));
+    const cookie = cookies.find(([key]) => key === name);
+    return cookie ? decodeURIComponent(cookie[1]) : null;
 }
 
+
 function eraseCookie(name) {
-    document.cookie = name + '=; Max-Age=-99999999;path=/';
+    document.cookie = `${name}=; Max-Age=0; path=/; SameSite=Lax`;
 }
 
 function deleteAllCookies() {
-    var cookies = document.cookie.split(";");
-
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        var eqPos = cookie.indexOf("=");
-        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-    }
+    document.cookie.split(";").forEach(cookie => {
+        const name = cookie.split("=")[0].trim();
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax`;
+    });
 }
+
 
 function financial(x, useSpace = true, fractionDigits = 2) {
     if (!useSpace) {
@@ -147,9 +135,9 @@ function financial(x, useSpace = true, fractionDigits = 2) {
 }
 
 function numberWithSpaces(x) {
-    var parts = x.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    return parts.join(".");
+    const [intPart, decimalPart] = x.toString().split('.');
+    const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return decimalPart ? `${formattedInt}.${decimalPart}` : formattedInt;
 }
 
 function parseReelFloat(x) {
@@ -157,13 +145,11 @@ function parseReelFloat(x) {
 }
 
 function rgb2hex(rgb) {
-    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    const result = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    if (!result) return null;
 
-    function hex(x) {
-        return ("0" + parseInt(x).toString(16)).slice(-2);
-    }
-
-    return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+    const toHex = n => Number(n).toString(16).padStart(2, '0');
+    return `#${toHex(result[1])}${toHex(result[2])}${toHex(result[3])}`;
 }
 
 function hex2Rgb(hex) {
@@ -174,7 +160,12 @@ function hex2Rgb(hex) {
 }
 
 function isUrlValid(url) {
-    return /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(url);
+    try {
+        const parsed = new URL(url);
+        return ['http:', 'https:', 'ftp:', 'sftp:'].includes(parsed.protocol);
+    } catch (_) {
+        return false;
+    }
 }
 
 function getMonthsName(month = null) {
@@ -186,13 +177,17 @@ function getMonthsName(month = null) {
 }
 
 function isIP(ipVal) {
-    let expression = /((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))/g;
-    return expression.test(ipVal);
+    // Vérification IPv4
+    const ipv4Pattern = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+
+    // Vérification IPv6
+    const ipv6Pattern = /^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
+
+    return ipv4Pattern.test(ipVal) || ipv6Pattern.test(ipVal);
 }
 
 function escapeHtml(text) {
-
-    var map = {
+    return String(text).replace(/[&<>"'`=\/]/g, s => ({
         '&': '&amp;',
         '<': '&lt;',
         '>': '&gt;',
@@ -201,11 +196,7 @@ function escapeHtml(text) {
         '/': '&#x2F;',
         '`': '&#x60;',
         '=': '&#x3D;'
-    };
-
-    return String(text).replace(/[&<>"'`=\/]/g, function (s) {
-        return map[s];
-    });
+    })[s] || s);
 }
 
 function decodeEscapedHtml(text) {
@@ -229,7 +220,7 @@ function getKeyByValueInObject(object, value) {
 }
 
 function mediaAjaxRequest(data) {
-    return $.post('/app/ajax/media.php', data);
+    return $.post('/APPOE/app/ajax/media.php', data);
 }
 
 function systemAjaxRequest(data) {
@@ -238,11 +229,11 @@ function systemAjaxRequest(data) {
     $('#loader').fadeIn('fast');
     $('#loaderInfos').html('Veuillez <strong>ne pas quitter</strong> votre navigateur');
 
-    return $.post('/app/ajax/plugin.php', data);
+    return $.post('/APPOE/app/ajax/plugin.php', data);
 }
 
 function checkUserSessionExit() {
-    return $.post('/app/ajax/plugin.php', {checkUserSession: 'OK'});
+    return $.post('/APPOE/app/ajax/plugin.php', {checkUserSession: 'OK'});
 }
 
 function getHtmlLoader() {
@@ -351,7 +342,7 @@ function processFormPostRequest($form, $recaptchaPublicKey) {
     let successMsg = $form.data('success') ? $form.data('success') : 'Votre demande a bien été envoyée !';
 
     //Check Recaptcha V3
-    recaptcha($form, $recaptchaPublicKey, function () {
+    // recaptcha($form, $recaptchaPublicKey, function () {
 
         //Send all form inputs
         sendPostFiles($form).done(function (data) {
@@ -363,7 +354,7 @@ function processFormPostRequest($form, $recaptchaPublicKey) {
                 $result.html(errorMsg);
             }
         });
-    });
+    //});
 }
 
 var delay = (function () {
@@ -436,7 +427,6 @@ function fixeTableHeader(topAdd = 0, otherTop = 0) {
 
 function isMobile() {
     return navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(Android)|(PlayBook)|(BB10)|(BlackBerry)|(Opera Mini)|(IEMobile)|(webOS)|(MeeGo)/i);
-
 }
 
 function isTouch() {
@@ -498,7 +488,7 @@ $.fn.hasAttr = function (name) {
                     publicKey: false,
                     recaptcha: '3',
                     method: 'POST',
-                    action: '/public/mail.php'
+                    action: 'APPOE/public/mail.php'
                 }, userOptions);
 
                 if (!options.publicKey) {

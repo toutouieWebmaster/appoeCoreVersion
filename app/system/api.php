@@ -1,12 +1,12 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/app/main.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/main.php');
 includePluginsFiles(true);
 
 //Clean data
 $_POST = cleanRequest($_POST);
-$allowApi = getOptionPreference('allowApi');
-$token = getOptionData('apiToken');
+$allowApi = getOption('PREFERENCE', 'allowApi');
+$token = getOption('DATA', 'apiToken');
 if (!empty($_POST['token']) && $allowApi === 'true' && $_POST['token'] == $token) {
 
     if (!headers_sent()) {

@@ -66,7 +66,7 @@ if (isset($_POST['APPOECONNEXION'])) {
                         exit();
                     }
 
-                    header('location:/app/page/');
+                    header('location:/APPOE/app/page/');
                     exit();
                 }
             }

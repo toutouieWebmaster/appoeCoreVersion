@@ -49,7 +49,7 @@
 
         $('#modalTwitterManager').on('shown.bs.modal', function (e) {
             $('#twitterGroup').html(loaderHtml());
-            $('#twitterGroup').load('/app/plugin/twitter/data/twitterGroup.php');
+            $('#twitterGroup').load('/APPOE/app/plugin/twitter/data/twitterGroup.php');
         });
 
         $(document.body).on('click', 'button#articleTwitterShareButton', function () {
@@ -65,7 +65,7 @@
             $('#twitterShareInfo').html('');
 
             $.post(
-                '/app/plugin/twitter/process/ajaxProcess.php',
+                '/APPOE/app/plugin/twitter/process/ajaxProcess.php',
                 {
                     shareLink: 'OK',
                     url: shareLink,
@@ -94,7 +94,7 @@
                 });
 
                 $.post(
-                    '/app/plugin/twitter/process/ajaxProcess.php',
+                    '/APPOE/app/plugin/twitter/process/ajaxProcess.php',
                     {
                         sendMessageToLists: 'OK',
                         lists: checkedListsName,

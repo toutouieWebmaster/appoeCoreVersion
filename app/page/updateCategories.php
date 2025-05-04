@@ -113,5 +113,5 @@ showPostResponse(getDataPostResponse()); ?>
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/app/lib/template/js/category.js"></script>
+    <script type="text/javascript" src="/APPOE/app/lib/template/js/category.js"></script>
 <?php require('footer.php'); ?>

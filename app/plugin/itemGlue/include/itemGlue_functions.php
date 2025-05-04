@@ -28,15 +28,16 @@ function getArticlesDataById($articleId, $lang = LANG)
 
     //Get Media
     $ArticleMedia = new ArticleMedia($Article->getId());
-    $Article->medias = $ArticleMedia->showFiles();
+    $Article->setMedias($ArticleMedia->showFiles());
 
     //Get Metas
     $ArticleMeta = new ArticleMeta($Article->getId(), $Article->getLang());
-    $Article->metas = $ArticleMeta->getData() ? extractFromObjToSimpleArr($ArticleMeta->getData(), 'metaKey', 'metaValue') : [];
+    $metas = $ArticleMeta->getData() ? extractFromObjToSimpleArr($ArticleMeta->getData(), 'metaKey', 'metaValue') : [];
+    $Article->setMetas($metas);
 
     //get all categories in relation with article
-    $Article->categoriesDetails = getCategoriesByArticle($Article->getId());
-    $Article->categories = extractFromObjToSimpleArr($Article->categoriesDetails, 'categoryId', 'name');
+    $Article->setCategoriesDetails(getCategoriesByArticle($Article->getId()));
+    $Article->setCategories(extractFromObjToSimpleArr($Article->getCategoriesDetails(), 'categoryId', 'name'));
 
     return $Article;
 }
@@ -381,7 +382,7 @@ function getCategoriesInArticleByParent(App\Plugin\ItemGlue\Article $Article, $p
 {
     $categories = [];
     if (property_exists($Article, 'categoriesDetails')) {
-        foreach ($Article->categoriesDetails as $category) {
+        foreach ($Article->getCategoriesDetails() as $category) {
             if (is_object($category) && $category->parentId == $parentId) {
                 $categories[$category->categoryId] = $category->name;
             }
@@ -400,8 +401,8 @@ function getAllCategoriesInArticles($articles)
 
     if ($articles) {
         foreach ($articles as $article) {
-            $cat = (false !== strpos($article->categoryNames, '||')) ? explode('||', $article->categoryNames) : $article->categoryNames;
-            array_push($categories, $cat);
+            $cat = (str_contains($article->categoryNames, '||')) ? explode('||', $article->categoryNames) : $article->categoryNames;
+            $categories[] = $cat;
         }
         $categories = flatten($categories);
     }
@@ -418,7 +419,7 @@ function getCategoriesInArticle($article, $property = 'categoryNames')
     $categories = [];
 
     if ($article) {
-        if (false !== strpos($article->$property, '||')) {
+        if (str_contains($article->$property, '||')) {
             $categories = explode('||', $article->$property);
         } else {
             $categories[] = $article->$property;
@@ -437,7 +438,7 @@ function slugifyCategoriesInArticle($article, $property = 'categoryNames')
     $categories = '';
 
     if ($article) {
-        if (false !== strpos($article->$property, '||')) {
+        if (str_contains($article->$property, '||')) {
             $categoriesArr = explode('||', $article->$property);
             foreach ($categoriesArr as &$cat) {
                 $cat = slugify($cat);
@@ -458,7 +459,7 @@ function slugifyCategoriesInArticle($article, $property = 'categoryNames')
 function getSlugifyCategories(string $categories, $separator = '||')
 {
 
-    if (false !== strpos($categories, $separator)) {
+    if (str_contains($categories, $separator)) {
         $categories = explode($separator, $categories);
         $categories = array_map('slugify', $categories);
         return implode(' ', $categories);
@@ -502,7 +503,7 @@ function getArticleUrl(stdClass $Article, $meta = 'link', $page = '')
          * If (meta "link" contains "http") return "link"
          * Else return the website url with "link"
          */
-        return false !== strpos($Article->metas[$meta], 'http') ? $Article->metas[$meta] : webUrl($Article->metas[$meta] . DIRECTORY_SEPARATOR);
+        return str_contains($Article->metas[$meta], 'http') ? $Article->metas[$meta] : webUrl($Article->metas[$meta] . DIRECTORY_SEPARATOR);
     }
 
     if (empty($page) && defined('DEFAULT_ARTICLES_PAGE')) {
@@ -535,7 +536,7 @@ function getArtFeaturedImg($Article, $options = [])
 
     return is_object($Article) && property_exists($Article, 'medias') ?
         getFirstImage(
-            getFileTemplatePosition($Article->medias, $options['tmpPos'], $options['forcedImg']),
+            getFileTemplatePosition($Article->getMedias(), $options['tmpPos'], $options['forcedImg']),
             $options['class'], $options['thumbSize'], $options['onlyUrl'], $options['onlyPath'], $options['webp']
         ) : false;
 }
@@ -650,4 +651,28 @@ function showArticleUsers($articleId, $by = 'Par', $separator = 'et')
     }
 
     return $html;
+}
+
+/**
+* @param $parentId
+* @param $articles
+* @return array|bool
+ */
+function getAllCategoriesInArticlesByPosition($parentId, $articles)
+{
+    $catsByPosition = [];
+    $Article = new Article();
+    $categories = $Article->showWithPosition($parentId);
+    if (is_array($categories) && is_array($articles)) {
+        foreach ($articles as $article) {
+            foreach ($categories as $category) {
+                if ($article == $category->name) {
+                    $catsByPosition[$category->position] = $category->name;
+                }
+            }
+        }
+        ksort($catsByPosition);
+        return $catsByPosition;
+    }
+    return false;
 }

@@ -256,7 +256,7 @@ if (!empty($_GET['id'])):
 
         <script type="text/javascript">
             $(document).ready(function () {
-                $('#allMediaModalContainer').load('/app/ajax/media.php?getAllMedia');
+                $('#allMediaModalContainer').load('/APPOE/app/ajax/media.php?getAllMedia');
 
                 $('form#galleryProductForm').submit(function () {
                     $('#loader').fadeIn('fast');
@@ -291,7 +291,7 @@ if (!empty($_GET['id'])):
 
                     delay(function () {
                         $.post(
-                            '/app/ajax/media.php',
+                            '/APPOE/app/ajax/media.php',
                             {
                                 updateDetailsImg: 'OK',
                                 idImage: idImage,
@@ -347,7 +347,7 @@ if (!empty($_GET['id'])):
                     $(this).text('<?= trans('copié'); ?>');
                 });
 
-                $('#metaProductContenair').load('/app/plugin/shop/page/getMetaProduct.php?idProduct=<?= $Product->getId(); ?>');
+                $('#metaProductContenair').load('/APPOE/app/plugin/shop/page/getMetaProduct.php?idProduct=<?= $Product->getId(); ?>');
 
                 $('#metaDataAvailable').change(function () {
                     if ($('#metaDataAvailable').is(':checked')) {
@@ -395,7 +395,7 @@ if (!empty($_GET['id'])):
 
                             $('#metaProductContenair')
                                 .html(loaderHtml())
-                                .load('/app/plugin/shop/page/getMetaProduct.php?idProduct=<?= $Product->getId(); ?>');
+                                .load('/APPOE/app/plugin/shop/page/getMetaProduct.php?idProduct=<?= $Product->getId(); ?>');
                         }
 
                         $('[type="submit"]', $form).attr('disabled', false).html('<?= trans('Enregistrer'); ?>').removeClass('disabled');
@@ -429,7 +429,7 @@ if (!empty($_GET['id'])):
                             if (data == 'true') {
                                 $('#metaProductContenair')
                                     .html(loaderHtml())
-                                    .load('/app/plugin/shop/page/getMetaProduct.php?idProduct=<?= $Product->getId(); ?>');
+                                    .load('/APPOE/app/plugin/shop/page/getMetaProduct.php?idProduct=<?= $Product->getId(); ?>');
                             }
                             availableApp();
                         });

@@ -1,6 +1,6 @@
 <?php require('header.php');
 echo getTitle(getAppPageName(), getAppPageSlug());
-$defaultEmail = getOptionData('defaultEmail'); ?>
+$defaultEmail = getOption('DATA', 'defaultEmail'); ?>
     <div class="row">
         <div class="col-12">
             <div class="table-responsive">
@@ -66,5 +66,5 @@ $defaultEmail = getOptionData('defaultEmail'); ?>
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/app/lib/template/js/user.js"></script>
+    <script type="text/javascript" src="/APPOE/app/lib/template/js/user.js"></script>
 <?php require('footer.php'); ?>

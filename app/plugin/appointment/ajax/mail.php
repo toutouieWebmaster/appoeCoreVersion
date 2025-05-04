@@ -4,7 +4,7 @@ use App\Plugin\Appointment\Client;
 use App\Plugin\Appointment\Rdv;
 use App\Plugin\Appointment\RdvTypeForm;
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/app/main.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/main.php');
 includePluginsFiles();
 
 if (!empty($_POST['formType']) && valideAjaxToken()) {

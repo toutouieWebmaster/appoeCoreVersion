@@ -316,7 +316,7 @@ if (!empty($_GET['id'])):
                 </div>
             </div>
         </div>
-        <script type="text/javascript" src="/app/lib/template/js/media.js"></script>
+        <script type="text/javascript" src="/APPOE/app/lib/template/js/media.js"></script>
     <?php else:
         echo getContainerErrorMsg(trans('Cette page n\'existe pas'));
     endif;

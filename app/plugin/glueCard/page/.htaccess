@@ -1,6 +1,6 @@
 Options +FollowSymlinks
 RewriteEngine On
-RewriteBase /app/plugin/glueCard/page/
+RewriteBase /APPOE/app/plugin/glueCard/page/
 RewriteRule ^updateCards/$  updateCards.php [L]
 
 RewriteEngine on

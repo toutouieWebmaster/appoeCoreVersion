@@ -61,8 +61,8 @@ class CmsCache
      */
     public function start()
     {
-        $maintenance = getOptionPreference('maintenance');
-        $cacheProcess = getOptionPreference('cacheProcess');
+        $maintenance = getOption('PREFERENCE', 'maintenance');
+        $cacheProcess = getOption('PREFERENCE', 'cacheProcess');
         if ('false' === $cacheProcess || 'true' === $maintenance) {
             return false;
         }

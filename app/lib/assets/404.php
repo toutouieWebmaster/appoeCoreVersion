@@ -1,4 +1,4 @@
-<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/app/main.php'); ?>
+<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/main.php'); ?>
 <!doctype html>
 <html lang="fr">
 <head>
@@ -90,7 +90,7 @@
         }
     </style>
 </head>
-<body cz-shortcut-listen="true">
+<body>
 <div class="error-container">
     <h1><?= trans('Erreur'); ?> !</h1>
     <p class="return"><a href="javascript:history.back()"><?= trans('Revenir en arrière'); ?></a></p>

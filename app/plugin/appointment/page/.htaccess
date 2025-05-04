@@ -1,6 +1,6 @@
 Options +FollowSymlinks
 RewriteEngine On
-RewriteBase /app/plugin/appointment/page/
+RewriteBase /APPOE/app/plugin/appointment/page/
 RewriteRule ^agendas/$  agendas.php [L]
 RewriteRule ^agendaManager/([0-9]+)/?$  updateAgendaManager.php?id=$1 [L]
 

@@ -1,6 +1,6 @@
 Options +FollowSymlinks
 RewriteEngine On
-RewriteBase /app/plugin/traduction/page/
+RewriteBase /APPOE/app/plugin/traduction/page/
 RewriteRule ^updateTraduction/$  updateTraduction.php [L]
 
 RewriteEngine on

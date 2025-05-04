@@ -36,7 +36,7 @@ $(document).ready(function () {
 
         let $articleMetaContainer = $('#metaArticleContenair');
 
-        $('#allMediaModalContainer').load('/app/ajax/media.php?getAllMedia');
+        $('#allMediaModalContainer').load('/APPOE/app/ajax/media.php?getAllMedia');
 
         $articleMetaContainer.load(WEB_ITEMGLUE_URL + 'page/getMetaArticle.php?idArticle=' + $articleMetaContainer.data('article-id'));
 
@@ -170,7 +170,7 @@ $(document).ready(function () {
                 $btn.html(loaderHtml());
 
                 busyApp(false);
-                $.post('/app/plugin/cms/process/ajaxProcess.php', {
+                $.post('/APPOE/app/plugin/cms/process/ajaxProcess.php', {
                     clearPageCache: 'OK',
                     pageSlug: $btn.data('page-slug'),
                     pageLang: $btn.data('page-lang')

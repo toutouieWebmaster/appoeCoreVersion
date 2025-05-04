@@ -1,10 +1,13 @@
 <?php
+
 /**
  * The MIT License
  * Copyright (c) 2007 Andy Smith
  */
-namespace App\Plugin\Twitter;
 
+declare(strict_types=1);
+
+namespace App\Plugin\Twitter;
 /**
  * A class for implementing a Signature Method
  * See section 9 ("Signing Requests") in the spec
@@ -26,11 +29,15 @@ abstract class SignatureMethod
      *
      * @param Request $request
      * @param Consumer $consumer
-     * @param Token $token
+     * @param Token|null $token
      *
      * @return string
      */
-    abstract public function buildSignature(Request $request, Consumer $consumer, Token $token = null);
+    abstract public function buildSignature(
+        Request $request,
+        Consumer $consumer,
+        ?Token $token = null,
+    );
 
     /**
      * Verifies that a given signature is correct
@@ -42,8 +49,12 @@ abstract class SignatureMethod
      *
      * @return bool
      */
-    public function checkSignature(Request $request, Consumer $consumer, Token $token, $signature)
-    {
+    public function checkSignature(
+        Request $request,
+        Consumer $consumer,
+        Token $token,
+        string $signature,
+    ): bool {
         $built = $this->buildSignature($request, $consumer, $token);
 
         // Check for zero length, although unlikely here
@@ -58,7 +69,7 @@ abstract class SignatureMethod
         // Avoid a timing leak with a (hopefully) time insensitive compare
         $result = 0;
         for ($i = 0; $i < strlen($signature); $i++) {
-            $result |= ord($built{$i}) ^ ord($signature{$i});
+            $result |= ord($built[$i]) ^ ord($signature[$i]);
         }
 
         return $result == 0;

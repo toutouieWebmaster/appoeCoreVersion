@@ -41,8 +41,6 @@
  * @version 1.0.000
  */
 
-use JetBrains\PhpStorm\NoReturn;
-
 if (php_sapi_name() != 'cli') {
   echo 'You need to run this command from console.';
   exit(1);
@@ -59,7 +57,7 @@ foreach ($tcpdf_include_dirs as $tcpdf_include_path) {
 /**
  * Display help guide for this command.
  */
-#[NoReturn] function showHelp() {
+function showHelp() {
 	$help = <<<EOD
 tcpdf_addfont - command line tool to convert fonts for the TCPDF library.
 
@@ -139,7 +137,8 @@ if (!is_array($argv)) {
 $options = array('type'=>'', 'enc'=>'', 'flags'=>32, 'outpath'=>K_PATH_FONTS, 'platid'=>3, 'encid'=>1, 'addcbbox'=>false, 'link'=>false);
 
 // short input options
-$sopt = 't:';
+$sopt = '';
+$sopt .= 't:';
 $sopt .= 'e:';
 $sopt .= 'f:';
 $sopt .= 'o:';
@@ -151,7 +150,7 @@ $sopt .= 'i:';
 $sopt .= 'h';
 
 // long input options
-$lopt = [];
+$lopt = array();
 $lopt[] = 'type:';
 $lopt[] = 'enc:';
 $lopt[] = 'flags:';

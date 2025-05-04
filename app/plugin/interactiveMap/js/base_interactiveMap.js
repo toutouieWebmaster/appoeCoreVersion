@@ -1,7 +1,7 @@
 function getInteractiveMap(filename, element, options = []) {
 
     let interMapOptions = {
-        source: '/app/plugin/interactiveMap/' + filename + '.json',
+        source: '/APPOE/app/plugin/interactiveMap/' + filename + '.json',
         sidebar: false,
         search: false,
         minimap: false,

@@ -1,6 +1,6 @@
 Options +FollowSymlinks
 RewriteEngine On
-RewriteBase /app/plugin/pdf/
+RewriteBase /APPOE/app/plugin/pdf/
 RewriteRule ^print/?$  index.php [QSA,L]
 
 RewriteEngine on

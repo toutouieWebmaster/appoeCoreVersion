@@ -1,5 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/app/lib/template/header_admin_template.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/lib/template/header_admin_template.php');
 echo getTitle(getAppPageName(), getAppPageSlug()); ?>
     <div class="row">
         <div class="col-12 mb-2"><h5 class="agendaTitle">Mes agendas</h5>
@@ -33,4 +33,4 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
             </div>
         </div>
     </div>
-<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/app/lib/template/footer_admin_template.php'); ?>
+<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/lib/template/footer_admin_template.php'); ?>

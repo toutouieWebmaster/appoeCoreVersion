@@ -36,7 +36,7 @@ if (checkAjaxRequest()) {
                 }
             }
 
-            array_push($map['categories'], $newCategory);
+            $map['categories'][] = $newCategory;
             $InteractiveMap->setData(json_encode($map));
             if ($InteractiveMap->updateData()) {
                 interMap_writeMapFile($InteractiveMap->getData(), $InteractiveMap->getTitle());
@@ -149,7 +149,7 @@ if (checkAjaxRequest()) {
             }
 
             if ($fountCount == 0) {
-                array_push($map['levels'][$key]['locations'], $newPoint);
+                $map['levels'][$key]['locations'][] = $newPoint;
 
                 $InteractiveMap->setData(json_encode($map));
                 if ($InteractiveMap->updateData()) {

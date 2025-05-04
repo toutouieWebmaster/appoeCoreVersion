@@ -19,7 +19,7 @@ $(document).ready(function () {
 
             $btn.attr('disabled', 'disabled').addClass('disabled').html('<i class="fas fa-circle-notch fa-spin"></i>');
             $.post(
-                '/app/ajax/plugin.php',
+                '/APPOE/app/ajax/plugin.php',
                 {
                     checkTable: pluginName
                 },
@@ -45,7 +45,7 @@ $(document).ready(function () {
             var responseVersion = $versionContenair.next('small.responseVersion');
             responseVersion.html('<i class="fas fa-circle-notch fa-spin"></i>');
             $.post(
-                '/app/ajax/plugin.php',
+                '/APPOE/app/ajax/plugin.php',
                 {
                     checkVersion: pluginName
                 },
@@ -75,7 +75,7 @@ $(document).ready(function () {
         var responseVersion = $versionContenair.next('small.responseVersion');
         responseVersion.html('<i class="fas fa-circle-notch fa-spin"></i>');
         $.post(
-            '/app/ajax/plugin.php',
+            '/APPOE/app/ajax/plugin.php',
             {
                 checkSystemVersion: 'ok'
             },
@@ -142,7 +142,7 @@ $(document).ready(function () {
         var pluginPath = $btn.data('pluginpath');
         $btn.attr('disabled', 'disabled').addClass('disabled').html(loaderHtml());
         var $returnContenaire = $btn.parent('div').next('div.returnContainer');
-        $returnContenaire.load('/app/ajax/plugin.php', {setupPath: pluginPath}, function () {
+        $returnContenaire.load('/APPOE/app/ajax/plugin.php', {setupPath: pluginPath}, function () {
             $returnContenaire.append('<p><strong>Vous devez recharger la page pour voir les nouvelles fonctionnalités.</strong></p>');
             $btn.html('Activé');
         });

@@ -7,7 +7,7 @@
  *
  * @package   Html2pdf
  * @author    Laurent MINGUET <webmaster@html2pdf.fr>
- * @copyright 2017 Laurent MINGUET
+ * @copyright 2025 Laurent MINGUET
  */
 namespace Spipu\Html2Pdf;
 
@@ -121,7 +121,7 @@ class SvgDrawer
         }
 
         // prepare the list of the actions
-        $actions = [];
+        $actions = array();
 
         // for actions
         $amountMatches = count($match[0]);

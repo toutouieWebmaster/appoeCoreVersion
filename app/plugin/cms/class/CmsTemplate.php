@@ -115,7 +115,7 @@ class CmsTemplate
         $col = $this->defaultCol;
 
         //Check for form types
-        if (false !== strpos($zone, '_')) {
+        if (str_contains($zone, '_')) {
 
             //Get data
             list($metaKey, $formType, $params) = array_pad(explode('_', $zone), 3, '');
@@ -150,7 +150,7 @@ class CmsTemplate
             if (!in_array($metaKey, $this->allMetaKeys)) {
 
                 //Display form input
-                if (false !== strpos($formType, ':')) {
+                if (str_contains($formType, ':')) {
 
                     //Get form options
                     $options = explode(':', $formType);
@@ -173,7 +173,7 @@ class CmsTemplate
                     }
                 }
 
-                array_push($this->allMetaKeys, $metaKey);
+                $this->allMetaKeys[] = $metaKey;
             }
 
             $html .= '</div>';
@@ -200,13 +200,13 @@ class CmsTemplate
         foreach ($zones as $i => $adminZone) {
 
             //Check for form type
-            if (false !== strpos($adminZone, '_')) {
+            if (str_contains($adminZone, '_')) {
 
                 //Get data
                 list($metaKey, $formType, $col) = array_pad(explode('_', $adminZone), 3, '');
 
                 //Check form type with options
-                if (false !== strpos($formType, ':')) {
+                if (str_contains($formType, ':')) {
 
                     $options = explode(':', $formType);
                     $formType = array_shift($options);
@@ -222,7 +222,7 @@ class CmsTemplate
                 }
 
             } else {
-                if (false !== strpos($adminZone, '#')) {
+                if (str_contains($adminZone, '#')) {
 
                     //Get data
                     list($htmlTag, $text, $zoneName) = array_pad(explode('#', $adminZone), 3, random_int(99, 99999999));
@@ -242,7 +242,7 @@ class CmsTemplate
 
                     //Get closed html tag condition
                     $closeTag = false;
-                    if (false !== strpos($adminZone, '/')) {
+                    if (str_contains($adminZone, '/')) {
                         $closeTag = true;
                         $adminZone = str_replace('/', '', $adminZone);
                     }

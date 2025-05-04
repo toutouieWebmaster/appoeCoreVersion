@@ -1,6 +1,6 @@
 Options +FollowSymlinks
 RewriteEngine On
-RewriteBase /app/plugin/cms/page/
+RewriteBase /APPOE/app/plugin/cms/page/
 RewriteRule ^allPages/$  allPages.php [L]
 RewriteRule ^addPage/$  addPage.php [L]
 RewriteRule ^updateMenu/$  updateMenu.php [L]

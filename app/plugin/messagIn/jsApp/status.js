@@ -1,6 +1,6 @@
 //get messages
 function liveMessages() {
-    return jQuery.get('/app/plugin/messagIn/syncMessages.php');
+    return jQuery.get('/APPOE/app/plugin/messagIn/syncMessages.php');
 }
 
 function getLiveMessage() {

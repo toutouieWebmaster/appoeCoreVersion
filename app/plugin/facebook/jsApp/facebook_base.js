@@ -4,7 +4,7 @@ jQuery(document).ready(function ($) {
 
         let appId;
 
-        $.post('/app/ajax/plugin.php', {getDefinedConst: 'FACEBOOK_APP_ID'}).done(function (data) {
+        $.post('/APPOE/app/ajax/plugin.php', {getDefinedConst: 'FACEBOOK_APP_ID'}).done(function (data) {
             if (data) {
                 appId = data.toString();
 

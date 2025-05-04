@@ -2659,3 +2659,6 @@ Description de ouf mon pote !! lang: fr;
 [2025-04-23 13:25:28] | 15792 | D Esther | Creating article relation -> type: USERS typeId:15792 articleId:1;
 [2025-04-23 13:43:29] | 15792 | D Esther | Updating user -> id: 15792 login: Esther email: esther@pp-communication.fr role: gNRkp nom: Dupraz prenom: Esther statut: 1;
 [2025-04-23 13:43:54] | 15792 | Dupraz Esther | Creating user -> login: Admin email: admin@admin.com role: uCvm nom: Admin prenom:  options: ;
+[2025-04-30 16:18:41] | 1 | Horowitz Esther | Update option -> type: PREFERENCE key:maintenance val:false;
+[2025-04-30 20:49:02] | 1 | Horowitz Esther | Update Client -> lastName: Essai firstName:Essai email:esther@pp-communication.fr tel:12344667887 options:a:4:{s:13:"taille-doigts";s:2:"46";s:7:"adresse";s:7:"Adresse";s:11:"code-postal";s:5:"12345";s:7:"message";s:1:"M";};
+[2025-04-30 21:11:13] | 1 | Horowitz Esther | Update Client -> lastName: Essai firstName:Essai email:esther@pp-communication.fr tel:12344667887 options:a:4:{s:13:"taille-doigts";s:2:"30";s:7:"adresse";s:7:"Adresse";s:11:"code-postal";s:5:"12345";s:7:"message";s:1:"M";};
