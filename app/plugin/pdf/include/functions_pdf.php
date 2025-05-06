@@ -17,6 +17,7 @@ require WEB_PLUGIN_PATH . 'pdf/vendor/autoload.php';
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
+use Spipu\Html2Pdf\Security\Security;
 
 /**
  * @param $templateSlug
@@ -26,21 +27,21 @@ use Spipu\Html2Pdf\Html2Pdf;
  * @param string $destination
  * @param bool $vueHtml
  */
-function getPdf($templateSlug, $params, $orientation = 'P', $pdfName = 'appoe', $destination = 'I', $vueHtml = false)
+function getPdf($templateSlug, $params, string $orientation = 'P', string $pdfName = 'appoe', string $destination = 'I', bool $vueHtml = false)
 {
     try {
         $html2pdf = new Html2Pdf($orientation, 'A4', 'fr', true, 'UTF-8', 12);
         $html2pdf->pdf->SetDisplayMode('fullpage');
-        $html2pdf->pdf->SetCreator('APPOE | AOE - Communication');
-        $html2pdf->pdf->SetAuthor('APPOE | AOE - Communication');
+        $html2pdf->pdf->SetCreator('APPOE | P&P Communication');
+        $html2pdf->pdf->SetAuthor('APPOE | P&P Communication');
         $html2pdf->pdf->SetTitle($pdfName);
         $html2pdf->pdf->SetSubject($pdfName);
         $html2pdf->pdf->SetKeywords($pdfName);
+
         $html2pdf->writeHTML(getPdfTemplate($templateSlug, $params));
         $html2pdf->Output($pdfName . '.pdf', $destination);
         exit;
     } catch (Html2PdfException $e) {
-
         $html2pdf->clean();
         $formatter = new ExceptionFormatter($e);
         echo $formatter->getHtmlMessage();
@@ -49,11 +50,11 @@ function getPdf($templateSlug, $params, $orientation = 'P', $pdfName = 'appoe', 
 
 
 /**
- * @param $templateSlug
- * @param $params
+ * @param string $templateSlug
+ * @param mixed $params
  * @return string
  */
-function getPdfTemplate($templateSlug, $params)
+function getPdfTemplate(string $templateSlug, mixed $params = null)
 {
     if (defined('PDF_TEMPLATE_PATH')) {
         return getFileContent(PDF_TEMPLATE_PATH . $templateSlug . '.php', $params);

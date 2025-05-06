@@ -54,7 +54,7 @@ const DEFAULT_ARTICLES_PAGE = '';
 const APPOE_MIN_ROLE = '';
 
 //Default pdf template folder
-const PDF_TEMPLATE_PATH = '';
+const PDF_TEMPLATE_PATH = ROOT_PATH . 'public/pdfTemplates/';
 
 //Twitter API connection keys & tokens
 const TWITTER_CONSUMER_KEY = '';

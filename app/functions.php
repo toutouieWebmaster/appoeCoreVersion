@@ -231,12 +231,12 @@ function isUrlRoot(string $url): bool
 }
 
 /**
- * @param string $url
+ * @param ?string $url
  * @param string $classNameAdded
  *
  * @return string
  */
-function activePage(string $url, string $classNameAdded = 'active'): string
+function activePage(?string $url, string $classNameAdded = 'active'): string
 {
     if (!empty($url)) {
 
@@ -1066,12 +1066,12 @@ function checkAjaxPostRecaptcha(array $post, string $serverSecretKey): bool
 }
 
 /**
- * @param string $secret
- * @param string $token
+ * @param ?string $secret
+ * @param ?string $token
  *
  * @return bool
  */
-function checkRecaptcha(string $secret, string $token): bool
+function checkRecaptcha(?string $secret, ?string $token): bool
 {
 
     if (!empty($secret) && !empty($token)) {
@@ -2269,102 +2269,93 @@ function purgeVarnishCache(?string $url = null): bool
 }
 
 /**
- * @param string $filename
- * @param int $desired_width
- * @param int $quality
+ * Génère une miniature ou une version WebP d'une image.
  *
- * @param bool $webp
- * @return bool
+ * @param string $filename Nom du fichier source (relatif à FILE_DIR_PATH)
+ * @param int $desired_width Largeur souhaitée de la miniature
+ * @param int $quality Qualité de l'image (1 à 100)
+ * @param bool $webp Générer en WebP si true
+ *
+ * @return bool True si la miniature est créée, false sinon
  */
 function thumb(string $filename, int $desired_width = 100, int $quality = 80, bool $webp = false): bool
 {
     $src = FILE_DIR_PATH . $filename;
-    $dest = FILE_DIR_PATH . 'thumb' . DIRECTORY_SEPARATOR . $desired_width . '_' . $filename;
+    $fileInfo = pathinfo($filename);
+    $nameWithoutExt = $fileInfo['filename'];
+
+    $destDir = FILE_DIR_PATH . ($webp ? 'webp' : 'thumb') . DIRECTORY_SEPARATOR;
+    $destExt = $webp ? '.webp' : '.' . strtolower($fileInfo['extension']);
+    $dest = $destDir . "{$desired_width}_{$nameWithoutExt}{$destExt}";
+
+    // Création des dossiers si nécessaires
+    if (!is_dir($destDir)) {
+        mkdir($destDir, 0705, recursive: true);
+    }
+
+    // Si la miniature existe déjà, inutile de la recréer
+    if (!is_file($src) || is_file($dest) || !isImage($src)) {
+        return false;
+    }
+
+    [$src_width, $src_height] = getimagesize($src);
+
+    if ($desired_width >= $src_width || $src_width <= 0 || $src_height <= 0) {
+        return false;
+    }
+
+    $source_image = match (strtoupper($fileInfo['extension'])) {
+        'JPG', 'JPEG' => @imagecreatefromjpeg($src),
+        'PNG'        => @imagecreatefrompng($src),
+        'GIF'        => @imagecreatefromgif($src),
+        'WEBP'       => function_exists('imagecreatefromwebp') ? @imagecreatefromwebp($src) : false,
+        default      => false
+    };
+
+    if (!$source_image) {
+        return false;
+    }
+
+    $desired_height = (int) floor($src_height * ($desired_width / $src_width));
+    if ($desired_height < 1) {
+        return false;
+    }
+
+    $virtual_image = imagecreatetruecolor($desired_width, $desired_height);
+
+    // Transparence pour PNG et WebP
+    if (in_array(strtoupper($fileInfo['extension']), ['PNG', 'WEBP'], true)) {
+        imagealphablending($virtual_image, false);
+        imagesavealpha($virtual_image, true);
+    }
+
+    imagecopyresampled(
+        $virtual_image,
+        $source_image,
+        0, 0, 0, 0,
+        $desired_width, $desired_height,
+        $src_width, $src_height
+    );
+
+    // Sauvegarde
+    $saved = false;
     if ($webp) {
-        $fileInfo = pathinfo($filename);
-        $dest = FILE_DIR_PATH . 'webp' . DIRECTORY_SEPARATOR . $desired_width . '_' . $fileInfo['filename'] . '.WEBP';
+        $saved = function_exists('imagewebp') && imagewebp($virtual_image, $dest, $quality);
+    } else {
+        $ext = strtoupper($fileInfo['extension']);
+        $saved = match ($ext) {
+            'JPG', 'JPEG' => imagejpeg($virtual_image, $dest, $quality),
+            'PNG'         => imagepng($virtual_image, $dest),
+            'GIF'         => imagegif($virtual_image, $dest),
+            'WEBP'        => function_exists('imagewebp') && imagewebp($virtual_image, $dest, $quality),
+            default       => false
+        };
     }
 
-    if (!file_exists(FILE_DIR_PATH . 'thumb/')) {
-        mkdir(FILE_DIR_PATH . 'thumb', 0705);
-    }
+    imagedestroy($virtual_image);
+    imagedestroy($source_image);
 
-    if (!file_exists(FILE_DIR_PATH . 'webp/')) {
-        mkdir(FILE_DIR_PATH . 'webp', 0705);
-    }
-
-    if (is_file($src) && !is_file($dest) && isImage($src)) {
-
-        list($src_width, $src_height, $src_type, $src_attr) = getimagesize($src);
-
-        //check if thumb can be realized
-        if ($desired_width < $src_width) {
-
-            // Find format
-            $ext = strtoupper(pathinfo($src, PATHINFO_EXTENSION));
-
-            /* read the source image */
-            if ($ext == "JPG" or $ext == "JPEG") {
-                $source_image = @imagecreatefromjpeg($src);
-            } elseif ($ext == "PNG") {
-                $source_image = @imagecreatefrompng($src);
-            } elseif ($ext == "GIF") {
-                $source_image = @imagecreatefromgif($src);
-            } elseif ($ext == "WEBP" && function_exists('imagecreatefromwebp')) {
-                $source_image = @imagecreatefromwebp($src);
-            } else {
-                return false;
-            }
-
-            if (!$source_image) {
-                return false;
-            }
-
-            $width = imagesx($source_image);
-            $height = imagesy($source_image);
-
-
-            /* find the "desired height" of this thumbnail, relative to the desired width  */
-            $desired_height = floor($height * ($desired_width / $width));
-
-            /* create a new, "virtual" image */
-            $virtual_image = imagecreatetruecolor($desired_width, $desired_height);
-
-            /* saving alpha color */
-            if ($ext == "PNG" || $ext == "WEBP") {
-                imageAlphaBlending($virtual_image, false);
-                imageSaveAlpha($virtual_image, true);
-            }
-
-            /* copy source image at a resized size */
-            imagecopyresampled($virtual_image, $source_image, 0, 0, 0, 0, $desired_width, $desired_height, $width, $height);
-
-            if ($webp) {
-                if (!function_exists('imagewebp')) {
-                    return false;
-                }
-                imagewebp($virtual_image, $dest, $quality);
-
-            } else {
-
-                /* create the physical thumbnail image to its destination */
-                if ($ext == "JPG" or $ext == "JPEG") {
-                    imagejpeg($virtual_image, $dest, $quality);
-                } elseif ($ext == "PNG") {
-                    imagepng($virtual_image, $dest);
-                } elseif ($ext == "GIF") {
-                    imagegif($virtual_image, $dest);
-                } elseif ($ext == "WEBP") {
-                    if (!function_exists('imagewebp')) {
-                        return false;
-                    }
-                    imagewebp($virtual_image, $dest, $quality);
-                }
-            }
-            return true;
-        }
-    }
-    return false;
+    return $saved;
 }
 
 /**
@@ -3038,12 +3029,12 @@ function groupMultipleKeysArray(array $data, string $keyName): array
 }
 
 /**
- * @param array|object $allContentArr
+ * @param array|object|null $allContentArr
  * @param mixed $key
  *
  * @return array
  */
-function extractFromObjArr(array|object $allContentArr, mixed $key): array
+function extractFromObjArr(null|array|object $allContentArr, mixed $key): array
 {
     $allContent = [];
     if (!empty($allContentArr)) {
@@ -3093,7 +3084,7 @@ function extractFromObjToArrForList(array|object $allContentArr, mixed $key): ar
 }
 
 /**
- * @param array|object $allContentArr
+ * @param array|object|null $allContentArr
  * @param mixed $key
  * @param string $value
  * @param string $value2
@@ -3101,7 +3092,7 @@ function extractFromObjToArrForList(array|object $allContentArr, mixed $key): ar
  *
  * @return array
  */
-function extractFromObjToSimpleArr(array|object $allContentArr, mixed $key, string $value = '', string $value2 = '', string $separator = ' '): array
+function extractFromObjToSimpleArr(array|object|null $allContentArr, mixed $key, string $value = '', string $value2 = '', string $separator = ' '): array
 {
     $allContent = [];
 
@@ -3725,9 +3716,9 @@ function getUserEmail(?string $idUser = null): string
 /**
  * @param ?string $idUser
  *
- * @return array|false
+ * @return mixed
  */
-function getUserStatus(?string $idUser = null): false|array
+function getUserStatus(?string $idUser = null): mixed
 {
     $idUser = checkAndGetUserId($idUser);
 
@@ -3981,12 +3972,12 @@ function isUserInApp(): bool
 /**
  * get real file path
  *
- * @param string $chemin
+ * @param ?string $chemin
  * @param array $ext
  *
  * @return array|false
  */
-function getPathFiles(string $chemin, array $ext = []): false|array
+function getPathFiles(?string $chemin, array $ext = []): false|array
 {
     if (!empty($chemin) && is_array($ext)) {
         $files = glob($chemin . '*.{' . implode(',', $ext) . '}', GLOB_BRACE);
@@ -4085,11 +4076,11 @@ function isUrl(mixed $url): mixed
 }
 
 /**
- * @param string $ip
+ * @param ?string $ip
  *
  * @return bool
  */
-function isIp(string $ip): bool
+function isIp(?string $ip): bool
 {
     return !empty($ip) && strlen($ip) <= 45 && (filter_var($ip, FILTER_VALIDATE_IP)
             || filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)
@@ -4157,12 +4148,12 @@ function webUrl(string $file, ?string $param = null): string
 /**
  * get real web url file by filename
  *
- * @param string $filename
+ * @param ?string $filename
  * @param ?string $param
  *
  * @return string
  */
-function url(string $filename, ?string $param = null): string
+function url(?string $filename, ?string $param = null): string
 {
     if (!empty($filename)) {
         if ($Cms = getPageByFilename($filename)) {
@@ -4173,11 +4164,11 @@ function url(string $filename, ?string $param = null): string
 }
 
 /**
- * @param string $link
+ * @param ?string $link
  *
  * @return string
  */
-function externalLink(string $link): string
+function externalLink(?string $link): string
 {
     if (!empty($link) && str_starts_with($link, "http")) {
 
@@ -4312,12 +4303,12 @@ function getFileName(string $path): string
 }
 
 /**
- * @param string $fileOptions
+ * @param ?string $fileOptions
  * @param string $key
  *
  * @return array|mixed
  */
-function getSerializedOptions(string $fileOptions, string $key = ''): mixed
+function getSerializedOptions(?string $fileOptions, string $key = ''): mixed
 {
     $arrayOptions = [];
     if (!empty($fileOptions)) {

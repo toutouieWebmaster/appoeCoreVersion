@@ -1,4 +1,5 @@
 <?php
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/main.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/plugin/pdf/include/functions_pdf.php');
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -13,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     unset($_POST['pdfTemplateFilename']);
     unset($_POST['pdfOutputName']);
     unset($_POST['pdfDestination']);
+
 
     getPdf($templateFile, $_POST, $orientation, $pdfOutputName, $destination, isset($_POST['vueHtml']));
 }

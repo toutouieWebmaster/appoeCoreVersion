@@ -521,25 +521,40 @@ function getArticleUrl(stdClass $Article, $meta = 'link', $page = '')
  * @param stdClass $Article
  * @param array $options
  * @return bool|string
- */
-function getArtFeaturedImg($Article, $options = [])
+ */function getArtFeaturedImg($Article, array $options = []): mixed
 {
-    $options = array_merge(array(
-        'tmpPos' => 2,
-        'forcedImg' => true,
-        'class' => '',
-        'thumbSize' => false,
-        'onlyUrl' => false,
-        'onlyPath' => false,
-        'webp' => false
-    ), $options);
+    $options = array_merge([
+        'tmpPos'     => 2,
+        'forcedImg'  => true,
+        'class'      => '',
+        'thumbSize'  => false,
+        'onlyUrl'    => false,
+        'onlyPath'   => false,
+        'webp'       => false
+    ], $options);
 
-    return is_object($Article) && property_exists($Article, 'medias') ?
-        getFirstImage(
-            getFileTemplatePosition($Article->getMedias(), $options['tmpPos'], $options['forcedImg']),
-            $options['class'], $options['thumbSize'], $options['onlyUrl'], $options['onlyPath'], $options['webp']
-        ) : false;
+    if (!is_object($Article)) {
+        return false;
+    }
+
+    $medias = null;
+    if (method_exists($Article, 'getMedias')) {
+        $medias = $Article->getMedias();
+    } elseif (property_exists($Article, 'medias')) {
+        $medias = $Article->medias;
+    }
+
+    if ($medias === null) {
+        return false;
+    }
+
+    return getFirstImage(
+        getFileTemplatePosition($medias, $options['tmpPos'], $options['forcedImg']),
+        $options['class'], $options['thumbSize'], $options['onlyUrl'],
+        $options['onlyPath'], $options['webp']
+    );
 }
+
 
 /**
  * @param object|array $article
