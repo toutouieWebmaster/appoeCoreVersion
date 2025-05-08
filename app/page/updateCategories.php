@@ -3,6 +3,7 @@ require('header.php');
 require_once(WEB_PROCESS_PATH . 'categories.php');
 
 use App\Category;
+use App\Form;
 
 $Category = new Category();
 $allCategories = $Category->showAll();
@@ -85,7 +86,7 @@ showPostResponse(getDataPostResponse()); ?>
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form action="" method="post" id="addCategoryForm">
-                    <?= \App\Form::target('ADDCATEGORY'); ?>
+                    <?= Form::target('ADDCATEGORY'); ?>
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalAddCategoryTitle">Ajouter une catégorie</h5>
                     </div>
@@ -93,10 +94,10 @@ showPostResponse(getDataPostResponse()); ?>
                         <?= getTokenField(); ?>
                         <div class="row">
                             <div class="col-12 my-2">
-                                <?= \App\Form::text('Nom', 'name', 'text', !empty($_POST['name']) ? $_POST['name'] : '', true, 150); ?>
+                                <?= Form::text('Nom', 'name', 'text', !empty($_POST['name']) ? $_POST['name'] : '', true, 150); ?>
                             </div>
                             <div class="col-12 my-2">
-                                <?= \App\Form::select('Type de catégorie', 'type', $allTypes, '', true); ?>
+                                <?= Form::select('Type de catégorie', 'type', $allTypes, '', true); ?>
                             </div>
                         </div>
                         <div class="row">

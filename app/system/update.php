@@ -1,9 +1,10 @@
 <?php
 require('ini.php');
 require($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/Autoloader.php');
-\App\Autoloader::register();
+Autoloader::register();
 require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/functions.php');
 
+use App\Autoloader;
 use App\Version;
 
 //Github links

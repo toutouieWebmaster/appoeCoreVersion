@@ -211,11 +211,7 @@ class Menu
             while ($row = $stmt->fetch(PDO::FETCH_OBJ)) {
                 $data[] = $row;
             }
-            if (isset($data)) {
-                return $data;
-            } else {
-                return false;
-            }
+            return $data ?? false;
         }
     }
 

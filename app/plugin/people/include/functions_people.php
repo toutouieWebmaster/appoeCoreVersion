@@ -19,6 +19,7 @@ const PEOPLE_NATURE = array(
  * @param bool $showType
  * @param bool $showSaveBtn
  * @return string
+ * @throws \Random\RandomException
  */
 function people_addPersonFormFields(array $excludesFields = [], array $dataFields = [], array $requiredFields = [], $formName = 'ADDPERSON', $showType = true, $showSaveBtn = true)
 {
@@ -33,9 +34,9 @@ function people_addPersonFormFields(array $excludesFields = [], array $dataField
     $country = 'FR';
 
     //replaces defaults values from function's arguments
-    extract($excludesFields, EXTR_OVERWRITE);
-    extract($dataFields, EXTR_OVERWRITE);
-    extract($requiredFields, EXTR_OVERWRITE);
+    extract($excludesFields);
+    extract($dataFields);
+    extract($requiredFields);
 
     //html form
     $html = getTokenField();

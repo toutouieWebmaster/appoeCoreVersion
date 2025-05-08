@@ -163,13 +163,13 @@ class CmsTemplate
                     }
                 } else {
                     if ($formType == 'textBig') {
-                        $html .= Form::textarea($metaKeyDisplay, $metaKey, $valueCmsContent, 8, false, 'data-idcmscontent="' . $idCmsContent . '"', '');
+                        $html .= Form::textarea($metaKeyDisplay, $metaKey, $valueCmsContent, 8, false, 'data-idcmscontent="' . $idCmsContent . '"');
                     } elseif ($formType == 'textarea') {
                         $html .= Form::textarea($metaKeyDisplay, $metaKey, htmlSpeCharDecode($valueCmsContent), 8, false, 'data-idcmscontent="' . $idCmsContent . '"', 'appoeditor');
                     } elseif ($formType == 'urlFile') {
                         $html .= Form::text($metaKeyDisplay, $metaKey, 'url', $valueCmsContent, false, 250, 'data-idcmscontent="' . $idCmsContent . '" rel="cms-img-popover"', '', 'urlFile');
                     } else {
-                        $html .= Form::text($metaKeyDisplay, $metaKey, $formType, $valueCmsContent, false, 250, 'data-idcmscontent="' . $idCmsContent . '"', '', '');
+                        $html .= Form::text($metaKeyDisplay, $metaKey, $formType, $valueCmsContent, false, 250, 'data-idcmscontent="' . $idCmsContent . '"');
                     }
                 }
 

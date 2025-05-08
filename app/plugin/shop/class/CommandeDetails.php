@@ -159,7 +159,7 @@ class CommandeDetails
             if (!$idProduct) {
                 return $stmt->fetchAll(\PDO::FETCH_OBJ);
             }
-            return $count == 1 ? true : false;
+            return $count == 1;
         }
     }
 

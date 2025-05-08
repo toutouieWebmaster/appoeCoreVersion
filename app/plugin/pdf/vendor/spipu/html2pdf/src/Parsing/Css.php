@@ -771,7 +771,7 @@ class Css
 
                 case 'width':
                     $this->value['width'] = $this->cssConverter->convertToMM($val, $this->getLastWidth());
-                    if ($this->value['width'] && substr($val, -1) === '%') {
+                    if ($this->value['width'] && str_ends_with($val, '%')) {
                         $correctWidth=true;
                     }
                     $noWidth = false;
@@ -1195,6 +1195,8 @@ class Css
                 case 'top':
                 case 'bottom':
                 case 'left':
+                case 'page-break-after':
+                case 'page-break-before':
                 case 'right':
                     $this->value[$nom] = $val;
                     break;
@@ -1205,11 +1207,6 @@ class Css
                     if ($nom === 'list-style') {
                         $nom = 'list-style-type';
                     }
-                    $this->value[$nom] = $val;
-                    break;
-
-                case 'page-break-before':
-                case 'page-break-after':
                     $this->value[$nom] = $val;
                     break;
 
@@ -1505,7 +1502,7 @@ class Css
             }
 
             // if the end of the key = the selector and the next step is ok => ok
-            if (substr($key, -strlen(' '.$name)) === ' '.$name && $this->getReccursiveStyle($key, $lst, $name)) {
+            if (str_ends_with($key, ' ' . $name) && $this->getReccursiveStyle($key, $lst, $name)) {
                 return true;
             }
         }
@@ -1661,7 +1658,7 @@ class Css
                 $name = trim($name);
 
                 // if a selector with something like :hover => continue
-                if (strpos($name, ':') !== false) {
+                if (str_contains($name, ':')) {
                     continue;
                 }
 
@@ -1711,7 +1708,7 @@ class Css
                 $content = @file_get_contents($url);
 
                 // if "http://" in the url
-                if (strpos($url, 'http://') !== false) {
+                if (str_contains($url, 'http://')) {
 
                     // get the domain "http://xxx/"
                     $url = str_replace('http://', '', $url);

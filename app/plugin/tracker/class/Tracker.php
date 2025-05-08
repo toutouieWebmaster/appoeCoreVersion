@@ -36,7 +36,7 @@ class Tracker
             $Browser = new Browser();
             $result = $Browser->getAll($_SERVER['HTTP_USER_AGENT']);
 
-            $this->referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
+            $this->referer = $_SERVER['HTTP_REFERER'] ?? null;
             $this->device = $result['device_type'];
             $this->browserName = $result['browser_name'];
             $this->browserVersion = $result['browser_version'];
@@ -277,7 +277,7 @@ class Tracker
                 `osVersion` VARCHAR(50) NULL DEFAULT NULL
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 				CREATE INDEX date ON ' . $this->tableName . ' (`date`);';
-        return !DB::exec($sql) ? false : true;
+        return (bool)DB::exec($sql);
     }
 
     /**

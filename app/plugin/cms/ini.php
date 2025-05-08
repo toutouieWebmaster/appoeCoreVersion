@@ -1,6 +1,6 @@
 <?php
-define('CMS_PATH', WEB_PLUGIN_PATH . 'cms/');
-define('CMS_URL', WEB_PLUGIN_URL . 'cms/');
+const CMS_PATH = WEB_PLUGIN_PATH . 'cms/';
+const CMS_URL = WEB_PLUGIN_URL . 'cms/';
 
 if (!defined('CACHE_PATH')) {
     define('CACHE_PATH', ROOT_PATH . 'static/');

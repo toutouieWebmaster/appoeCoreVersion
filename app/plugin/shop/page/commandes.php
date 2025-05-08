@@ -32,7 +32,7 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                                 };
                                 ?>
                                 <tr class="seeCommandeDetails" data-commandeid="<?= $commande->id ?>">
-                                    <td><?= displayTimeStamp($commande->created_at, true) ?></td>
+                                    <td><?= displayTimeStamp($commande->created_at) ?></td>
 
                                     <?php $Client = new \App\Plugin\People\People($commande->client_id); ?>
                                     <td class="client"><?= $Client->getEntitled(); ?></td>

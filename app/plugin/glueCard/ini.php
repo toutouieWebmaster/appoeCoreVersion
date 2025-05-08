@@ -1,6 +1,6 @@
 <?php
-define('GLUECARD_PATH', WEB_PLUGIN_PATH . 'glueCard/');
-define('GLUECARD_URL', WEB_PLUGIN_URL . 'glueCard/');
+const GLUECARD_PATH = WEB_PLUGIN_PATH . 'glueCard/';
+const GLUECARD_URL = WEB_PLUGIN_URL . 'glueCard/';
 
 const PLUGIN_TABLES = array(
 	TABLEPREFIX.'appoe_plugin_glueCard_handles',

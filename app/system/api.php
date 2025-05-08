@@ -26,7 +26,7 @@ if (!empty($_POST['token']) && $allowApi === 'true' && $_POST['token'] == $token
     //Get articles by category
     if (!empty($_POST['getArticleByCategory']) && is_numeric($_POST['getArticleByCategory'])) {
 
-        $parent = !empty($_POST['parent']) && $_POST['parent'] == 'true' ? true : false;
+        $parent = !empty($_POST['parent']) && $_POST['parent'] == 'true';
         echo jsonHtmlParse(getArticlesByCategory($_POST['getArticleByCategory'], $parent, $length, $lang));
         exit();
     }

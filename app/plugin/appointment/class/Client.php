@@ -148,7 +148,7 @@ class Client
     /**
      * @param mixed $updatedAt
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -160,7 +160,7 @@ class Client
     /**
      * @return bool
      */
-    public function createTable()
+    public function createTable(): bool
     {
         $sql = 'CREATE TABLE IF NOT EXISTS ' . $this->tableName . ' (
                 `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -177,22 +177,22 @@ class Client
         return DB::exec($sql);
     }
 
-    public function show()
+    public function show(): bool
     {
         return DB::show($this);
     }
 
-    public function showByEmail()
+    public function showByEmail(): bool
     {
         return DB::show($this, ['email']);
     }
 
-    public function showAll()
+    public function showAll(): false|array
     {
         return DB::showAll($this);
     }
 
-    public function showPending()
+    public function showPending(): false|array
     {
         return DB::showAll($this, ['status']);
     }
@@ -200,11 +200,11 @@ class Client
     /**
      * @return bool
      */
-    public function save()
+    public function save(): bool
     {
         if ($return = DB::save($this, ['lastName', 'firstName', 'email', 'tel', 'options', 'status'])) {
             $lastInsertId = DB::lastInsertId();
-            $this->id = $lastInsertId;
+            $this->setId($lastInsertId);
             appLog('Add Client -> lastName: ' . $this->lastName . ' firstName:' . $this->firstName . ' email:' . $this->email . ' tel:' . $this->tel . ' options:' . $this->options);
             return true;
         }
@@ -214,7 +214,7 @@ class Client
     /**
      * @return bool
      */
-    public function update()
+    public function update(): bool
     {
         if (DB::update($this, ['lastName', 'firstName', 'email', 'tel', 'options', 'status'], ['id'])) {
             appLog('Update Client -> lastName: ' . $this->lastName . ' firstName:' . $this->firstName . ' email:' . $this->email . ' tel:' . $this->tel . ' options:' . $this->options);
@@ -226,7 +226,7 @@ class Client
     /**
      * @return bool
      */
-    public function exist()
+    public function exist(): bool
     {
         return DB::exist($this, ['email']);
     }
@@ -234,7 +234,7 @@ class Client
     /**
      * @return bool
      */
-    public function delete()
+    public function delete(): bool
     {
         if (DB::delete($this, ['id'])) {
             appLog('Delete Client -> id: ' . $this->id);

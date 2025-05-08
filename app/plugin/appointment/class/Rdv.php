@@ -283,9 +283,9 @@ class Rdv
      */
     public function save()
     {
-        if ($return = DB::save($this, ['idAgenda', 'idClient', 'idTypeRdv', 'date', 'start', 'end', 'options', 'status', 'createdAt'])) {
+        if (DB::save($this, ['idAgenda', 'idClient', 'idTypeRdv', 'date', 'start', 'end', 'options', 'status', 'createdAt'])) {
             $lastInsertId = DB::lastInsertId();
-            $this->id = $lastInsertId;
+            $this->setId($lastInsertId);
             appLog('Add Rdv -> idAgenda: ' . $this->idAgenda . ' idClient:' . $this->idClient . ' idTypeRdv:' . $this->idTypeRdv . ' date:' . $this->date);
             return true;
         }

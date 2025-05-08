@@ -1,8 +1,12 @@
 <?php
+
+use App\Form;
+use App\Plugin\Traduction\Traduction;
+
 require('header.php');
 require(TRADUCTION_PATH . 'process/postProcess.php');
 if (APP_LANG != "fr") {
-    $Traduction = new \App\Plugin\Traduction\Traduction(APP_LANG);
+    $Traduction = new Traduction(APP_LANG);
     $allContent = $Traduction->getDbData();
 }
 echo getTitle(getAppPageName(), getAppPageSlug());
@@ -25,7 +29,7 @@ showPostResponse(); ?>
                                placeholder="<?= trans('Mot'); ?>" required>
                         <?= getTokenField(); ?>
                         <div class="input-group-append">
-                            <?= \App\Form::target('ADDTRADUCTION'); ?>
+                            <?= Form::target('ADDTRADUCTION'); ?>
                             <button type="submit" name="ADDTRADUCTIONSUBMIT" class="btn btn-outline-info">
                                 <?= trans('Ajouter une traduction'); ?>
                             </button>
@@ -44,7 +48,7 @@ showPostResponse(); ?>
                 <div id="tradContainer" class="row">
                     <?php foreach ($allContent as $metaKey => $content): ?>
                         <div class="col-12 fileContent bg_grey_hover tradContent my-2">
-                            <?= \App\Form::text($metaKey, $metaKey, 'text', $content['metaValue'], false, 250, 'data-idtrad="' . $content['id'] . '" autocomplet="off"'); ?>
+                            <?= Form::text($metaKey, $metaKey, 'text', $content['metaValue'], false, 250, 'data-idtrad="' . $content['id'] . '" autocomplet="off"'); ?>
                             <button type="button" class="deleteTraduction btn btn-sm"
                                     style="position: absolute; bottom: 0; right: 0;"
                                     data-keytrad="<?= $metaKey; ?>">
@@ -74,7 +78,7 @@ showPostResponse(); ?>
                         <div class="row">
                             <?php foreach (LANGUAGES as $id => $lang): ?>
                                 <div class="col-12 my-2">
-                                    <?= \App\Form::text($lang, 'metaValue-' . $id, 'text', !empty($_POST['metaValue-' . $id]) ? $_POST['metaValue-' . $id] : ''); ?>
+                                    <?= Form::text($lang, 'metaValue-' . $id, 'text', !empty($_POST['metaValue-' . $id]) ? $_POST['metaValue-' . $id] : ''); ?>
                                 </div>
                             <?php endforeach; ?>
                             <div class="col-12 my-2">
@@ -87,7 +91,7 @@ showPostResponse(); ?>
                         </div>
                     </div>
                     <div class="modal-footer" id="modalAddMultipleTradsFooter">
-                        <?= \App\Form::target('ADDMULTIPLETRADS'); ?>
+                        <?= Form::target('ADDMULTIPLETRADS'); ?>
                         <button type="submit" name="ADDMULTIPLETRADSSUBMIT"
                                 class="btn btn-primary"><?= trans('Enregistrer'); ?></button>
                         <button type="button" class="btn btn-secondary"

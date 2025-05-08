@@ -68,6 +68,23 @@ function setArticle(Article $Article): void
 }
 
 /**
+ * @param Article|object|bool $Article
+ * @return void
+ */
+function setArticleParams(object|bool $Article): void
+{
+    if ($Article) {
+        setPageParam('currentPageID', $Article->getId());
+        setPageParam('currentPageType', 'ARTICLE');
+        setPageParam('currentPageName', $Article->getName());
+        setPageParam('currentPageSlug', $Article->getSlug());
+        setPageParam('currentPageDescription', $Article->getDescription());
+        setPageParam('currentPageImage', getArtFeaturedImg($Article, ['tmpPos' => 1, 'onlyUrl' => true]));
+        setArticle($Article);
+    }
+}
+
+/**
  * @param string $param
  *
  * @return string

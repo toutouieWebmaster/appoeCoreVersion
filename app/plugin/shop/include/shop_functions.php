@@ -1,6 +1,7 @@
 <?php
 
 use App\CategoryRelations;
+use App\Plugin\Shop\Client;
 use App\Plugin\Shop\Commande;
 use App\Plugin\Shop\CommandeDetails;
 use App\Plugin\Shop\Product;
@@ -50,7 +51,7 @@ function shop_getProductDetailsFromSlug(string $slug, string $lang = LANG): Prod
 /**
  * @param null $idProduct
  * @param $lang
- * @return \App\Plugin\Shop\Product|array|Product
+ * @return Product|array
  */
 function shop_getProductDetails($idProduct = null, $lang = LANG)
 {
@@ -89,7 +90,7 @@ function shop_getProductDetails($idProduct = null, $lang = LANG)
     foreach ($allProducts as $product) {
 
         $productData = shop_getProductDetails($product->id);
-        array_push($data, $productData);
+        $data[] = $productData;
     }
 
     return $data;
@@ -164,7 +165,7 @@ function shop_getShoppingCard($saveCommande = false)
                             $totalProductsPrice += $product['totalPrice'];
 
                             //put results into array
-                            array_push($allDataProducts, $product);
+                            $allDataProducts[] = $product;
                         }
                     }
                 }
@@ -300,16 +301,16 @@ function shop_getTotalShopping($forDB = false)
  */
 function shop_checkExistClient()
 {
-    return !empty($_COOKIE['CLIENT']) ? true : false;
+    return !empty($_COOKIE['CLIENT']);
 }
 
 /**
- * @return \App\Plugin\Shop\Client|bool
+ * @return Client|bool
  */
 function shop_getClientInfo()
 {
     if (!empty($_COOKIE['CLIENT'])) {
-        $Client = new \App\Plugin\Shop\Client();
+        $Client = new Client();
         $Client->setId($_COOKIE['CLIENT']);
         if ($Client->show()) {
             return $Client;
@@ -495,7 +496,7 @@ function shop_getCountShippingCard()
 function getCategoriesByProduct($id)
 {
     //get product
-    $Product = new \App\Plugin\Shop\Product($id);
+    $Product = new Product($id);
 
     //get all categories in relation with article
     $CategoryRelation = new CategoryRelations('SHOP', $Product->getId());

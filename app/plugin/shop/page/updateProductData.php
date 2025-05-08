@@ -1,6 +1,7 @@
 <?php
 require('header.php');
 
+use App\Form;
 use App\Plugin\Shop\Product;
 use App\Plugin\Shop\ProductContent;
 use App\Plugin\Shop\ShopMedia;
@@ -19,7 +20,7 @@ if (!empty($_GET['id'])):
         $ProductContent = new ProductContent($Product->getId(), APP_LANG);
 
         $ProductMedia = new ShopMedia($Product->getId());
-        $ProductMedia->setLang(APP_LANG);;
+        $ProductMedia->setLang(APP_LANG);
         $allProductMedias = $ProductMedia->showFiles();
 
         echo getTitle($Product->getName(), getAppPageSlug());
@@ -76,7 +77,7 @@ if (!empty($_GET['id'])):
                                 <?= getTokenField(); ?>
                                 <input type="hidden" name="productId" value="<?= $Product->getId(); ?>">
                                 <div class="col-12 mb-2">
-                                    <?= \App\Form::text('Résumé', 'resume', 'text', html_entity_decode($ProductContent->getResume()), false, 255); ?>
+                                    <?= Form::text('Résumé', 'resume', 'text', html_entity_decode($ProductContent->getResume()), false, 255); ?>
                                 </div>
                                 <div class="col-12">
                                         <textarea name="productContent" id="productContent"
@@ -84,8 +85,8 @@ if (!empty($_GET['id'])):
                                 </div>
                                 <div class="my-2"></div>
                                 <div class="col-12">
-                                    <?= \App\Form::target('SAVEPRODUCTCONTENT'); ?>
-                                    <?= \App\Form::submit('Enregistrer', 'SAVEPRODUCTCONTENTSUBMIT'); ?>
+                                    <?= Form::target('SAVEPRODUCTCONTENT'); ?>
+                                    <?= Form::submit('Enregistrer', 'SAVEPRODUCTCONTENTSUBMIT'); ?>
                                 </div>
                             </form>
                         </div>
@@ -99,16 +100,16 @@ if (!empty($_GET['id'])):
                         <?= getTokenField(); ?>
                         <input type="hidden" name="productId" value="<?= $Product->getId(); ?>">
                         <div class="col-12 col-lg-6 my-2">
-                            <?= \App\Form::file('Importer des médias', 'inputFile[]', false, 'multiple', '', 'Choisissez...', false); ?>
+                            <?= Form::file('Importer des médias', 'inputFile[]', false, 'multiple', '', 'Choisissez...', false); ?>
                         </div>
                         <div class="col-12 col-lg-6 my-2">
                                 <textarea name="textareaSelectedFile" id="textareaSelectedFile"
                                           class="d-none"></textarea>
-                            <?= \App\Form::text('Choisissez des médias', 'inputSelectFiles', 'text', '0 fichiers', false, 300, 'readonly data-toggle="modal" data-target="#allMediasModal"'); ?>
+                            <?= Form::text('Choisissez des médias', 'inputSelectFiles', 'text', '0 fichiers', false, 300, 'readonly data-toggle="modal" data-target="#allMediasModal"'); ?>
                         </div>
                         <div class="col-12">
-                            <?= \App\Form::target('ADDIMAGESTOPRODUCT'); ?>
-                            <?= \App\Form::submit('Enregistrer', 'ADDIMAGESTOPRODUCTSUBMIT'); ?>
+                            <?= Form::target('ADDIMAGESTOPRODUCT'); ?>
+                            <?= Form::submit('Enregistrer', 'ADDIMAGESTOPRODUCTSUBMIT'); ?>
                         </div>
                     </form>
                     <?php if ($allProductMedias): ?>
@@ -135,10 +136,10 @@ if (!empty($_GET['id'])):
                                     <form method="post" data-imageid="<?= $file->id; ?>">
                                         <input type="hidden" class="typeId" name="typeId"
                                                value="<?= $file->typeId; ?>">
-                                        <?= \App\Form::text('Titre', 'title', 'text', $file->title, false, 255, '', '', 'form-control-sm imageTitle upImgForm', 'Titre'); ?>
-                                        <?= \App\Form::textarea('Description', 'description', $file->description, 1, false, '', 'form-control-sm imageDescription upImgForm', 'Description'); ?>
-                                        <?= \App\Form::text('Lien', 'link', 'url', $file->link, false, 255, '', '', 'form-control-sm imagelink upImgForm', 'Lien'); ?>
-                                        <?= \App\Form::text('Position', 'position', 'text', $file->position, false, 5, '', '', 'form-control-sm imagePosition upImgForm', 'Position'); ?>
+                                        <?= Form::text('Titre', 'title', 'text', $file->title, false, 255, '', '', 'form-control-sm imageTitle upImgForm', 'Titre'); ?>
+                                        <?= Form::textarea('Description', 'description', $file->description, 1, false, '', 'form-control-sm imageDescription upImgForm', 'Description'); ?>
+                                        <?= Form::text('Lien', 'link', 'url', $file->link, false, 255, '', '', 'form-control-sm imagelink upImgForm', 'Lien'); ?>
+                                        <?= Form::text('Position', 'position', 'text', $file->position, false, 5, '', '', 'form-control-sm imagePosition upImgForm', 'Position'); ?>
                                         <select class="custom-select custom-select-sm templatePosition form-control-sm upImgForm"
                                                 name="templatePosition">
                                             <?php if (!getSerializedOptions($file->options, 'templatePosition')): ?>
@@ -212,14 +213,14 @@ if (!empty($_GET['id'])):
                                 </div>
                                 <form action="" method="post" id="addMetaProductForm">
                                     <input type="hidden" name="productId" value="<?= $Product->getId(); ?>">
-                                    <?= \App\Form::target('ADDMETAPRODUCT'); ?>
+                                    <?= Form::target('ADDMETAPRODUCT'); ?>
                                     <input type="hidden" name="UPDATEMETAPRODUCT" value="">
                                     <div class="row">
                                         <div class="col-12 my-2">
-                                            <?= \App\Form::text('Titre', 'metaKey', 'text', '', true, 150); ?>
+                                            <?= Form::text('Titre', 'metaKey', 'text', '', true, 150); ?>
                                         </div>
                                         <div class="col-12 my-2">
-                                            <?= \App\Form::textarea('Contenu', 'metaValue', '', 5, true, '', 'appoeditor'); ?>
+                                            <?= Form::textarea('Contenu', 'metaValue', '', 5, true, '', 'appoeditor'); ?>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -240,7 +241,7 @@ if (!empty($_GET['id'])):
                                             </button>
                                         </div>
                                         <div class="col-12 col-lg-9 my-2">
-                                            <?= \App\Form::submit('Enregistrer', 'ADDMETAPRODUCTSUBMIT'); ?>
+                                            <?= Form::submit('Enregistrer', 'ADDMETAPRODUCTSUBMIT'); ?>
                                         </div>
                                     </div>
                                 </form>

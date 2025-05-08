@@ -1,11 +1,13 @@
-<?php require('header.php');
+<?php use App\Plugin\Shop\Product;
+
+require('header.php');
 require_once(SHOP_PATH . 'process/addStock.php');
 echo getTitle(getAppPageName(), getAppPageSlug());
 showPostResponse(); ?>
     <div class="container">
         <form action="" method="post" id="addStockForm">
             <?= getTokenField();
-            $Product = new \App\Plugin\Shop\Product();
+            $Product = new Product();
             $allProduct = $Product->showAll();
             $listProduct = extractFromObjToSimpleArr($allProduct, 'id', 'name');
             ?>

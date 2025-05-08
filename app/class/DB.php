@@ -138,7 +138,8 @@ final class DB
             $params[":$value"] = self::collect($class, $value);
         }
 
-        $sql = "INSERT INTO " . self::collect($class, 'tableName') . " ($fields) VALUES (:$placeholders)";
+        $sql = "INSERT INTO " . self::collect($class, 'tableName') . " ($fields) VALUES ($placeholders)";
+
         return self::exec($sql, $params);
     }
 
@@ -169,7 +170,7 @@ final class DB
         $sql = 'SELECT id FROM ' . self::collect($class, 'tableName') . ' WHERE ' . self::buildWhereClause($where, $params, $class);
 
         $result = self::exec($sql, $params);
-        return (bool)($result && $result->fetchColumn());
+        return $result && $result->fetchColumn();
     }
 
     /**

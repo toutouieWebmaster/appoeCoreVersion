@@ -19,7 +19,7 @@ if (!defined('DEBUG')) {
     define('DEBUG', false);
 }
 
-//Default cache duration in minutes
+//Default cache duration in seconds
 if (!defined('CACHE_DURATION')) {
     define('CACHE_DURATION', 60 * 60 * 24 * 10);
 }

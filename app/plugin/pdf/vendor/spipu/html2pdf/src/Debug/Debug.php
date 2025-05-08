@@ -61,7 +61,7 @@ class Debug implements DebugInterface
     protected function displayLine($name, $timeTotal, $timeStep, $memoryUsage, $memoryPeak)
     {
         $output =
-            str_pad($name, 30, ' ', STR_PAD_RIGHT).
+            str_pad($name, 30).
             str_pad($timeTotal, 12, ' ', STR_PAD_LEFT).
             str_pad($timeStep, 12, ' ', STR_PAD_LEFT).
             str_pad($memoryUsage, 15, ' ', STR_PAD_LEFT).

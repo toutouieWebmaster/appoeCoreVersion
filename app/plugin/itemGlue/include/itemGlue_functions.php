@@ -520,8 +520,8 @@ function getArticleUrl(stdClass $Article, $meta = 'link', $page = '')
 /**
  * @param stdClass $Article
  * @param array $options
- * @return bool|string
- */function getArtFeaturedImg($Article, array $options = []): mixed
+ * @return string|bool
+ */function getArtFeaturedImg($Article, array $options = []): string|bool
 {
     $options = array_merge([
         'tmpPos'     => 2,

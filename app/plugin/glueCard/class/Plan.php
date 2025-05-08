@@ -161,7 +161,7 @@ class Plan
                 `created_at` DATE NOT NULL,
                 `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;';
-        return !DB::exec($sql) ? false : true;
+        return (bool)DB::exec($sql);
     }
 
     /**

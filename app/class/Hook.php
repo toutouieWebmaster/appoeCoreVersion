@@ -26,10 +26,10 @@ class Hook
      * @param array $args
      * @return bool
      */
-    public static function apply($hook, array $args = [])
+    public static function apply($hook, array $args = []): bool
     {
         if (!empty(self::$HOOKS[$hook])) {
-            foreach (array_sort(self::$HOOKS[$hook], 'priority', SORT_ASC) as $f) {
+            foreach (array_sort(self::$HOOKS[$hook], 'priority') as $f) {
                 call_user_func_array($f['function'], $args);
             }
         }

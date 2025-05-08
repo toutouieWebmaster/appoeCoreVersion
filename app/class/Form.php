@@ -470,11 +470,9 @@ class Form
      * @param $name
      * @return string
      */
-    public static function target($name)
+    public static function target($name): string
     {
-        $html = '<input type="hidden" name = "' . $name . '" id = "' . $name . '" value="' . $name . '">';
-
-        return $html;
+        return '<input type="hidden" name = "' . $name . '" id = "' . $name . '" value="' . $name . '">';
     }
 
     /**

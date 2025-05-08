@@ -450,3 +450,19 @@ Stack trace:
 (
 )
 
+[07-May-2025 09:06:47 Europe/Paris] Command: "C:/xampp/mysql/bin/mysqldump.exe" --no-tablespace --opt -h"127.0.0.1" -u"root" --password="" "appoe_demo" | gzip > "C:\xampp\htdocs\APPOE\app\backup\2025-05-07\db.sql.gz"
+[07-May-2025 09:06:47 Europe/Paris] Return var: 255
+[07-May-2025 09:06:47 Europe/Paris] Output: Array
+(
+)
+
+[07-May-2025 11:30:40 Europe/Paris] PHP Fatal error:  Uncaught Error: Cannot access private property App\Plugin\Appointment\Rdv::$idClient in C:\xampp\htdocs\APPOE\app\plugin\appointment\ajax\mail.php:109
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\plugin\appointment\ajax\mail.php on line 109
+[08-May-2025 09:22:02 Europe/Paris] Command: "C:/xampp/mysql/bin/mysqldump.exe" --no-tablespace --opt -h"127.0.0.1" -u"root" --password="" "appoe_demo" | gzip > "C:\xampp\htdocs\APPOE\app\backup\2025-05-08\db.sql.gz"
+[08-May-2025 09:22:02 Europe/Paris] Return var: 255
+[08-May-2025 09:22:02 Europe/Paris] Output: Array
+(
+)
+

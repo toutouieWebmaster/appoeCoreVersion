@@ -9,7 +9,6 @@ function getPriceFromGrid_laposte($grid, $poids, $tva = 0)
     foreach ($grid as $grammes => $euros) {
         if ($poids <= $grammes) {
             return ($tva == 0) ? $euros : calculeTva_laposte($euros);
-            break;
         }
     }
 
@@ -28,94 +27,17 @@ function calculeTransport_laposte($country, $poids = null, $dimension = 5)
             return 0;
         }
 
-        switch ($country) {
-
-            case 'FR':
-                return getPriceByZone_laposte('FR', $poids, $dimension);
-                break;
-
-            case 'GP':
-            case 'MQ':
-            case 'GY':
-            case 'YT':
-            case 'RE':
-            case 'PM':
-            case 'SM':
-                return getPriceByZone_laposte('OM1', $poids, $dimension);
-                break;
-
-            case 'NC':
-            case 'PF':
-            case 'WF':
-                return getPriceByZone_laposte('OM2', $poids, $dimension);
-                break;
-
-            case 'DE':
-            case 'BE':
-            case 'LU':
-            case 'NL':
-                return getPriceByZone_laposte(1, $poids, $dimension);
-                break;
-
-            case 'AT':
-            case 'ES':
-            case 'IE':
-            case 'IT':
-            case 'PT':
-            case 'GB':
-            case 'VA':
-                return getPriceByZone_laposte(2, $poids, $dimension);
-                break;
-
-            case 'DK':
-            case 'EE':
-            case 'HU':
-            case 'LV':
-            case 'LT':
-            case 'PL':
-            case 'CZ':
-            case 'SK':
-            case 'SE':
-            case 'CH':
-                return getPriceByZone_laposte(3, $poids, $dimension);
-                break;
-
-            case 'FI':
-            case 'GR':
-            case 'IS':
-            case 'MA':
-            case 'TN':
-            case 'DZ':
-            case 'MT':
-            case 'NO':
-            case 'LY':
-            case 'TR':
-            case 'BG':
-            case 'RO':
-            case 'UA':
-                return getPriceByZone_laposte(4, $poids, $dimension);
-                break;
-
-            case 'AU':
-            case 'CA':
-            case 'C2':
-            case 'KR':
-            case 'US':
-            case 'HK':
-            case 'IN':
-            case 'IL':
-            case 'JP':
-            case 'RU':
-            case 'SG':
-            case 'TH':
-            case 'VN':
-                return getPriceByZone_laposte(5, $poids, $dimension);
-                break;
-
-            default:
-                return false;
-                break;
-        }
+        return match ($country) {
+            'FR' => getPriceByZone_laposte('FR', $poids, $dimension),
+            'GP', 'MQ', 'GY', 'YT', 'RE', 'PM', 'SM' => getPriceByZone_laposte('OM1', $poids, $dimension),
+            'NC', 'PF', 'WF' => getPriceByZone_laposte('OM2', $poids, $dimension),
+            'DE', 'BE', 'LU', 'NL' => getPriceByZone_laposte(1, $poids, $dimension),
+            'AT', 'ES', 'IE', 'IT', 'PT', 'GB', 'VA' => getPriceByZone_laposte(2, $poids, $dimension),
+            'DK', 'EE', 'HU', 'LV', 'LT', 'PL', 'CZ', 'SK', 'SE', 'CH' => getPriceByZone_laposte(3, $poids, $dimension),
+            'FI', 'GR', 'IS', 'MA', 'TN', 'DZ', 'MT', 'NO', 'LY', 'TR', 'BG', 'RO', 'UA' => getPriceByZone_laposte(4, $poids, $dimension),
+            'AU', 'CA', 'C2', 'KR', 'US', 'HK', 'IN', 'IL', 'JP', 'RU', 'SG', 'TH', 'VN' => getPriceByZone_laposte(5, $poids, $dimension),
+            default => false,
+        };
 
     }
 
@@ -132,7 +54,6 @@ function getPriceByZone_laposte($zone, $poids, $dimension)
 
             case 'FR':
                 return getPriceFromGrid_laposte(prixLettreFR_laposte(), $poids);
-                break;
 
             case 'OM1':
             case 'OM2':
@@ -141,60 +62,28 @@ function getPriceByZone_laposte($zone, $poids, $dimension)
             case 3:
             case 4:
                 return getPriceFromGrid_laposte(prixPetitPaquetZone1_laposte(), $poids, 1);
-                break;
 
             case 5:
             case 6:
                 return getPriceFromGrid_laposte(prixPetitPaquetZone2_laposte(), $poids, 1);
-                break;
 
         }
 
     } else {
 
         //Colis
-        switch ($zone) {
-
-            case 'FR':
-                return getPriceFromGrid_laposte(prixColisFR_laposte(), $poids, 1);
-                break;
-
-            case 'OM1':
-                return getPriceFromGrid_laposte(prixColisOM1_laposte(), $poids, 1);
-                break;
-
-            case 'OM2':
-                return getPriceFromGrid_laposte(prixColisOM2_laposte(), $poids, 1);
-                break;
-
-            case 1:
-                return getPriceFromGrid_laposte(prixColisZone1_laposte(), $poids, 1);
-                break;
-
-            case 2:
-                return getPriceFromGrid_laposte(prixColisZone2_laposte(), $poids, 1);
-                break;
-
-            case 3:
-                return getPriceFromGrid_laposte(prixColisZone3_laposte(), $poids, 1);
-                break;
-
-            case 4:
-                return getPriceFromGrid_laposte(prixColisZone4_laposte(), $poids, 1);
-                break;
-
-            case 5:
-                return getPriceFromGrid_laposte(prixColisZone5_laposte(), $poids, 1);
-                break;
-
-            case 6:
-                return getPriceFromGrid_laposte(prixColisZone6_laposte(), $poids, 1);
-                break;
-
-            default:
-                return false;
-                break;
-        }
+        return match ($zone) {
+            'FR' => getPriceFromGrid_laposte(prixColisFR_laposte(), $poids, 1),
+            'OM1' => getPriceFromGrid_laposte(prixColisOM1_laposte(), $poids, 1),
+            'OM2' => getPriceFromGrid_laposte(prixColisOM2_laposte(), $poids, 1),
+            1 => getPriceFromGrid_laposte(prixColisZone1_laposte(), $poids, 1),
+            2 => getPriceFromGrid_laposte(prixColisZone2_laposte(), $poids, 1),
+            3 => getPriceFromGrid_laposte(prixColisZone3_laposte(), $poids, 1),
+            4 => getPriceFromGrid_laposte(prixColisZone4_laposte(), $poids, 1),
+            5 => getPriceFromGrid_laposte(prixColisZone5_laposte(), $poids, 1),
+            6 => getPriceFromGrid_laposte(prixColisZone6_laposte(), $poids, 1),
+            default => false,
+        };
 
     }
 

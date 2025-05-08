@@ -2,7 +2,7 @@
 
 use App\ShinouiKatan;
 
-define('MEHOUBARIM_JSON', WEB_PLUGIN_PATH . 'mehoubarim/mehoubarim.json');
+const MEHOUBARIM_JSON = WEB_PLUGIN_PATH . 'mehoubarim/mehoubarim.json';
 
 const STATUS_CONNECTED_USER = array(
     1 => 'success',

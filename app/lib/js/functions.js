@@ -20,7 +20,7 @@ function setLang(lang, interface_lang = false) {
     return $.post('/APPOE/app/ajax/lang.php',
         {
             lang: lang,
-            interfaceLang: !interface_lang ? 'content' : 'interface'
+            interfaceLang: interface_lang ? 'interface' : 'content'
         });
 }
 

@@ -1,6 +1,6 @@
 <?php
-define('ITEMGLUE_PATH', WEB_PLUGIN_PATH . 'itemGlue/');
-define('ITEMGLUE_URL', WEB_PLUGIN_URL . 'itemGlue/');
+const ITEMGLUE_PATH = WEB_PLUGIN_PATH . 'itemGlue/';
+const ITEMGLUE_URL = WEB_PLUGIN_URL . 'itemGlue/';
 
 const PLUGIN_TABLES = array(
 	TABLEPREFIX.'appoe_plugin_itemGlue_articles',

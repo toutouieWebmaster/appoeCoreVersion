@@ -40,7 +40,7 @@ if (checkPostAndTokenRequest()) {
                     setPostResponse('Un problème est survenu lors de l\'enregistrement de la carte');
                 }
             } else {
-                setPostResponse('Ce titre est déjà utilisé', 'danger');
+                setPostResponse('Ce titre est déjà utilisé');
             }
         } else {
             setPostResponse('Tous les champs sont obligatoires');
@@ -117,7 +117,7 @@ if (checkPostAndTokenRequest()) {
             }
 
             if ($access) {
-                array_push($map['levels'], $newLevel);
+                $map['levels'][] = $newLevel;
 
                 $InteractiveMap->setData(json_encode($map));
                 if ($InteractiveMap->updateData()) {

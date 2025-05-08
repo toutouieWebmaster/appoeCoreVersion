@@ -24,7 +24,7 @@ echo getTitle(getAppPageName(), getAppPageSlug(), '', '<div class="position-abso
                                 <td data-col="name"><?= $article->name ?></td>
                                 <td data-col="slug"><?= $article->slug ?></td>
                                 <td data-col="categories"><?= implode(', ', extractFromObjToSimpleArr(getCategoriesByArticle($article->id), 'name')); ?></td>
-                                <td data-col="date"><?= displayCompleteDate($article->created_at, false) ?></td>
+                                <td data-col="date"><?= displayCompleteDate($article->created_at) ?></td>
                                 <td data-col="buttons">
                                     <button type="button" class="btn btn-sm featuredArticle"
                                             title="<?= $article->statut == 2 ? trans('Article standard') : trans('Article vedette'); ?>"
