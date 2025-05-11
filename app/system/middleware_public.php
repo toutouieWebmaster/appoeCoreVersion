@@ -1,5 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/main.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/app/main.php');
 includePluginsFiles();
 require_once(WEB_SYSTEM_PATH . 'control_public.php');
 require_once(WEB_SYSTEM_PATH . 'auth_user.php');

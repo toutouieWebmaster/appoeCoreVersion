@@ -27,7 +27,7 @@ div.handleCard .card-header button.focus {
     box-shadow: none;
 }
 div.cardsContainer .card .card-body{
-    /*background-image: url("/APPOE/app/lib/template/images/pattern-so-white.png");
+    /*background-image: url("/app/lib/template/images/pattern-so-white.png");
     background-repeat: repeat;*/
 }
 input[name="handleNameInput"] {

@@ -1,5 +1,5 @@
 function getInstagramTimelineFile() {
-    return $.getJSON('/APPOE/app/plugin/instagram/timeline.json');
+    return $.getJSON('/app/plugin/instagram/timeline.json');
 }
 
 function showInstagramTimeline(preferences = {}) {

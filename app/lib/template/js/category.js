@@ -5,7 +5,7 @@ $(document).ready(function () {
         let $categoryTypeInput = $('#categoryTypeForm');
         $categoryTypeInput.html('<i class="fas fa-circle-notch fa-spin"></i> Chargement');
         $.post(
-            '/APPOE/app/ajax/categories.php',
+            '/app/ajax/categories.php',
             {
                 getCategoriesByType: 'OK',
                 categoryType: categoryType
@@ -30,7 +30,7 @@ $(document).ready(function () {
         if (catName.length > 0 && catPos > 0) {
             busyApp();
             $.post(
-                '/APPOE/app/ajax/categories.php',
+                '/app/ajax/categories.php',
                 {
                     updateCategoryName: 'OK',
                     idCategory: idCategory,
@@ -58,7 +58,7 @@ $(document).ready(function () {
         let idCategory = $btn.data('restaureid');
 
         $.post(
-            '/APPOE/app/ajax/categories.php',
+            '/app/ajax/categories.php',
             {
                 restaureCategory: 'OK',
                 idCategoryToRestaure: idCategory
@@ -81,7 +81,7 @@ $(document).ready(function () {
             let $btn = $(this);
 
             $.post(
-                '/APPOE/app/ajax/categories.php',
+                '/app/ajax/categories.php',
                 {
                     deleteCategory: 'OK',
                     idCategory: idCategory

@@ -18,8 +18,8 @@
 }
 
 /* Preloader & Error */
-.mapplic-element.mapplic-loading { background: url('/APPOE/app/plugin/interactiveMap/images/loader.gif') no-repeat center; }
-.mapplic-element.mapplic-error { background: url('/APPOE/app/plugin/interactiveMap/images/error-icon.png') no-repeat center; }
+.mapplic-element.mapplic-loading { background: url('/app/plugin/interactiveMap/images/loader.gif') no-repeat center; }
+.mapplic-element.mapplic-error { background: url('/app/plugin/interactiveMap/images/error-icon.png') no-repeat center; }
 
 .mapplic-element > * {
 	opacity: 1;
@@ -71,16 +71,16 @@
 /* IE Fix END */
 
 .mapplic-map.mapplic-zoomable .mapplic-map-image {
-	cursor: url('/APPOE/app/plugin/interactiveMap/images/openhand.cur'), default;
+	cursor: url('/app/plugin/interactiveMap/images/openhand.cur'), default;
 }
 
 .mapplic-map.mapplic-zoomable.mapplic-dragging .mapplic-map-image {
-	cursor: url('/APPOE/app/plugin/interactiveMap/images/closedhand.cur'), move;
+	cursor: url('/app/plugin/interactiveMap/images/closedhand.cur'), move;
 }
 
 /* Pin types */
 .mapplic-pin {
-	background-image: url('/APPOE/app/plugin/interactiveMap/images/pin.png');
+	background-image: url('/app/plugin/interactiveMap/images/pin.png');
 	background-size: 18px 24px;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -239,12 +239,12 @@
 	left: -7px;
 }
 
-.mapplic-pin.orange { background-image: url('/APPOE/app/plugin/interactiveMap/images/pin-orange.png'); }
-.mapplic-pin.yellow { background-image: url('/APPOE/app/plugin/interactiveMap/images/pin-yellow.png'); }
-.mapplic-pin.white { background-image: url('/APPOE/app/plugin/interactiveMap/images/pin-white.png'); }
-.mapplic-pin.green { background-image: url('/APPOE/app/plugin/interactiveMap/images/pin-green.png'); }
-.mapplic-pin.blue { background-image: url('/APPOE/app/plugin/interactiveMap/images/pin-blue.png'); }
-.mapplic-pin.purple { background-image: url('/APPOE/app/plugin/interactiveMap/images/pin-purple.png'); }
+.mapplic-pin.orange { background-image: url('/app/plugin/interactiveMap/images/pin-orange.png'); }
+.mapplic-pin.yellow { background-image: url('/app/plugin/interactiveMap/images/pin-yellow.png'); }
+.mapplic-pin.white { background-image: url('/app/plugin/interactiveMap/images/pin-white.png'); }
+.mapplic-pin.green { background-image: url('/app/plugin/interactiveMap/images/pin-green.png'); }
+.mapplic-pin.blue { background-image: url('/app/plugin/interactiveMap/images/pin-blue.png'); }
+.mapplic-pin.purple { background-image: url('/app/plugin/interactiveMap/images/pin-purple.png'); }
 
 .mapplic-pin.circular {
 	background-image: none;
@@ -395,7 +395,7 @@
 /* Clear Button */
 .mapplic-clear-button {
 	background-color: #fff;
-	background-image: url('/APPOE/app/plugin/interactiveMap/images/reset.png');
+	background-image: url('/app/plugin/interactiveMap/images/reset.png');
 	background-size: 16px 16px;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -449,13 +449,13 @@
 }
 
 a.mapplic-zoomin-button {
-	background-image: url('/APPOE/app/plugin/interactiveMap/images/plus.png');
+	background-image: url('/app/plugin/interactiveMap/images/plus.png');
 	background-size: 10px 10px;
 	border-radius: 2px 2px 0 0;
 }
 
 a.mapplic-zoomout-button {
-	background-image: url('/APPOE/app/plugin/interactiveMap/images/minus.png');
+	background-image: url('/app/plugin/interactiveMap/images/minus.png');
 	background-size: 10px 10px;
 	border-radius: 0 0 2px 2px;
 	border-top: none;
@@ -474,7 +474,7 @@ a.mapplic-zoomout-button {
 
 .mapplic-fullscreen-button {
 	background-color: #fff;
-	background-image: url('/APPOE/app/plugin/interactiveMap/images/fullscreen.png');
+	background-image: url('/app/plugin/interactiveMap/images/fullscreen.png');
 	background-repeat: no-repeat;
 	background-position: center;
 	border: 1px solid #eee;
@@ -489,7 +489,7 @@ a.mapplic-zoomout-button {
 }
 
 .mapplic-fullscreen .mapplic-fullscreen-button {
-	background-image: url('/APPOE/app/plugin/interactiveMap/images/fullscreen-exit.png');
+	background-image: url('/app/plugin/interactiveMap/images/fullscreen-exit.png');
 }
 
 .mapplic-fullscreen .mapplic-container {
@@ -545,11 +545,11 @@ a.mapplic-zoomout-button {
 }
 
 .mapplic-levels .mapplic-levels-up {
-	background-image: url('/APPOE/app/plugin/interactiveMap/images/arrow-up.png');
+	background-image: url('/app/plugin/interactiveMap/images/arrow-up.png');
 }
 
 .mapplic-levels .mapplic-levels-down {
-	background-image: url('/APPOE/app/plugin/interactiveMap/images/arrow-down.png');
+	background-image: url('/app/plugin/interactiveMap/images/arrow-down.png');
 	bottom: 0;
 }
 
@@ -579,7 +579,7 @@ a.mapplic-zoomout-button {
 }
 
 .mapplic-search-input {
-	background-image: url('/APPOE/app/plugin/interactiveMap/images/viewer.png');
+	background-image: url('/app/plugin/interactiveMap/images/viewer.png');
 	background-size: 17px 16px;
 	background-repeat: no-repeat;
 	background-position: 8px;
@@ -606,7 +606,7 @@ a.mapplic-zoomout-button {
 }
 
 .mapplic-search-clear {
-	background-image: url('/APPOE/app/plugin/interactiveMap/images/cross.png');
+	background-image: url('/app/plugin/interactiveMap/images/cross.png');
 	background-size: 8px 8px;
 	background-repeat: no-repeat;
 	background-color: transparent;
@@ -835,7 +835,7 @@ a.mapplic-zoomout-button {
 }
 
 .mapplic-tooltip-close {
-	background-image: url('/APPOE/app/plugin/interactiveMap/images/cross.png');
+	background-image: url('/app/plugin/interactiveMap/images/cross.png');
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: 8px 8px;
@@ -969,38 +969,38 @@ a.mapplic-zoomout-button {
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx) {
 	.mapplic-search-clear,
 	.mapplic-tooltip-close {
-		background-image: url('/APPOE/app/plugin/interactiveMap/images/cross@2x.png');
+		background-image: url('/app/plugin/interactiveMap/images/cross@2x.png');
 	}
 
 	.mapplic-levels .mapplic-levels-up {
-		background-image: url('/APPOE/app/plugin/interactiveMap/images/arrow-up@2x.png');
+		background-image: url('/app/plugin/interactiveMap/images/arrow-up@2x.png');
 	}
 
 	.mapplic-levels .mapplic-levels-down {
-		background-image: url('/APPOE/app/plugin/interactiveMap/images/arrow-down@2x.png');
+		background-image: url('/app/plugin/interactiveMap/images/arrow-down@2x.png');
 	}
 
 	a.mapplic-zoomin-button {
-		background-image: url('/APPOE/app/plugin/interactiveMap/images/plus@2x.png');
+		background-image: url('/app/plugin/interactiveMap/images/plus@2x.png');
 	}
 
 	a.mapplic-zoomout-button {
-		background-image: url('/APPOE/app/plugin/interactiveMap/images/minus@2x.png');
+		background-image: url('/app/plugin/interactiveMap/images/minus@2x.png');
 	}
 
 	.mapplic-search-input {
-		background-image: url('/APPOE/app/plugin/interactiveMap/images/viewer@2x.png');
+		background-image: url('/app/plugin/interactiveMap/images/viewer@2x.png');
 	}
 
-	.mapplic-pin { background-image: url('/APPOE/app/plugin/interactiveMap/images/pin@2x.png'); }
-	.mapplic-pin.orange { background-image: url('/APPOE/app/plugin/interactiveMap/images/pin-orange@2x.png'); }
-	.mapplic-pin.yellow { background-image: url('/APPOE/app/plugin/interactiveMap/images/pin-yellow@2x.png'); }
-	.mapplic-pin.green { background-image: url('/APPOE/app/plugin/interactiveMap/images/pin-green@2x.png'); }
-	.mapplic-pin.blue { background-image: url('/APPOE/app/plugin/interactiveMap/images/pin-blue@2x.png'); }
-	.mapplic-pin.purple { background-image: url('/APPOE/app/plugin/interactiveMap/images/pin-purple@2x.png'); }
+	.mapplic-pin { background-image: url('/app/plugin/interactiveMap/images/pin@2x.png'); }
+	.mapplic-pin.orange { background-image: url('/app/plugin/interactiveMap/images/pin-orange@2x.png'); }
+	.mapplic-pin.yellow { background-image: url('/app/plugin/interactiveMap/images/pin-yellow@2x.png'); }
+	.mapplic-pin.green { background-image: url('/app/plugin/interactiveMap/images/pin-green@2x.png'); }
+	.mapplic-pin.blue { background-image: url('/app/plugin/interactiveMap/images/pin-blue@2x.png'); }
+	.mapplic-pin.purple { background-image: url('/app/plugin/interactiveMap/images/pin-purple@2x.png'); }
 
 	.mapplic-clear-button {
-		background-image: url('/APPOE/app/plugin/interactiveMap/images/reset@2x.png');
+		background-image: url('/app/plugin/interactiveMap/images/reset@2x.png');
 	}
 }
 

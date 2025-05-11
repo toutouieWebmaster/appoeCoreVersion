@@ -1,6 +1,6 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/plugin/rating/main.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/plugin/rating/include/rating_function.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/app/plugin/rating/main.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/app/plugin/rating/include/rating_function.php');
 
 use App\Plugin\Rating\Rating;
 

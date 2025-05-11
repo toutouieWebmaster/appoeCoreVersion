@@ -31,7 +31,7 @@ jQuery(document).ready(function ($) {
             fetch: 1
         };
         $.post(
-            '/APPOE/app/plugin/rating/process/ajaxProcess.php',
+            '/app/plugin/rating/process/ajaxProcess.php',
             out_data,
             function (INFO) {
                 if (INFO) {
@@ -59,7 +59,7 @@ jQuery(document).ready(function ($) {
             };
 
             $.post(
-                '/APPOE/app/plugin/rating/process/ajaxProcess.php',
+                '/app/plugin/rating/process/ajaxProcess.php',
                 clicked_data,
                 function (INFO) {
                     if (INFO) {

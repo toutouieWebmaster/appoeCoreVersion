@@ -2,7 +2,7 @@
 
 use App\Plugin\Appointment\Agenda;
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/lib/template/header_admin_template.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/app/lib/template/header_admin_template.php');
 if (!empty($_GET['id']) && is_numeric($_GET['id'])):
     $Agenda = new Agenda();
     $Agenda->setId($_GET['id']);
@@ -28,4 +28,4 @@ if (!empty($_GET['id']) && is_numeric($_GET['id'])):
 <?php else:
     echo getContainerErrorMsg(trans('Cette page n\'existe pas'));
 endif;
-require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/lib/template/footer_admin_template.php'); ?>
+require_once($_SERVER['DOCUMENT_ROOT'] . '/app/lib/template/footer_admin_template.php'); ?>

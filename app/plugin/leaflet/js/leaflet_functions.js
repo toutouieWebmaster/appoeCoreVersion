@@ -201,7 +201,7 @@ function leaflet_simpleMarker(map, lngLat, title, imgSrc) {
     map.invalidateSize();
 }
 
-function leaflet_showImg(map, imgSrc = '/APPOE/app/lib/template/images/logo_app.png', imgWidth = '128px', onclickUrl = 'https://aoe-communication.com', position = 'bottomleft') {
+function leaflet_showImg(map, imgSrc = '/app/lib/template/images/logo_app.png', imgWidth = '128px', onclickUrl = 'https://aoe-communication.com', position = 'bottomleft') {
 
     L.Control.Watermark = L.Control.extend({
 

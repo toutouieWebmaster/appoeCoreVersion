@@ -6,7 +6,7 @@ use App\Plugin\Cms\CmsCache;
 use App\Plugin\Cms\CmsContent;
 use App\Plugin\Cms\CmsTemplate;
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/system/middleware_public.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/app/system/middleware_public.php');
 includePluginsFiles();
 
 if (DB::checkTable(TABLEPREFIX . 'appoe_plugin_cms')) {

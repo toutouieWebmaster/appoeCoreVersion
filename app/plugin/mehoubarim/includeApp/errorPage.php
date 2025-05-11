@@ -1,5 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/main.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/app/main.php');
 require_once(WEB_PLUGIN_PATH . 'mehoubarim/include/mehoubarim_functions.php');
 
 use App\ShinouiKatan;

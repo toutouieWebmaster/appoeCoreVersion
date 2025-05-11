@@ -1,5 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/main.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/app/main.php');
 if (isUserAuthorized('updatePageContent')): ?>
     <div id="adminDashPublic">
         <a href="<?= WEB_ADMIN_URL; ?>" title="Tableau de bord">
@@ -27,7 +27,7 @@ if (isUserAuthorized('updatePageContent')): ?>
                     if (null != page.getAttribute('data-page-slug') && null != page.getAttribute('data-page-lang')) {
 
                         let xhr = new XMLHttpRequest();
-                        xhr.open("POST", '/APPOE/app/plugin/cms/process/ajaxProcess.php', true);
+                        xhr.open("POST", '/app/plugin/cms/process/ajaxProcess.php', true);
 
                         //Envoie les informations du header adaptées avec la requête
                         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

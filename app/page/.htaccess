@@ -1,6 +1,6 @@
 Options +FollowSymlinks
 RewriteEngine On
-RewriteBase /APPOE/app/page/
+RewriteBase /app/page/
 RewriteRule ^home/$  index.php [L]
 RewriteRule ^user/([0-9]+)/$ updateUser.php?id=$1 [L]
 RewriteRule ^allUsers/$  allUsers.php [L]

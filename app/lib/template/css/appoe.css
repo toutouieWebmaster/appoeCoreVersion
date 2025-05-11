@@ -173,7 +173,7 @@ a:focus, a:hover {
     max-height: 100vh;
     z-index: 20;
     margin-left: 0;
-    background-image: url("/APPOE/app/lib/template/images/pattern-so-white.png");
+    background-image: url("/app/lib/template/images/pattern-so-white.png");
     background-repeat: repeat;
     -webkit-box-shadow: 1px 0 20px rgba(0, 0, 0, 0.10);
     box-shadow: 1px 0 20px rgba(0, 0, 0, 0.10);

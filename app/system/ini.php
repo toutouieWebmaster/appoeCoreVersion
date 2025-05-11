@@ -2,7 +2,7 @@
 /**
  * DataBase config
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/ini.main.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/ini.main.php');
 
 /**
  * Charset

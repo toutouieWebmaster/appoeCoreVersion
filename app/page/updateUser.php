@@ -72,7 +72,7 @@ if (!empty($_GET['id'])):
                 </form>
             </div>
         </div>
-        <script type="text/javascript" src="/APPOE/app/lib/template/js/user.js"></script>
+        <script type="text/javascript" src="/app/lib/template/js/user.js"></script>
     <?php else:
         echo getContainerErrorMsg(trans('Cet utilisateur n\'existe pas'));
     endif;

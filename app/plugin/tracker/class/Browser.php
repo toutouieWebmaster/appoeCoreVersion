@@ -869,7 +869,7 @@ class Browser
         if ($this->get_mode !== 'device' && $this->result_browser_chromium_version == 0 && $this->result_browser_gecko_version == 0 && $this->matchi_ua('AppleWebKit/'))
         {
             $this->result_browser_webkit_version = 0;
-            $match = $this->matchi_ua('/APPOE/appleWebKit\/([0-9]+\.[0-9]+)/');
+            $match = $this->matchi_ua('/appleWebKit\/([0-9]+\.[0-9]+)/');
             if (!empty($match[1])) $this->result_browser_webkit_version = (float)$match[1];
         }
 
@@ -883,7 +883,7 @@ class Browser
         {
             // Safari
 
-            $browser_list[] = array('Safari', '/APPOE/appleWebKit\/[.0-9]+.*Gecko\)\sSafari\/[.0-9A-Za-z]+$/', '/Safari\/(\d+)/', '1', 'Version/');
+            $browser_list[] = array('Safari', '/appleWebKit\/[.0-9]+.*Gecko\)\sSafari\/[.0-9A-Za-z]+$/', '/Safari\/(\d+)/', '1', 'Version/');
             $browser_list[] = array('Safari', '/Version\/([0-9]+\.[0-9]+).*Safari/', '/Version\/([0-9]+\.[0-9]+).*Safari/', '1', 'Epiphany|Arora/|Midori|midori|SlimBoat');
 
             // IE
@@ -976,7 +976,7 @@ class Browser
 
                     // Safari old version conversion
 
-                    if ($match === '/APPOE/appleWebKit\/[.0-9]+.*Gecko\)\sSafari\/[.0-9A-Za-z]+$/')
+                    if ($match === '/appleWebKit\/[.0-9]+.*Gecko\)\sSafari\/[.0-9A-Za-z]+$/')
                     {
                         $ev = intval($this->result_browser_version);
                         if (!empty($ev)) $this->result_browser_version = 1;
@@ -1242,7 +1242,7 @@ class Browser
 
         if ($this->result_browser_name === 'Safari' || $this->result_browser_name === 'Safari Mobile')
         {
-            if ($this->match_ua('/APPOE/appleWebKit\/[.0-9]+.*Gecko\)\sVersion\/[.0-9].*Safari\/[.0-9A-Za-z]+$/')) $this->result_browser_safari_original = 1;
+            if ($this->match_ua('/appleWebKit\/[.0-9]+.*Gecko\)\sVersion\/[.0-9].*Safari\/[.0-9A-Za-z]+$/')) $this->result_browser_safari_original = 1;
         }
 
         // Check and correct browser version anomaly

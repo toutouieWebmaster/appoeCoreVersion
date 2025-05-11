@@ -134,7 +134,7 @@ jQuery(window).on('load', function () {
 
             if($('script[src*="owl.carousel.min.js"]').length === 0) {
                 let owlScript = document.createElement("script");
-                owlScript.src = '/APPOE/app/plugin/appointment/assets/owl.carousel.min.js';
+                owlScript.src = '/app/plugin/appointment/assets/owl.carousel.min.js';
                 owlScript.type = 'text/javascript';
                 document.getElementsByTagName("head")[0].appendChild(owlScript);
             }
@@ -343,17 +343,17 @@ jQuery(window).on('load', function () {
             $form.prepend('<input name="rdvEnd" type="hidden" value="' + rdvEnd + '">');
 
             if ($form.find('input[name="idRdvToRemove"]').length > 0) {
-                $form.attr('data-success', '<div class="appointmentAppoeReminder"><img src="/APPOE/app/plugin/appointment/img/check.svg" width="30px">' +
+                $form.attr('data-success', '<div class="appointmentAppoeReminder"><img src="/app/plugin/appointment/img/check.svg" width="30px">' +
                     'Votre rendez-vous du <strong>' + rdvDateReminder + '</strong>' +
                     ' a bien été modifié.<br>Vous recevrez bientôt un email récapitulatif de votre rendez vous.</div>');
             } else {
 
                 if ($form.find('input[name="idClientKnown"]').length > 0) {
-                    $form.attr('data-success', '<div class="appointmentAppoeReminder"><img src="/APPOE/app/plugin/appointment/img/check.svg" width="30px">' +
+                    $form.attr('data-success', '<div class="appointmentAppoeReminder"><img src="/app/plugin/appointment/img/check.svg" width="30px">' +
                         'Votre rendez-vous du <strong>' + rdvDateReminder + '</strong>' +
                         ' a bien été enregistré.<br>Vous recevrez bientôt un email récapitulatif de votre rendez vous.</div>');
                 } else {
-                    $form.attr('data-success', '<div class="appointmentAppoeReminder"><img src="/APPOE/app/plugin/appointment/img/check.svg" width="30px">' +
+                    $form.attr('data-success', '<div class="appointmentAppoeReminder"><img src="/app/plugin/appointment/img/check.svg" width="30px">' +
                         '<strong>Un email vous a été envoyé</strong>' +
                         '<em style="font-size: 16px;line-height: 24px;display: block;margin-top: 10px;">' +
                         'Afin de s\'assurer de la validité de vos coordonnées de contact et ainsi finaliser notre premier rendez-vous, ' +

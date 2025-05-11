@@ -19,8 +19,8 @@ const DBPATH = 'mysql:host=' . DBHOST . ';dbname=' . DBNAME . ';charset=UTF8';
 const WEB_TITLE = 'APPOE';
 const DEFAULT_EMAIL = '';
 const WEB_DIR = '/';
-define('WEB_DIR_URL', 'https://' . $_SERVER['HTTP_HOST'] . WEB_DIR . 'APPOE' . WEB_DIR);
-define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT'] . WEB_DIR . 'APPOE' . WEB_DIR);
+define('WEB_DIR_URL', 'https://' . $_SERVER['HTTP_HOST'] . WEB_DIR);
+define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT'] . WEB_DIR);
 
 /**
  * Localisation : Date & Time

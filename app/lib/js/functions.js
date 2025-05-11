@@ -1,5 +1,5 @@
 const WEB_PROTOCOL_URL = window.location.protocol;
-const WEB_DIR_URL = WEB_PROTOCOL_URL + '//' + window.location.hostname + '/' + 'APPOE/';
+const WEB_DIR_URL = WEB_PROTOCOL_URL + '//' + window.location.hostname + '/';
 const WEB_APP_URL = WEB_DIR_URL + 'app/';
 const WEB_PLUGIN_URL = WEB_APP_URL + 'plugin/';
 
@@ -17,7 +17,7 @@ function convertToSlug(str) {
 }
 
 function setLang(lang, interface_lang = false) {
-    return $.post('/APPOE/app/ajax/lang.php',
+    return $.post('/app/ajax/lang.php',
         {
             lang: lang,
             interfaceLang: interface_lang ? 'interface' : 'content'
@@ -220,7 +220,7 @@ function getKeyByValueInObject(object, value) {
 }
 
 function mediaAjaxRequest(data) {
-    return $.post('/APPOE/app/ajax/media.php', data);
+    return $.post('/app/ajax/media.php', data);
 }
 
 function systemAjaxRequest(data) {
@@ -229,11 +229,11 @@ function systemAjaxRequest(data) {
     $('#loader').fadeIn('fast');
     $('#loaderInfos').html('Veuillez <strong>ne pas quitter</strong> votre navigateur');
 
-    return $.post('/APPOE/app/ajax/plugin.php', data);
+    return $.post('/app/ajax/plugin.php', data);
 }
 
 function checkUserSessionExit() {
-    return $.post('/APPOE/app/ajax/plugin.php', {checkUserSession: 'OK'});
+    return $.post('/app/ajax/plugin.php', {checkUserSession: 'OK'});
 }
 
 function getHtmlLoader() {
@@ -488,7 +488,7 @@ $.fn.hasAttr = function (name) {
                     publicKey: false,
                     recaptcha: '3',
                     method: 'POST',
-                    action: 'APPOE/public/mail.php'
+                    action: 'public/mail.php'
                 }, userOptions);
 
                 if (!options.publicKey) {

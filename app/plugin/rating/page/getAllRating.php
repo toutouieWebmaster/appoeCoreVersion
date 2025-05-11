@@ -1,5 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/main.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/app/main.php');
 require_once('../ini.php');
 includePluginsFiles();
 $allRating = getAllRates();
@@ -46,4 +46,4 @@ $allRating = getAllRates();
     endif; ?>
     </tbody>
 </table>
-<script type="text/javascript" src="/APPOE/app/plugin/rating/js/rating_base.js"></script>
+<script type="text/javascript" src="/app/plugin/rating/js/rating_base.js"></script>

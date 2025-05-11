@@ -1,6 +1,6 @@
 Options +FollowSymlinks
 RewriteEngine On
-RewriteBase /APPOE/app/plugin/rating/page/
+RewriteBase /app/plugin/rating/page/
 RewriteRule ^allRating/$  allRating.php [L]
 
 RewriteEngine on

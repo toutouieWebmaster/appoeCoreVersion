@@ -22,7 +22,7 @@
 			<div class="col-md-3 col-sm-3 widget">
 				<div class="logo-footer-cont">
 					<a href="/">
-						<img class="logo-footer" src="/APPOE/public/images/logo-footer.png" alt="logo">
+						<img class="logo-footer" src="/public/images/logo-footer.png" alt="logo">
 					</a>
 				</div>
 				<div class="footer-2-text-cont">

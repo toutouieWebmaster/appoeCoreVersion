@@ -1,6 +1,6 @@
 Options +FollowSymlinks
 RewriteEngine On
-RewriteBase /APPOE/app/plugin/people/page/
+RewriteBase /app/plugin/people/page/
 RewriteRule ^addPerson/$  addPerson.php [L]
 RewriteRule ^allPeople/$  allPeople.php [L]
 RewriteRule ^peopleArchives/$  archives.php [L]

@@ -1,8 +1,8 @@
 <?php
 require('ini.php');
-require($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/Autoloader.php');
+require($_SERVER['DOCUMENT_ROOT'] . '/app/Autoloader.php');
 Autoloader::register();
-require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/functions.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/app/functions.php');
 
 use App\Autoloader;
 use App\Version;

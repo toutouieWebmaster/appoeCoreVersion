@@ -7,7 +7,7 @@ ServerSignature Off
 <IfModule mod_rewrite.c>
 Options +FollowSymlinks
 RewriteEngine On
-RewriteBase /APPOE/
+RewriteBase /
 RewriteRule ^index\.php$ - [L]
 RewriteRule ^hibour/?$  hibour.php [L]
 RewriteRule ^api/?$  /app/system/api.php [L]

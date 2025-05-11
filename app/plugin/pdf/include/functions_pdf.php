@@ -10,7 +10,7 @@
  * E: return the document as base64 mime multi-part email attachment (RFC 2045)
  */
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/main.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/app/main.php');
 
 require WEB_PLUGIN_PATH . 'pdf/vendor/autoload.php';
 

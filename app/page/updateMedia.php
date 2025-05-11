@@ -151,6 +151,6 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
             </div>
         </div>
 
-        <script type="text/javascript" src="/APPOE/app/lib/template/js/media.js"></script>
+        <script type="text/javascript" src="/app/lib/template/js/media.js"></script>
     </div>
 <?php require('footer.php'); ?>

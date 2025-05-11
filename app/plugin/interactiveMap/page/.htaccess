@@ -1,6 +1,6 @@
 Options +FollowSymlinks
 RewriteEngine On
-RewriteBase /APPOE/app/plugin/interactiveMap/page/
+RewriteBase /app/plugin/interactiveMap/page/
 RewriteRule ^allInterMaps/$  allInterMaps.php [L]
 RewriteRule ^addInterMap/$  addInterMap.php [L]
 RewriteRule ^updateInterMap/([0-9]+)/$  updateInterMap.php?id=$1 [L]

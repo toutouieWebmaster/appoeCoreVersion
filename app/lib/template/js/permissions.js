@@ -6,7 +6,7 @@ $(document).ready(function () {
         1: 'Affiché'
     };
 
-    $.post('/APPOE/app/ajax/users.php', {GETUSERSROLES: 'OK'},
+    $.post('/app/ajax/users.php', {GETUSERSROLES: 'OK'},
         function (data) {
             if (data) {
                 Roles = JSON.parse(data);
@@ -84,7 +84,7 @@ $(document).ready(function () {
         if (name.length > 0 && role > 0 && order > 0) {
             busyApp(false);
             $.post(
-                '/APPOE/app/ajax/permissions.php',
+                '/app/ajax/permissions.php',
                 {
                     updatePermission: 'OK',
                     id: idMenu,
@@ -117,7 +117,7 @@ $(document).ready(function () {
         busyApp(false);
 
         $.post(
-            '/APPOE/app/ajax/permissions.php',
+            '/app/ajax/permissions.php',
             $('#addPermissionForm').serialize(),
             function (data) {
                 if (data && (data == 'true' || data === true)) {

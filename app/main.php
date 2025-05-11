@@ -11,7 +11,7 @@ if (!headers_sent()) {
 }
 
 //Get ini.php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/system/ini.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/app/system/ini.php');
 
 //Get custom Autoloader
 require(WEB_APP_PATH . 'Autoloader.php');

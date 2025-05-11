@@ -1,6 +1,6 @@
 Options +FollowSymlinks
 RewriteEngine On
-RewriteBase /APPOE/app/plugin/eventManagement/page/
+RewriteBase /app/plugin/eventManagement/page/
 RewriteRule ^allAuteurs/$  allAuteurs.php [L]
 RewriteRule ^auteur/([0-9]+)/$  updateAuteur.php?id=$1 [L]
 RewriteRule ^addAuteur/$  addAuteur.php [L]

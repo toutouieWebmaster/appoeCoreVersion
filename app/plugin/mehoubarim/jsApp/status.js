@@ -1,5 +1,5 @@
 function mehoubarim_getUserStatus() {
-    jQuery('#usersStatsSubMenu').load('/APPOE/app/plugin/mehoubarim/index.php');
+    jQuery('#usersStatsSubMenu').load('/app/plugin/mehoubarim/index.php');
 }
 
 jQuery(document).ready(function () {
@@ -40,7 +40,7 @@ jQuery(document).ready(function () {
         $btn.html(loaderHtml());
 
         jQuery.post(
-            '/APPOE/app/plugin/mehoubarim/process/ajaxProcess.php',
+            '/app/plugin/mehoubarim/process/ajaxProcess.php',
             {logoutUser: userId}
         ).done(function (data) {
             $('#modalInfo').modal('hide');
@@ -56,7 +56,7 @@ jQuery(document).ready(function () {
         $btn.html(loaderHtml());
 
         jQuery.post(
-            '/APPOE/app/plugin/mehoubarim/process/ajaxProcess.php',
+            '/app/plugin/mehoubarim/process/ajaxProcess.php',
             {freeUser: userId}
         ).done(function (data) {
             $('#modalInfo').modal('hide');

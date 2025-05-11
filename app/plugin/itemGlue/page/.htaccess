@@ -1,6 +1,6 @@
 Options +FollowSymlinks
 RewriteEngine On
-RewriteBase /APPOE/app/plugin/itemGlue/page/
+RewriteBase /app/plugin/itemGlue/page/
 RewriteRule ^allArticles/$  allArticles.php [L]
 RewriteRule ^addArticle/$  addArticle.php [L]
 RewriteRule ^articlesArchives/$  articlesArchives.php [L]

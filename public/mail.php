@@ -1,5 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/APPOE/app/main.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/app/main.php');
 includePluginsFiles();
 //if (checkAjaxPostRecaptcha($_POST, '6LeExqwUAAAAAH5sJrvOg52vPo2XXuRr20JWTLD5')){
 

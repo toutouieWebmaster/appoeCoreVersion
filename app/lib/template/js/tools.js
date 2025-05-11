@@ -55,7 +55,7 @@ jQuery(document).ready(function ($) {
                 });
 
                 if (!exist) {
-                    $.post('/APPOE/app/ajax/config.php', {
+                    $.post('/app/ajax/config.php', {
                         addAccessPermission: 'OK',
                         ipAddress: $input.val()
                     }).done(function (data) {
@@ -113,7 +113,7 @@ jQuery(document).ready(function ($) {
         let id = $div.data('ipaccess-id');
         if (id && ip && isIP(ip)) {
 
-            $.post('/APPOE/app/ajax/config.php', {
+            $.post('/app/ajax/config.php', {
                 deleteAccessPermission: 'OK',
                 ipAddressId: id
             }).done(function (data) {
@@ -146,7 +146,7 @@ jQuery(document).ready(function ($) {
             $btn.html(loaderHtml());
 
             busyApp(false);
-            $.post('/APPOE/app/plugin/cms/process/ajaxProcess.php', {clearFilesCache: 'OK'}).done(function (data) {
+            $.post('/app/plugin/cms/process/ajaxProcess.php', {clearFilesCache: 'OK'}).done(function (data) {
                 if (data == 'true' || data === true) {
                     $btn.html('<i class="fas fa-check"></i> Cache des fichiers vidé!').blur()
                         .removeClass('btn-outline-danger').addClass('btn-success');
@@ -166,7 +166,7 @@ jQuery(document).ready(function ($) {
             $btn.html(loaderHtml());
 
             busyApp(false);
-            $.post('/APPOE/app/ajax/config.php', {clearServerCache: 'OK'}).done(function (data) {
+            $.post('/app/ajax/config.php', {clearServerCache: 'OK'}).done(function (data) {
                 if (data == 'true' || data === true) {
                     $btn.html('<i class="fas fa-check"></i> Cache du serveur purgé!').blur()
                         .removeClass('btn-outline-danger').addClass('btn-success');

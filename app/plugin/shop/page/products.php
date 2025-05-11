@@ -76,7 +76,7 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                     var idProduct = $btn.data('idproduct');
 
                     $.post(
-                        '/APPOE/app/plugin/shop/process/ajaxProcess.php',
+                        '/app/plugin/shop/process/ajaxProcess.php',
                         {
                             idArchiveProduct: idProduct
                         },
@@ -95,7 +95,7 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                 var idProduct = $btn.data('idproduct');
 
                 $.post(
-                    '/APPOE/app/plugin/shop/process/ajaxProcess.php',
+                    '/app/plugin/shop/process/ajaxProcess.php',
                     {
                         idSpotlightProduct: idProduct
                     },
