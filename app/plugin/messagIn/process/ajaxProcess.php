@@ -1,10 +1,13 @@
 <?php
+
+use App\Plugin\MessagIn\MessagIn;
+
 require_once( '../main.php' );
 if ( checkAjaxRequest() ) {
 
 	if ( getUserIdSession() ) {
 
-		$MessagIn = new \App\Plugin\MessagIn\MessagIn();
+		$MessagIn = new MessagIn();
 
 		if ( ! empty( $_POST['idMessageToDelete'] ) ) {
             $MessagIn->setId( $_POST['idMessageToDelete'] );

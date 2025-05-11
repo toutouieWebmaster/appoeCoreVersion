@@ -1,4 +1,7 @@
 <?php
+
+use App\Plugin\EventManagement\Event;
+
 if (checkPostAndTokenRequest()) {
 
     //Clean data
@@ -9,7 +12,7 @@ if (checkPostAndTokenRequest()) {
         && !empty($_POST['description'])
     ) {
 
-        $Event = new \App\Plugin\EventManagement\Event();
+        $Event = new Event();
 
         //Add Event
         $Event->feed($_POST);

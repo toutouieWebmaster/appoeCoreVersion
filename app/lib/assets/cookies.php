@@ -15,14 +15,14 @@
 
         function getGoogleAnalytics() {
 
-            var ua = document.body.dataset.ua;
+            let ua = document.body.dataset.ua;
 
-            var s = document.createElement('script');
+            let s = document.createElement('script');
             s.type = 'text/javascript';
             s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ua;
             document.body.appendChild(s);
 
-            var uas = document.createElement('script');
+            let uas = document.createElement('script');
             uas.type = 'text/javascript';
             uas.innerHTML = 'window.dataLayer = window.dataLayer || [];' +
                 'function gtag() {dataLayer.push(arguments);}' +

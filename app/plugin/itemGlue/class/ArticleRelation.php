@@ -121,7 +121,7 @@ class ArticleRelation
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8;ALTER TABLE `' . TABLEPREFIX . 'appoe_plugin_itemGlue_articles_relations` AUTO_INCREMENT = 11;';
 
         $stmt = DB::exec($sql);
-        return $stmt ? true : false;
+        return (bool)$stmt;
     }
 
     /**

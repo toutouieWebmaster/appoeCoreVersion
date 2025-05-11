@@ -79,7 +79,7 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                             foreach (IP_ALLOWED as $ip): ?>
                                 <div>
                                     <small class="text-secondary">
-                                        <em><?= (false !== strpos($ip, ':')) ? 'IPV6' : 'IPV4'; ?></em>
+                                        <em><?= (str_contains($ip, ':')) ? 'IPV6' : 'IPV4'; ?></em>
                                     </small> <span class="text-info"><?= $ip; ?></span>
                                 </div>
                             <?php endforeach;
@@ -178,7 +178,7 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                             <div class="media mb-3 align-items-center">
                                 <div class="file-thumbnail">
                                     <div id="color<?= $color; ?>" class="border colorDiv"
-                                         style="background-color:<?= getOptionTheme('--color' . $color); ?>;">
+                                         style="background-color:<?= getOption('THEME', '--color' . $color); ?>;">
                                     </div>
                                 </div>
                                 <div class="media-body ml-3">
@@ -187,14 +187,14 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                                         <input class="themeColorChange" type="text"
                                                data-class="--color<?= $color; ?>"
                                                data-title="color<?= $color; ?>"
-                                               value="<?= getOptionTheme('--color' . $color); ?>">
+                                               value="<?= getOption('THEME', '--color' . $color); ?>">
                                     </div>
                                 </div>
                             </div>
                             <div class="media mb-3 align-items-center">
                                 <div class="file-thumbnail">
                                     <div id="textBgColor<?= $color; ?>" class="border colorDiv"
-                                         style="background-color: <?= getOptionTheme('--textBgColor' . $color); ?>;"></div>
+                                         style="background-color: <?= getOption('THEME', '--textBgColor' . $color); ?>;"></div>
                                 </div>
                                 <div class="media-body ml-3">
                                     <strong class="mb-1">Texte sur fond</strong>
@@ -202,7 +202,7 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                                         <input type="text" class="themeColorChange"
                                                data-class="--textBgColor<?= $color; ?>"
                                                data-title="textBgColor<?= $color; ?>"
-                                               value="<?= getOptionTheme('--textBgColor' . $color); ?>">
+                                               value="<?= getOption('THEME', '--textBgColor' . $color); ?>">
                                     </div>
                                 </div>
                             </div>

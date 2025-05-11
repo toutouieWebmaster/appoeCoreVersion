@@ -7,7 +7,7 @@
  *
  * @package   Html2pdf
  * @author    Laurent MINGUET <webmaster@html2pdf.fr>
- * @copyright 2017 Laurent MINGUET
+ * @copyright 2025 Laurent MINGUET
  */
 namespace Spipu\Html2Pdf\Parsing;
 
@@ -26,7 +26,7 @@ class HtmlLexer
     public function tokenize($html)
     {
         // initialise the array
-        $tokens = [];
+        $tokens = array();
 
         // regexp to separate the tags from the texts
         $reg = '/(<\/?\w[^<>]*>)|([^<]+|<)/is';

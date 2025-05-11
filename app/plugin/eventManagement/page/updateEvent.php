@@ -1,6 +1,11 @@
-<?php if (!empty($_GET['id'])): ?>
+<?php
+use App\Form;
+use App\Plugin\EventManagement\Auteur;
+use App\Plugin\EventManagement\Event;
+
+if (!empty($_GET['id'])): ?>
     <?php require('header.php');
-    $Event = new \App\Plugin\EventManagement\Event($_GET['id']);
+    $Event = new Event($_GET['id']);
     if ($Event->getStatut()) :
         require_once(EVENTMANAGEMENT_PATH . 'process/updateEvent.php');
         echo getTitle( getAppPageName(), getAppPageSlug() );
@@ -25,51 +30,51 @@
 
             <form action="" method="post" id="updateEventForm" enctype="multipart/form-data">
                 <?= getTokenField(); ?>
-                <?= App\Form::text('', 'id', 'hidden', $Event->getId(), true); ?>
-                <?= App\Form::text('', 'image', 'hidden', $Event->getImage(), true); ?>
+                <?= Form::text('', 'id', 'hidden', $Event->getId(), true); ?>
+                <?= Form::text('', 'image', 'hidden', $Event->getImage(), true); ?>
                 <div class="row">
                     <div class="col-12 col-lg-4">
                         <?php
-                        $Auteur = new \App\Plugin\EventManagement\Auteur();
+                        $Auteur = new Auteur();
                         $auteurs = extractFromObjToSimpleArr($Auteur->showByType(), 'id', 'name');
-                        echo App\Form::select('Auteur', 'auteurId', $auteurs, $Event->getAuteurId(), true);
+                        echo Form::select('Auteur', 'auteurId', $auteurs, $Event->getAuteurId(), true);
                         ?>
                     </div>
                     <div class="col-12 col-lg-4">
-                        <?= App\Form::text('Titre', 'titre', 'text', $Event->getTitre(), true, 250); ?>
+                        <?= Form::text('Titre', 'titre', 'text', $Event->getTitre(), true, 250); ?>
                     </div>
                     <div class="col-12 col-lg-4">
-                        <?= App\Form::text('Pitch', 'pitch', 'text', $Event->getPitch(), false, 255); ?>
+                        <?= Form::text('Pitch', 'pitch', 'text', $Event->getPitch(), false, 255); ?>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <?= App\Form::textarea('Participation', 'participation', $Event->getParticipation(), 5, false); ?>
+                        <?= Form::textarea('Participation', 'participation', $Event->getParticipation()); ?>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <?= App\Form::textarea('Description', 'description', $Event->getDescription(), 5, true, '', 'ckeditor'); ?>
+                        <?= Form::textarea('Description', 'description', $Event->getDescription(), 5, true, '', 'ckeditor'); ?>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 col-lg-8">
-                        <?= App\Form::radio('Type de Spectacle', 'spectacleType', array_map('trans', SPECTACLES_TYPES), $Event->getSpectacleType()); ?>
+                        <?= Form::radio('Type de Spectacle', 'spectacleType', array_map('trans', SPECTACLES_TYPES), $Event->getSpectacleType()); ?>
                     </div>
                     <div class="col-12 col-lg-4">
-                        <?= App\Form::radio('IN / OFF', 'indoor', array_map('trans', INDOOR_OFF), $Event->getIndoor()); ?>
+                        <?= Form::radio('IN / OFF', 'indoor', array_map('trans', INDOOR_OFF), $Event->getIndoor()); ?>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <?= App\Form::text('Nouvelle Image', 'image', 'file', '', false); ?>
+                        <?= Form::text('Nouvelle Image', 'image', 'file'); ?>
                     </div>
                 </div>
                 <div class="my-4"></div>
                 <div class="row">
                     <div class="col-12">
-                        <?= App\Form::target('UPDATEEVENT'); ?>
-                        <?= App\Form::submit('Enregistrer', 'UPDATEEVENTSUBMIT'); ?>
+                        <?= Form::target('UPDATEEVENT'); ?>
+                        <?= Form::submit('Enregistrer', 'UPDATEEVENTSUBMIT'); ?>
                     </div>
                 </div>
             </form>

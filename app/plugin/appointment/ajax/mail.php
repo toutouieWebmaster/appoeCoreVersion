@@ -1,8 +1,10 @@
 <?php
 
+use App\Plugin\Appointment\Agenda;
 use App\Plugin\Appointment\Client;
 use App\Plugin\Appointment\Rdv;
 use App\Plugin\Appointment\RdvTypeForm;
+use Random\RandomException;
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/app/main.php');
 includePluginsFiles();
@@ -36,10 +38,10 @@ if (!empty($_POST['formType']) && valideAjaxToken()) {
             }
         }
 
-        $Agenda = new \App\Plugin\Appointment\Agenda();
+        $Agenda = new Agenda();
         $Agenda->setId($_POST['idAgenda']);
         if(!$Agenda->show()){
-            echo json_encode('Erreur inconnu');
+            echo json_encode('Erreur inconnue');
             exit();
         }
 
@@ -78,17 +80,15 @@ if (!empty($_POST['formType']) && valideAjaxToken()) {
         if ($Client->exist()) {
             $Client->showByEmail();
 
-            if (!$Client->getStatus()) {
-                echo json_encode('<div class="appointmentAppoeReminder">Impossible d\'enregistrer le rendez-vous tant que vous n\'avez pas confirmé votre adresse email !</div>');
-                exit();
-            }
+            //Pas nécessaire a priori. Si le client n'est pas validé, il devra juste confirmer son adresse email afin de valider le rdv, et recevra un nouvel email
+//            if (!$Client->getStatus()) {
+//                echo json_encode('<div class="appointmentAppoeReminder">Impossible d\'enregistrer le rendez-vous tant que vous n\'avez pas confirmé votre adresse email !</div>');
+//                exit();
+//            }
 
-            /** TODO
-             * $Client->setLastName($clientLastName);
-             * $Client->setFirstName($clientFirstNameName);
-             * $Client->setTel($clientTel);
-             */
-
+             $Client->setLastName($clientLastName);
+             $Client->setFirstName($clientFirstNameName);
+             $Client->setTel($clientTel);
             $Client->setOptions(serialize(array_merge(unserialize($Client->getOptions()), $options)));
             $Client->update();
 
@@ -144,8 +144,12 @@ if (!empty($_POST['formType']) && valideAjaxToken()) {
                 'confirmationBtnText' => 'Confirmer'
             );
 
-            if (emailVerification($data, [], ['viewSenderSource' => false])) {
-                echo json_encode(true);
+            try {
+                if (emailVerification($data, [], ['viewSenderSource' => false])) {
+                    echo json_encode(true);
+                }
+            } catch (\PHPMailer\PHPMailer\Exception|RandomException $e) {
+                error_log($e->getMessage());
             }
         }
 

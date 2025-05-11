@@ -42,7 +42,7 @@ if (!empty($_GET['id']) && !empty($_GET['level']) && isset($_GET['location'])):
                                 <?= \App\Form::file('Photo', 'thumbnail[]', false, '', 'form-control-sm'); ?>
                             </div>
                             <div class="mb-2">
-                                <?= \App\Form::select('Catégorie', 'category', $allCategories, $location['category'], false); ?>
+                                <?= \App\Form::select('Catégorie', 'category', $allCategories, $location['category']); ?>
                             </div>
 
                             <div class="custom-control custom-checkbox">

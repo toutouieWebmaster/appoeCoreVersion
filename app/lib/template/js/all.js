@@ -367,12 +367,14 @@ jQuery(document).ready(function ($) {
     Waves.attach('.wave-effect', ['waves-button']);
     Waves.attach('.wave-effect-float', ['waves-button', 'waves-float']);
 
-    $('#languageSelectorContainer').on('mouseenter', function () {
+    let $langageSelectorContainer = $('#languageSelectorContainer');
+
+    $langageSelectorContainer.on('mouseenter', function () {
         $(this).find('div.dropdown').addClass('show');
         $('#languageSelectorContent').addClass('show');
     });
 
-    $('#languageSelectorContainer').on('mouseleave', function () {
+    $langageSelectorContainer.on('mouseleave', function () {
         $(this).find('div.dropdown').removeClass('show');
         $('#languageSelectorContent').removeClass('show');
     });

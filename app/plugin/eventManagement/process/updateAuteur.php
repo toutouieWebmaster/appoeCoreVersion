@@ -1,4 +1,7 @@
 <?php
+
+use App\Plugin\EventManagement\Auteur;
+
 if (checkPostAndTokenRequest()) {
 
     //Clean data
@@ -6,7 +9,7 @@ if (checkPostAndTokenRequest()) {
 
     if (!empty($_POST['id']) && !empty($_POST['name'])) {
 
-        $Auteur = new \App\Plugin\EventManagement\Auteur();
+        $Auteur = new Auteur();
 
         //Update auteur
         $Auteur->feed($_POST);

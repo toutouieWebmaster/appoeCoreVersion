@@ -7,7 +7,7 @@
  *
  * @package   Html2pdf
  * @author    Laurent MINGUET <webmaster@html2pdf.fr>
- * @copyright 2017 Laurent MINGUET
+ * @copyright 2025 Laurent MINGUET
  */
 namespace Spipu\Html2Pdf\Parsing;
 
@@ -40,7 +40,7 @@ class Html
      * parsed HTML code
      * @var Node[]
      */
-    public $code = [];
+    public $code = array();
 
     /**
      * main constructor
@@ -51,7 +51,7 @@ class Html
     {
         $this->textParser = $textParser;
         $this->tagParser = new TagParser($this->textParser);
-        $this->code  = [];
+        $this->code  = array();
     }
 
     /**
@@ -61,7 +61,7 @@ class Html
      */
     public function getCloneCodes()
     {
-        $codes = [];
+        $codes = array();
         foreach ($this->code as $key => $code) {
             $codes[$key] = clone $code;
         }
@@ -77,7 +77,7 @@ class Html
      */
     public function parse($tokens)
     {
-        $parents = [];
+        $parents = array();
 
         // flag : are we in a <pre> Tag ?
         $this->tagPreIn = false;
@@ -86,7 +86,7 @@ class Html
          * all the actions to do
          * @var Node[] $actions
          */
-        $actions = [];
+        $actions = array();
 
         // get the actions from the html tokens
         foreach ($tokens as $token) {
@@ -247,7 +247,7 @@ class Html
         // save the current position in the HTML code
         $node->setLine($token->getLine());
 
-        $actions = [];
+        $actions = array();
         // if the tag must be closed
         if (!in_array($node->getName(), $tagsNotClosed)) {
             // if it is a closure tag
@@ -274,7 +274,7 @@ class Html
 
                     // prepare the closed tag
                     $node = clone $node;
-                    $node->setParams([]);
+                    $node->setParams(array());
                     $node->setClose(true);
                 } else {
                     // else: add a child for validation
@@ -304,9 +304,9 @@ class Html
     protected function getTextAction(Token $token)
     {
         // action to use for each line of the content of a <pre> Tag
-        $tagPreBr = new Node('br', array('style' => [], 'num' => 0), false);
+        $tagPreBr = new Node('br', array('style' => array(), 'num' => 0), false);
 
-        $actions = [];
+        $actions = array();
 
         // if we are not in a <pre> tag
         if (!$this->tagPreIn) {
@@ -345,7 +345,7 @@ class Html
     {
         // if the code does not exist => return empty
         if (!isset($this->code[$k])) {
-            return [];
+            return array();
         }
 
         // the tag to detect
@@ -359,7 +359,7 @@ class Html
         //
         $level = 0;      // depth level
         $end = false;    // end of the search
-        $code = []; // extract code
+        $code = array(); // extract code
 
         // while it's not ended
         while (!$end) {

@@ -1,8 +1,11 @@
-<?php require('header.php');
+<?php use App\Plugin\Shop\Product;
+use App\Plugin\Shop\Stock;
+
+require('header.php');
 echo getTitle(getAppPageName(), getAppPageSlug()); ?>
     <div class="container-fluid">
         <?php
-        $Stock = new \App\Plugin\Shop\Stock();
+        $Stock = new Stock();
         $listStock = $Stock->showAll();
         ?>
         <div class="row">
@@ -20,7 +23,7 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                         </thead>
                         <tbody>
                         <?php foreach ($listStock as $stock): ?>
-                            <?php $Product = new \App\Plugin\Shop\Product($stock->product_id); ?>
+                            <?php $Product = new Product($stock->product_id); ?>
 
                             <?php
                             $limitQuantity = !is_null($stock->limit_quantity) ? $Product->getRemainingQuantity() . ' / ' . $stock->limit_quantity : '-';

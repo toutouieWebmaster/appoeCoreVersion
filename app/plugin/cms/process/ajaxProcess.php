@@ -1,5 +1,6 @@
 <?php
 
+use App\Form;
 use App\Plugin\Cms\Cms;
 use App\Plugin\Cms\CmsContent;
 use App\Plugin\Cms\CmsMenu;
@@ -99,7 +100,7 @@ if (checkAjaxRequest()) {
             $allMenu[10] = trans('Aucun parent');
 
             if ($allMenu) {
-                echo \App\Form::select(trans('Page Parente'), 'parentId', $allMenu, '', true);
+                echo Form::select(trans('Page Parente'), 'parentId', $allMenu, '', true);
             }
             exit();
         }

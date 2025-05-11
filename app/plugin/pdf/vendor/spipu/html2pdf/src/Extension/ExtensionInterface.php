@@ -7,7 +7,7 @@
  *
  * @package   Html2pdf
  * @author    Laurent MINGUET <webmaster@html2pdf.fr>
- * @copyright 2017 Laurent MINGUET
+ * @copyright 2025 Laurent MINGUET
  */
 namespace Spipu\Html2Pdf\Extension;
 
@@ -24,7 +24,7 @@ interface ExtensionInterface
     public function getName();
 
     /**
-     * @return []
+     * @return array()
      */
     public function getTags();
 }

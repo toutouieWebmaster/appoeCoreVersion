@@ -39,11 +39,9 @@ class Browser
 
     /**
      * Reset all common defined properties method
-     *
-     * @return null
      */
 
-    private function resetProperties()
+    private function resetProperties(): void
     {
         $this->real_os_name = '';
         $this->result_ios = FALSE;
@@ -82,7 +80,7 @@ class Browser
     {
         if (empty($data)) return FALSE;
 
-        if (substr($data, 0, 1)==='/' && substr($data, -1)==='/')
+        if (str_starts_with($data, '/') && str_ends_with($data, '/'))
         {
             if ($case_s == TRUE) $data = $data.'i';
             if (preg_match($data, $this->useragent, $matches))
@@ -104,7 +102,7 @@ class Browser
             {
                 if ($case_s == FALSE)
                 {
-                    if (strpos($this->useragent, $v) !== FALSE) return TRUE;
+                    if (str_contains($this->useragent, $v)) return TRUE;
                 }
                 else
                 {
@@ -200,27 +198,26 @@ class Browser
 
     private function macos_codename($version)
     {
-        switch($version)
-        {
-            case 0: $result_codename = 'Cheetah'; break;
-            case 1: $result_codename = 'Puma'; break;
-            case 2: $result_codename = 'Jaguar'; break;
-            case 3: $result_codename = 'Panther'; break;
-            case 4: $result_codename = 'Tiger'; break;
-            case 5: $result_codename = 'Leopard'; break;
-            case 6: $result_codename = 'Snow Leopard'; break;
-            case 7: $result_codename = 'Lion'; break;
-            case 8: $result_codename = 'Mountain Lion'; break;
-            case 9: $result_codename = 'Mavericks'; break;
-            case 10: $result_codename = 'Yosemite'; break;
-            case 11: $result_codename = 'El Capitan'; break;
-            case 12: $result_codename = 'Sierra'; break;
-            case 13: $result_codename = 'High Sierra'; break;
-            case 14: $result_codename = 'Mojave'; break;
-            case 15: $result_codename = 'Catalina'; break;
-            case 16: $result_codename = 'Big Sur'; break;
-            default: $result_codename = 'New'; break;
-        }
+        $result_codename = match ($version) {
+            0 => 'Cheetah',
+            1 => 'Puma',
+            2 => 'Jaguar',
+            3 => 'Panther',
+            4 => 'Tiger',
+            5 => 'Leopard',
+            6 => 'Snow Leopard',
+            7 => 'Lion',
+            8 => 'Mountain Lion',
+            9 => 'Mavericks',
+            10 => 'Yosemite',
+            11 => 'El Capitan',
+            12 => 'Sierra',
+            13 => 'High Sierra',
+            14 => 'Mojave',
+            15 => 'Catalina',
+            16 => 'Big Sur',
+            default => 'New',
+        };
         return $result_codename;
     }
 
@@ -550,14 +547,14 @@ class Browser
                     if ($matches)
                     {
                         $this->result_os_family = 'linux';
-                        if (strpos($k, 'Windows') !== FALSE) $this->result_os_family = 'windows';
+                        if (str_contains($k, 'Windows')) $this->result_os_family = 'windows';
                         $this->result_os_name = $k;
                         $this->result_os_version = (float)$matches[1];
                         $os_need_continue = FALSE;
 
                         // J2ME/MIDP or MAUI
 
-                        if (strpos($k, 'Java Platform') !== FALSE || strpos($k, 'MAUI Platform') !== FALSE)
+                        if (str_contains($k, 'Java Platform') || str_contains($k, 'MAUI Platform'))
                         {
                             $this->result_os_family = 'unknown';
                             $os_need_continue = TRUE;
@@ -715,7 +712,7 @@ class Browser
                 if ($this->result_os_name !== 'Windows') $this->result_os_title = $this->result_os_name;
                 else $this->result_os_title = $this->result_os_name.' (unknown version)';
             }
-            if (strpos($this->result_os_name, 'unknown') !== false) $this->result_os_type = 'unknown';
+            if (str_contains($this->result_os_name, 'unknown')) $this->result_os_type = 'unknown';
             if ($this->result_os_version == NULL) $this->result_os_version = 0;
         }
 
@@ -872,7 +869,7 @@ class Browser
         if ($this->get_mode !== 'device' && $this->result_browser_chromium_version == 0 && $this->result_browser_gecko_version == 0 && $this->matchi_ua('AppleWebKit/'))
         {
             $this->result_browser_webkit_version = 0;
-            $match = $this->matchi_ua('/AppleWebKit\/([0-9]+\.[0-9]+)/');
+            $match = $this->matchi_ua('/appleWebKit\/([0-9]+\.[0-9]+)/');
             if (!empty($match[1])) $this->result_browser_webkit_version = (float)$match[1];
         }
 
@@ -886,7 +883,7 @@ class Browser
         {
             // Safari
 
-            $browser_list[] = array('Safari', '/AppleWebKit\/[.0-9]+.*Gecko\)\sSafari\/[.0-9A-Za-z]+$/', '/Safari\/(\d+)/', '1', 'Version/');
+            $browser_list[] = array('Safari', '/appleWebKit\/[.0-9]+.*Gecko\)\sSafari\/[.0-9A-Za-z]+$/', '/Safari\/(\d+)/', '1', 'Version/');
             $browser_list[] = array('Safari', '/Version\/([0-9]+\.[0-9]+).*Safari/', '/Version\/([0-9]+\.[0-9]+).*Safari/', '1', 'Epiphany|Arora/|Midori|midori|SlimBoat');
 
             // IE
@@ -979,7 +976,7 @@ class Browser
 
                     // Safari old version conversion
 
-                    if ($match === '/AppleWebKit\/[.0-9]+.*Gecko\)\sSafari\/[.0-9A-Za-z]+$/')
+                    if ($match === '/appleWebKit\/[.0-9]+.*Gecko\)\sSafari\/[.0-9A-Za-z]+$/')
                     {
                         $ev = intval($this->result_browser_version);
                         if (!empty($ev)) $this->result_browser_version = 1;
@@ -1245,7 +1242,7 @@ class Browser
 
         if ($this->result_browser_name === 'Safari' || $this->result_browser_name === 'Safari Mobile')
         {
-            if ($this->match_ua('/AppleWebKit\/[.0-9]+.*Gecko\)\sVersion\/[.0-9].*Safari\/[.0-9A-Za-z]+$/')) $this->result_browser_safari_original = 1;
+            if ($this->match_ua('/appleWebKit\/[.0-9]+.*Gecko\)\sVersion\/[.0-9].*Safari\/[.0-9A-Za-z]+$/')) $this->result_browser_safari_original = 1;
         }
 
         // Check and correct browser version anomaly
@@ -1277,7 +1274,7 @@ class Browser
             $browsers_without_versions = NULL;
         }
 
-        if (strpos($this->result_browser_name, 'unknown') !== FALSE) $this->result_browser_title = 'unknown';
+        if (str_contains($this->result_browser_name, 'unknown')) $this->result_browser_title = 'unknown';
         if ($this->result_browser_version == NULL) $this->result_browser_version = 0;
 
         if ($this->get_mode === 'browser') return NULL;

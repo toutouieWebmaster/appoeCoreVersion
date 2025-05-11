@@ -7,7 +7,7 @@
  *
  * @package   Html2pdf
  * @author    Laurent MINGUET <webmaster@html2pdf.fr>
- * @copyright 2017 Laurent MINGUET
+ * @copyright 2025 Laurent MINGUET
  */
 namespace Spipu\Html2Pdf\Extension;
 
@@ -21,7 +21,7 @@ abstract class AbstractExtension implements ExtensionInterface
     /**
      * @var array
      */
-    protected $tagDefinitions = [];
+    protected $tagDefinitions = array();
 
     /**
      * {@inheritDoc}

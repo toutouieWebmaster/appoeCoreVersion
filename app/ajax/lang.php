@@ -12,6 +12,7 @@ if (checkAjaxRequest()) {
         } else {
 
             //TODO if ($_POST['interfaceLang'] == 'content') {}
+            //On cherche à traduire le contenu du b-o en une autre langue, par ex. "dashboard" au lieu de "tableau de bord"
 
             //default set lang for app content and website
             setCookiesLang($_POST['lang']);

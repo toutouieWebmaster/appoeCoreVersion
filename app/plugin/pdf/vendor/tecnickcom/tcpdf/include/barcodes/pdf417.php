@@ -96,7 +96,7 @@ class PDF417 {
 	 * Barcode array to be returned which is readable by TCPDF.
 	 * @protected
 	 */
-	protected $barcode_array = [];
+	protected $barcode_array = array();
 
 	/**
 	 * Start pattern.
@@ -523,20 +523,20 @@ class PDF417 {
 	/**
 	 * This is the class constructor.
 	 * Creates a PDF417 object
-	 * @param $code (string) code to represent using PDF417
-	 * @param $ecl (int) error correction level (0-8); default -1 = automatic correction level
-	 * @param $aspectratio (float) the width to height of the symbol (excluding quiet zones)
-	 * @param $macro (array) information for macro block
+	 * @param string $code code to represent using PDF417
+	 * @param int $ecl error correction level (0-8); default -1 = automatic correction level
+	 * @param float $aspectratio the width to height of the symbol (excluding quiet zones)
+	 * @param array $macro information for macro block
 	 * @public
 	 */
-	public function __construct($code, $ecl=-1, $aspectratio=2, $macro=[]) {
-		$barcode_array = [];
+	public function __construct($code, $ecl=-1, $aspectratio=2, $macro=array()) {
+		$barcode_array = array();
 		if ((is_null($code)) OR ($code == '\0') OR ($code == '')) {
 			return false;
 		}
 		// get the input sequence array
 		$sequence = $this->getInputSequences($code);
-		$codewords = []; // array of code-words
+		$codewords = array(); // array of code-words
 		foreach($sequence as $seq) {
 			$cw = $this->getCompaction($seq[0], $seq[1], true);
 			$codewords = array_merge($codewords, $cw);
@@ -553,7 +553,7 @@ class PDF417 {
 		}
 		// build macro control block codewords
 		if (!empty($macro)) {
-			$macrocw = [];
+			$macrocw = array();
 			// beginning of macro control block
 			$macrocw[] = 928;
 			// segment index
@@ -649,7 +649,7 @@ class PDF417 {
 		$pstop = $this->stop_pattern.str_repeat('0', QUIETH);
 		$barcode_array['num_rows'] = ($rows * ROWHEIGHT) + (2 * QUIETV);
 		$barcode_array['num_cols'] = (($cols + 2) * 17) + 35 + (2 * QUIETH);
-		$barcode_array['bcode'] = [];
+		$barcode_array['bcode'] = array();
 		// build rows for vertical quiet zone
 		if (QUIETV > 0) {
 			$empty_row = array_fill(0, $barcode_array['num_cols'], 0);
@@ -734,12 +734,13 @@ class PDF417 {
 
 	/**
 	 * Returns the error correction level (0-8) to be used
-	 * @param $ecl (int) error correction level
-	 * @param $numcw (int) number of data codewords
+	 * @param int $ecl error correction level
+	 * @param int $numcw number of data codewords
 	 * @return int error correction level
 	 * @protected
 	 */
 	protected function getErrorCorrectionLevel($ecl, $numcw) {
+		$maxecl = 8; // starting error level
 		// check for automatic levels
 		if (($ecl < 0) OR ($ecl > 8)) {
 			if ($numcw < 41) {
@@ -755,7 +756,6 @@ class PDF417 {
 			}
 		}
 		// get maximum correction level
-		$maxecl = 8; // starting error level
 		$maxerrsize = (928 - $numcw); // available codewords for error
 		while ($maxecl > 0) {
 			$errsize = (2 << $ecl);
@@ -772,8 +772,8 @@ class PDF417 {
 
 	/**
 	 * Returns the error correction codewords
-	 * @param $cw (array) array of codewords including Symbol Length Descriptor and pad
-	 * @param $ecl (int) error correction level 0-8
+	 * @param array $cw array of codewords including Symbol Length Descriptor and pad
+	 * @param int $ecl error correction level 0-8
 	 * @return array of error correction codewords
 	 * @protected
 	 */
@@ -809,13 +809,13 @@ class PDF417 {
 
 	/**
 	 * Create array of sequences from input
-	 * @param $code (string) code
-	 * @return bidimensional array containing characters and classification
+	 * @param string $code code
+	 * @return array bi-dimensional array containing characters and classification
 	 * @protected
 	 */
 	protected function getInputSequences($code) {
-		$sequence_array = []; // array to be returned
-		$numseq = [];
+		$sequence_array = array(); // array to be returned
+		$numseq = array();
 		// get numeric sequences
 		preg_match_all('/([0-9]{13,44})/', $code, $numseq, PREG_OFFSET_CAPTURE);
 		$numseq[1][] = array('', strlen($code));
@@ -825,7 +825,7 @@ class PDF417 {
 			if ($seq[1] > 0) {
 				// extract text sequence before the number sequence
 				$prevseq = substr($code, $offset, ($seq[1] - $offset));
-				$textseq = [];
+				$textseq = array();
 				// get text sequences
 				preg_match_all('/([\x09\x0a\x0d\x20-\x7e]{5,})/', $prevseq, $textseq, PREG_OFFSET_CAPTURE);
 				$textseq[1][] = array('', strlen($prevseq));
@@ -864,18 +864,18 @@ class PDF417 {
 
 	/**
 	 * Compact data by mode.
-	 * @param $mode (int) compaction mode number
-	 * @param $code (string) data to compact
-	 * @param $addmode (boolean) if true add the mode codeword at first position
+	 * @param int $mode compaction mode number
+	 * @param string $code data to compact
+	 * @param boolean $addmode if true add the mode codeword at first position
 	 * @return array of codewords
 	 * @protected
 	 */
 	protected function getCompaction($mode, $code, $addmode=true) {
-		$cw = []; // array of codewords to return
+		$cw = array(); // array of codewords to return
 		switch($mode) {
 			case 900: { // Text Compaction mode latch
 				$submode = 0; // default Alpha sub-mode
-				$txtarr = []; // array of characters and sub-mode switching characters
+				$txtarr = array(); // array of characters and sub-mode switching characters
 				$codelen = strlen($code);
 				for ($i = 0; $i < $codelen; ++$i) {
 					$chval = ord($code[$i]);
@@ -941,10 +941,10 @@ class PDF417 {
 						$t = bcadd($t, bcmul(''.ord($code[4]), '256'));
 						$t = bcadd($t, ''.ord($code[5]));
 						// tmp array for the 6 bytes block
-						$cw6 = [];
+						$cw6 = array();
 						do {
-							$d = bcmod($t, '900');
-							$t = bcdiv($t, '900');
+							$d = bcmod($t, '900', 0);
+							$t = bcdiv($t, '900', 0);
 							// prepend the value to the beginning of the array
 							array_unshift($cw6, $d);
 						} while ($t != '0');
@@ -969,8 +969,8 @@ class PDF417 {
 					}
 					$t = '1'.$code;
 					do {
-						$d = bcmod($t, '900');
-						$t = bcdiv($t, '900');
+						$d = bcmod($t, '900', 0);
+						$t = bcdiv($t, '900', 0);
 						array_unshift($cw, $d);
 					} while ($t != '0');
 					$code = $rest;

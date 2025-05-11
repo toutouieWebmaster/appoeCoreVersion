@@ -1,4 +1,7 @@
 <?php
+
+use App\CategoryRelations;
+
 if (checkPostAndTokenRequest()) {
 
     //Clean data
@@ -20,7 +23,7 @@ if (checkPostAndTokenRequest()) {
             if ($Product->update()) {
 
                 //Categories
-                $CategoryRelation = new \App\CategoryRelations('SHOP', $Product->getId());
+                $CategoryRelation = new CategoryRelations('SHOP', $Product->getId());
                 $allCategories = $CategoryRelation->getData();
                 $allSimpleCategories = extractFromObjToSimpleArr($allCategories, 'id', 'categoryId');
 

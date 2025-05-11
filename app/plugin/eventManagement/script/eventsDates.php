@@ -12,7 +12,7 @@ if (checkAjaxRequest() && !empty($_REQUEST['id'])): ?>
         foreach ($allEvents as $event) {
             $Date = new DateTime($event->dateDebut);
             if (!in_array($Date->format('Y-m-d'), $eventsArray)) {
-                array_push($eventsArray, $Date->format('Y-m-d'));
+                $eventsArray[] = $Date->format('Y-m-d');
             }
         }
     }

@@ -547,7 +547,7 @@ class File
 
                             $uploadFilesCounter++;
                             appLog('Upload file -> name: ' . $filename);
-                            array_push($returnArr['filename'], $filename);
+                            $returnArr['filename'][] = $filename;
 
                             if ($saveToDb && $formUploadToDB) {
 

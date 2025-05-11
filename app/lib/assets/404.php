@@ -90,7 +90,7 @@
         }
     </style>
 </head>
-<body cz-shortcut-listen="true">
+<body>
 <div class="error-container">
     <h1><?= trans('Erreur'); ?> !</h1>
     <p class="return"><a href="javascript:history.back()"><?= trans('Revenir en arrière'); ?></a></p>

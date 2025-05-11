@@ -8,7 +8,7 @@ const DEBUG = true;
  * Database params
  */
 const DBHOST = '127.0.0.1';
-const DBNAME = 'appoe';
+const DBNAME = 'appoe_demo';
 const DBUSER = 'root';
 const DBPASS = '';
 const DBPATH = 'mysql:host=' . DBHOST . ';dbname=' . DBNAME . ';charset=UTF8';
@@ -54,7 +54,7 @@ const DEFAULT_ARTICLES_PAGE = '';
 const APPOE_MIN_ROLE = '';
 
 //Default pdf template folder
-const PDF_TEMPLATE_PATH = '';
+const PDF_TEMPLATE_PATH = ROOT_PATH . 'public/pdfTemplates/';
 
 //Twitter API connection keys & tokens
 const TWITTER_CONSUMER_KEY = '';

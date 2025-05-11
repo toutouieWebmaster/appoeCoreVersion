@@ -1,4 +1,7 @@
 <?php
+
+use App\Form;
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/app/lib/template/header_admin_template.php');
 echo getTitle(getAppPageName(), getAppPageSlug()); ?>
     <div class="row">
@@ -22,10 +25,10 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                     <form id="addAgendaForm">
                         <div class="form-row">
                             <div class="col-12 mb-2">
-                                <?= \App\Form::input('agendaName', ['title' => 'Nom de l\'agenda', 'required' => true]); ?>
+                                <?= Form::input('agendaName', ['title' => 'Nom de l\'agenda', 'required' => true]); ?>
                             </div>
                             <div class="col-12">
-                                <?= App\Form::btn('Enregistrer', 'ADDAGENDASUBMIT'); ?>
+                                <?= Form::btn('Enregistrer', 'ADDAGENDASUBMIT'); ?>
                             </div>
                         </div>
                     </form>

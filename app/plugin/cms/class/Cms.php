@@ -515,7 +515,7 @@ class Cms
             if ($count == 1) {
                 if ($forUpdate) {
                     $row = $stmt->fetch(PDO::FETCH_OBJ);
-                    return $this->id == $row->id ? true : false;
+                    return $this->id == $row->id;
                 }
                 return false;
             } else {

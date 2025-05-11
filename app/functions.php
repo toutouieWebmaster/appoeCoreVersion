@@ -2,15 +2,20 @@
 
 use App\AppLogging;
 use App\Category;
+use App\DB;
+use App\File;
 use App\MailLogger;
 use App\Media;
+use App\Menu;
 use App\Option;
 use App\Plugin\ItemGlue\Article;
 use App\Plugin\Traduction\Traduction;
+use App\Shinoui;
 use App\Users;
 use App\Version;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use Random\RandomException;
 
 //Get PHPMAILER
 require_once WEB_PHPMAILER_PATH . 'Exception.php';
@@ -29,10 +34,10 @@ function pageSlug(): string
 
 /**
  * @param string $paramName
- * @param $param
+ * @param string $param
  * @return void
  */
-function setPageParam(string $paramName, $param): void
+function setPageParam(string $paramName, string $param): void
 {
     $pageParametresNames = [
         'currentPageCmsID',
@@ -63,6 +68,23 @@ function setArticle(Article $Article): void
 }
 
 /**
+ * @param Article|object|bool $Article
+ * @return void
+ */
+function setArticleParams(object|bool $Article): void
+{
+    if ($Article) {
+        setPageParam('currentPageID', $Article->getId());
+        setPageParam('currentPageType', 'ARTICLE');
+        setPageParam('currentPageName', $Article->getName());
+        setPageParam('currentPageSlug', $Article->getSlug());
+        setPageParam('currentPageDescription', $Article->getDescription());
+        setPageParam('currentPageImage', getArtFeaturedImg($Article, ['tmpPos' => 1, 'onlyUrl' => true]));
+        setArticle($Article);
+    }
+}
+
+/**
  * @param string $param
  *
  * @return string
@@ -88,7 +110,7 @@ function getPageParam(string $param): string
 }
 
 /**
- * @return bool|mixed
+ * @return false|mixed
  */
 function getArticle(): mixed
 {
@@ -109,9 +131,9 @@ function getPageData(): array
 }
 
 /**
- * @return mixed|string
+ * @return string
  */
-function getMetaData(): mixed
+function getMetaData(): string
 {
     $header = '<meta name="publisher" content="toutOuïe Communication" />';
 
@@ -135,9 +157,9 @@ function getMetaData(): mixed
     $header .= '<meta property="og:site_name" content="' . WEB_TITLE . '" />';
 
     //JSON-LD
+    $header .= '<script type="application/ld+json">{';
+    $header .= '"@context": "https://schema.org",';
     if (getPageParam('currentPageType') === 'ARTICLE') {
-        $header .= '<script type="application/ld+json">{';
-        $header .= '"@context": "https://schema.org",';
         $header .= '"@type": "NewsArticle",';
         $header .= '"image": ["' . getPageParam('currentPageImage') . '"],';
         $header .= '"headline": "' . htmlspecialchars(getPageParam('currentPageName')) . '",';
@@ -147,16 +169,13 @@ function getMetaData(): mixed
         $header .= '"mainEntityOfPage": {"@type": "WebPage","@id": "' . WEB_DIR_URL . ltrim($_SERVER["REQUEST_URI"], '/') . '"},';
         $header .= '"publisher": {"@type": "Organization","name": "' . WEB_TITLE . '","logo": {"@type": "ImageObject","url": "' . getLogo(false, true) . '"}},';
         $header .= '"author": {"@type": "Organization","name": "' . WEB_TITLE . '"}';
-        $header .= '}</script>';
     } else {
-        $header .= '<script type="application/ld+json">{';
-        $header .= '"@context": "https://schema.org",';
         $header .= '"@type": "Organization",';
         $header .= '"name": "' . WEB_TITLE . '",';
         $header .= '"url": "' . WEB_DIR_URL . '",';
         $header .= '"logo": "' . getLogo(false, true) . '"';
-        $header .= '}</script>';
     }
+    $header .= '}</script>';
     return $header;
 }
 
@@ -179,18 +198,18 @@ function getAppoeFavicon(): string
 }
 
 /**
- * @param $pageName
+ * @param string $pageName
  */
-function setAppPageName($pageName): void
+function setAppPageName(string $pageName): void
 {
     checkSession();
     $_SESSION['currentAppPageName'] = $pageName;
 }
 
 /**
- * @param $pageSlug
+ * @param string $pageSlug
  */
-function setAppPageSlug($pageSlug): void
+function setAppPageSlug(string $pageSlug): void
 {
     checkSession();
     $_SESSION['currentAppPageSlug'] = $pageSlug;
@@ -213,14 +232,14 @@ function getAppPageSlug(): mixed
 }
 
 /**
- * @param $url
+ * @param string $url
  *
  * @return bool
  */
-function isUrlRoot($url): bool
+function isUrlRoot(string $url): bool
 {
 
-    if ($url == 'index' && (false !== strpos($_SERVER['REQUEST_URI'], 'home')
+    if ($url == 'index' && (str_contains($_SERVER['REQUEST_URI'], 'home')
             || basename($_SERVER["SCRIPT_FILENAME"]) == 'index.php')) {
         return true;
     }
@@ -229,12 +248,12 @@ function isUrlRoot($url): bool
 }
 
 /**
- * @param $url
+ * @param ?string $url
  * @param string $classNameAdded
  *
  * @return string
  */
-function activePage($url, string $classNameAdded = 'active'): string
+function activePage(?string $url, string $classNameAdded = 'active'): string
 {
     if (!empty($url)) {
 
@@ -258,9 +277,9 @@ function activePage($url, string $classNameAdded = 'active'): string
 /**
  * Show Maintenance Header
  *
- * @param String $text
+ * @param string $text
  */
-function showMaintenanceHeader($text = 'Page en maintenance !'): void
+function showMaintenanceHeader(string $text = 'Page en maintenance !'): void
 {
     echo '<h1 class="bg-danger m-5 text-white">' . $text . '</h1>';
 }
@@ -268,12 +287,12 @@ function showMaintenanceHeader($text = 'Page en maintenance !'): void
 /**
  * Construct general menu
  *
- * @param $allPages
+ * @param mixed $allPages
  *
  * @return array
  */
 
-function constructMenu($allPages): array
+function constructMenu(mixed $allPages): array
 {
     //Create menu
     $menu = [];
@@ -304,7 +323,7 @@ function constructMenu($allPages): array
  *
  * @return array
  */
-function getSessionMenu($primaryIndex = 1, $parent = 10): array
+function getSessionMenu(int $primaryIndex = 1, int $parent = 10): array
 {
 
     $sessionMenu = [];
@@ -321,9 +340,9 @@ function getSessionMenu($primaryIndex = 1, $parent = 10): array
 }
 
 /**
- * @param $lang
+ * @param string $lang
  */
-function setCookiesLang($lang): void
+function setCookiesLang(string $lang): void
 {
     $options = array('expires' => time() + (12 * 3600), 'path' => WEB_DIR, 'secure' => false, 'httponly' => true, 'samesite' => 'Lax');
     setcookie('LANG', $lang, $options);
@@ -333,15 +352,15 @@ function setCookiesLang($lang): void
 /**
  * @param string $lang
  */
-function setSessionLang($lang = LANG): void
+function setSessionLang(string $lang = LANG): void
 {
     $_SESSION['LANG'] = $lang;
 }
 
 /**
- * @return bool|mixed
+ * @return false|mixed
  */
-function getSessionLang()
+function getSessionLang(): mixed
 {
     return !empty($_SESSION['LANG']) ? $_SESSION['LANG'] : false;
 }
@@ -357,24 +376,24 @@ function hasMenu(int $primaryIndex = 1): bool
 }
 
 /**
- * @param $index
+ * @param int|string $index
  * @param int $menuPrimaryIndex
  *
  * @return bool
  */
-function hasSubMenu($index, int $menuPrimaryIndex = 1): bool
+function hasSubMenu(int|string $index, int $menuPrimaryIndex = 1): bool
 {
     return array_key_exists($index, $_SESSION['MENU'][$menuPrimaryIndex]);
 }
 
 /**
- * @param $filename
+ * @param string $filename
  * @param string $jsonKey
  * @param string $jsonSecondKey
  *
  * @return bool|array
  */
-function getJsonContent($filename, string $jsonKey = '', string $jsonSecondKey = ''): mixed
+function getJsonContent(string $filename, string $jsonKey = '', string $jsonSecondKey = ''): mixed
 {
     if (file_exists($filename)) {
 
@@ -409,13 +428,13 @@ function getJsonContent($filename, string $jsonKey = '', string $jsonSecondKey =
 }
 
 /**
- * @param $filename
- * @param $content
- * @param $mode
+ * @param string $filename
+ * @param string $content
+ * @param string $mode
  *
  * @return bool
  */
-function putJsonContent($filename, $content, $mode = 'w+')
+function putJsonContent(string $filename, string $content, string $mode = 'w+'): bool
 {
 
     $json_file = fopen($filename, $mode);
@@ -429,11 +448,11 @@ function putJsonContent($filename, $content, $mode = 'w+')
 }
 
 /**
- * @param $object
+ * @param mixed $object
  *
  * @return string
  */
-function jsonHtmlParse($object)
+function jsonHtmlParse(mixed $object): string
 {
     return !empty($object) ? json_encode($object, JSON_UNESCAPED_UNICODE) : '';
 }
@@ -446,13 +465,11 @@ function jsonHtmlParse($object)
  *
  * @return string
  */
-function getTitle($name = '', $slug = '', $appendName = '', $appendHtml = '')
+function getTitle(string $name = '', string $slug = '', string $appendName = '', string $appendHtml = ''): string
 {
-    $html = '<div class="row"><div class="col-12 position-relative">
+    return '<div class="row"><div class="col-12 position-relative">
             <h1 class="bigTitle icon-' . $slug . '"><span class="colorPrimary mr-2"></span>' . trans($name) . $appendName . '</h1>
             ' . $appendHtml . '</div></div><hr class="mx-5 mt-3 mb-4">';
-
-    return $html;
 }
 
 /**
@@ -460,53 +477,17 @@ function getTitle($name = '', $slug = '', $appendName = '', $appendHtml = '')
  *
  * @return string
  */
-function getAppoeCredit($color = "")
+function getAppoeCredit(string $color = ""): string
 {
     return 'Propulsé par <a target="_blank" ' . (!empty($color) ? 'style="color:' . $color . '"' : '') . ' href="https://tout-ouie.com/" title="APPOE">APPOE</a>';
 }
 
 /**
- * @param $key
- * @return bool
+ * @param string $type
+ * @param mixed $key
+ * @return mixed
  */
-function getOptionPreference($key)
-{
-    $Option = new Option();
-    $Option->setType('PREFERENCE');
-    $Option->setKey($key);
-    return $Option->getValByKey();
-}
-
-/**
- * @param $key
- * @return bool
- */
-function getOptionData($key)
-{
-    $Option = new Option();
-    $Option->setType('DATA');
-    $Option->setKey($key);
-    return $Option->getValByKey();
-}
-
-/**
- * @param $key
- * @return bool
- */
-function getOptionTheme($key)
-{
-    $Option = new Option();
-    $Option->setType('THEME');
-    $Option->setKey($key);
-    return $Option->getValByKey();
-}
-
-/**
- * @param $type
- * @param $key
- * @return bool
- */
-function getOption($type, $key)
+function getOption(string $type, mixed $key): mixed
 {
     $Option = new Option();
     $Option->setType($type);
@@ -517,7 +498,7 @@ function getOption($type, $key)
 /**
  * Show custom APPOE theme
  */
-function showThemeRoot()
+function showThemeRoot(): void
 {
     if (!file_exists(WEB_TEMPLATE_PATH . 'css/theme.css')) {
         $Option = new Option();
@@ -542,11 +523,11 @@ function showThemeRoot()
 }
 
 /**
- * @param $array
+ * @param mixed $array
  *
- * @return mixed
+ * @return ?bool
  */
-function isArrayEmpty($array)
+function isArrayEmpty(mixed $array): ?bool
 {
     $empty = true;
 
@@ -555,7 +536,6 @@ function isArrayEmpty($array)
             if ($leaf === [] || $leaf === '') {
                 return;
             }
-
             $empty = false;
         });
     }
@@ -566,13 +546,13 @@ function isArrayEmpty($array)
 /**
  * Multidimensional Array Sort
  *
- * @param $array
- * @param $keyName
- * @param int $order
+ * @param array $array
+ * @param string $keyName
+ * @param mixed $order
  *
  * @return array
  */
-function array_sort($array, $keyName, $order = SORT_ASC)
+function array_sort(array $array, string $keyName, mixed $order = SORT_ASC): array
 {
 
     $new_array = [];
@@ -609,52 +589,52 @@ function array_sort($array, $keyName, $order = SORT_ASC)
 }
 
 /**
- * @param $mediaPath
+ * @param string $mediaPath
  *
  * @return bool
  */
-function isImage($mediaPath)
+function isImage(string $mediaPath): bool
 {
     if (file_exists($mediaPath)) {
         $mime = exif_imagetype($mediaPath);
-        return filesize($mediaPath) > 11 ? ($mime == IMAGETYPE_JPEG || $mime == IMAGETYPE_PNG || $mime == IMAGETYPE_GIF
-            || $mime == IMAGETYPE_WEBP || isSvg($mediaPath)) : false;
+        return filesize($mediaPath) > 11 && (($mime == IMAGETYPE_JPEG || $mime == IMAGETYPE_PNG || $mime == IMAGETYPE_GIF
+                || $mime == IMAGETYPE_WEBP || isSvg($mediaPath)));
     }
 
     return false;
 }
 
 /**
- * @param $mediaPath
+ * @param string $mediaPath
  * @return bool
  */
-function isSvg($mediaPath)
+function isSvg(string $mediaPath): bool
 {
     return 'image/svg+xml' === mime_content_type($mediaPath) || 'image/svg' === mime_content_type($mediaPath);
 }
 
 /**
- * @param $mediaPath
+ * @param string $mediaPath
  *
  * @return bool
  */
-function isAudio($mediaPath)
+function isAudio(string $mediaPath): bool
 {
     if (file_exists($mediaPath)) {
         $mime = mime_content_type($mediaPath);
 
-        return (false !== strpos($mime, 'audio/')) ? true : false;
+        return str_contains($mime, 'audio/');
     }
 
     return false;
 }
 
 /**
- * @param $mediaPath
+ * @param string $mediaPath
  *
  * @return bool
  */
-function isVideo($mediaPath)
+function isVideo(string $mediaPath): bool
 {
     if (file_exists($mediaPath)) {
         $allowed = array(
@@ -663,7 +643,7 @@ function isVideo($mediaPath)
 
         $mime = mime_content_type($mediaPath);
 
-        return (false !== strpos($mime, 'video/')) || in_array($mime, $allowed) ? true : false;
+        return (str_contains($mime, 'video/')) || in_array($mime, $allowed);
     }
 
     return false;
@@ -671,38 +651,46 @@ function isVideo($mediaPath)
 
 /**
  * Return a data URI for file
- * @param $file
+ * @param string $file
  * @return string
  */
-function dataURIencode($file)
+function dataURIencode(string $file): string
 {
 
     $mime_type = mime_content_type($file);
     $file_binary = file_get_contents($file);
-    return 'data:' . $mime_type . ';base64,' . base64_encode($file_binary);
+    if ($mime_type && $file_binary) {
+        return 'data:' . $mime_type . ';base64,' . base64_encode($file_binary);
+    }
+    return '';
 }
 
 /**
- * @param $text
- * @param $size
+ * @param ?string $text
+ * @param int $size
  *
  * @return string
  */
-function shortenText($text, $size)
+function shortenText(?string $text, int $size): string
 {
+    if (empty($text) || $size <= 0) {
+        return '';
+    }
+
     return mb_strimwidth(strip_tags(htmlspecialchars_decode($text)), 0, $size, '...', 'utf-8');
 }
+
 
 /**
  * Unset same key in array and return it sliced
  *
  * @param array $data
- * @param $compareKey
+ * @param string $compareKey
  * @param bool $returnSliceArray
  *
  * @return array
  */
-function unsetSameKeyInArr(array $data, $compareKey, $returnSliceArray = false)
+function unsetSameKeyInArr(array $data, string $compareKey, bool $returnSliceArray = false): array
 {
 
     if (in_array($compareKey, array_keys($data))) {
@@ -717,42 +705,42 @@ function unsetSameKeyInArr(array $data, $compareKey, $returnSliceArray = false)
 }
 
 /**
- * @param $text
+ * @param string $text
  *
  * @return string
  */
-function minimalizeText($text)
+function minimalizeText(string $text): string
 {
     return strtolower(removeAccents(trim($text)));
 }
 
 /**
- * @param $item
+ * @param mixed $item
  *
  * @return string
  */
-function htmlSpeCharDecode($item): string
+function htmlSpeCharDecode(mixed $item): string
 {
     return htmlspecialchars_decode($item ?? '', ENT_QUOTES);
 }
 
 /**
- * @param $item
+ * @param mixed $item
  *
  * @return string
  */
-function htmlEntityDecode($item)
+function htmlEntityDecode(mixed $item): string
 {
-    return html_entity_decode($item, ENT_QUOTES);
+    return html_entity_decode($item ?? '', ENT_QUOTES);
 }
 
 /**
- * @param $key
+ * @param string $key
  * @param string $doc
  *
  * @return mixed
  */
-function trans($key, $doc = 'general')
+function trans(string $key, string $doc = 'general'): mixed
 {
     $trans = minimalizeText($key);
     $currLang = isUserInApp() ? INTERFACE_LANG : LANG;
@@ -777,13 +765,13 @@ function trans($key, $doc = 'general')
 }
 
 /**
- * @param $text
- * @param $tradToOrigin
- * @param $lang
+ * @param string $text
+ * @param bool $tradToOrigin
+ * @param string $lang
  *
  * @return mixed
  */
-function trad($text, $tradToOrigin = false, $lang = LANG)
+function trad(string $text, bool $tradToOrigin = false, string $lang = LANG): mixed
 {
     if (class_exists('App\Plugin\Traduction\Traduction')) {
 
@@ -796,11 +784,11 @@ function trad($text, $tradToOrigin = false, $lang = LANG)
 }
 
 /**
- * @param $text
+ * @param string|string[] $text
  *
- * @return null|string|string[]
+ * @return string
  */
-function slugify($text)
+function slugify(array|string $text): string
 {
     if (is_array($text)) {
         $text = implode('-', $text);
@@ -881,7 +869,7 @@ function getFilesFromDir(string $dirname, array $options = []): array
 /**
  * @return array
  */
-function getLangs()
+function getLangs(): array
 {
     return LANGUAGES;
 }
@@ -889,27 +877,27 @@ function getLangs()
 /**
  * @return array
  */
-function getAppLangs()
+function getAppLangs(): array
 {
     return getFilesFromDir(WEB_SYSTEM_PATH . 'lang/');
 }
 
 /**
- * @param $name
+ * @param string $name
  *
  * @return string
  */
-function getAppImg($name)
+function getAppImg(string $name): string
 {
     return APP_IMG_URL . $name;
 }
 
 /**
- * @param $lang
+ * @param string $lang
  *
  * @return bool
  */
-function langExist($lang)
+function langExist(string $lang): bool
 {
 
     if (array_key_exists($lang, LANGUAGES)) {
@@ -920,9 +908,9 @@ function langExist($lang)
 }
 
 /**
- * @return bool
+ * @return string|false
  */
-function getIP()
+function getIP(): string|false
 {
     foreach (
         array(
@@ -948,17 +936,17 @@ function getIP()
 }
 
 /**
- * @param $request
+ * @param string|string[] $request
  *
  * @return bool
  */
-function checkRequest($request)
+function checkRequest(string |array $request): bool
 {
     $unauthorized_characters = '"\'/\\#<>$*%!§;?([{)]}+=&²~|£µ';
     $request_error = 0;
 
     if (is_array($request)) {
-        foreach ($request as $key => $value) {
+        foreach ($request as $value) {
 
             $requestLenght = strlen($value);
 
@@ -988,11 +976,11 @@ function checkRequest($request)
 }
 
 /**
- * @param $data
+ * @param mixed $data
  *
  * @return bool
  */
-function generateSitemap($data)
+function generateSitemap(mixed $data): bool
 {
     $sitemap = '<?xml version="1.0" encoding="UTF-8"?>';
     $sitemap .= '<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">';
@@ -1036,12 +1024,12 @@ function generateSitemap($data)
 /**
  * Function to clean requests
  *
- * @param mixed $data
- * @param array|null $exclude
+ * @param string|string[] $data
+ * @param array $exclude
  *
  * @return array|string
  */
-function cleanRequest($data, array $exclude = [])
+function cleanRequest(string|array $data, array $exclude = []): array|string
 {
     if (is_array($data)) {
 
@@ -1060,25 +1048,23 @@ function cleanRequest($data, array $exclude = [])
 }
 
 /**
- * @param $data
+ * @param string $data
  *
  * @return string
  */
-function cleanData($data)
+function cleanData(string $data): string
 {
     $data = trim($data);
     $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-
-    return $data;
+    return htmlspecialchars($data);
 }
 
 /**
  * @param array $post
- * @param $serverSecretKey
+ * @param string $serverSecretKey
  * @return bool
  */
-function checkAjaxPostRecaptcha(array $post, $serverSecretKey)
+function checkAjaxPostRecaptcha(array $post, string $serverSecretKey): bool
 {
     //Check Ajax Request
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH'])
@@ -1097,12 +1083,12 @@ function checkAjaxPostRecaptcha(array $post, $serverSecretKey)
 }
 
 /**
- * @param $secret
- * @param $token
+ * @param ?string $secret
+ * @param ?string $token
  *
  * @return bool
  */
-function checkRecaptcha($secret, $token)
+function checkRecaptcha(?string $secret, ?string $token): bool
 {
 
     if (!empty($secret) && !empty($token)) {
@@ -1141,12 +1127,12 @@ function debug(): void
 }
 
 /**
- * @param $dateStr
+ * @param string $dateStr
  * @param string $format
  *
  * @return bool
  */
-function isValidDateTime($dateStr, string $format = 'Y-m-d H:i:s'): bool
+function isValidDateTime(string $dateStr, string $format = 'Y-m-d H:i:s'): bool
 {
     $date = DateTime::createFromFormat($format, $dateStr);
 
@@ -1154,13 +1140,13 @@ function isValidDateTime($dateStr, string $format = 'Y-m-d H:i:s'): bool
 }
 
 /**
- * @param $timestamp
+ * @param string $timestamp
  * @param bool $hour
  *
  * @return string
- * @throws Exception
+ * @throws DateMalformedStringException
  */
-function displayTimeStamp($timestamp, bool $hour = true): string
+function displayTimeStamp(string $timestamp, bool $hour = true): string
 {
     $Date = new DateTime($timestamp, new DateTimeZone('Europe/Paris'));
 
@@ -1178,7 +1164,6 @@ function displayTimeStamp($timestamp, bool $hour = true): string
  * @param bool|string $defaultFormat
  *
  * @return bool|string
- * @throws Exception
  */
 function displayCompleteDate(string $date, bool $hour = false, string|false $defaultFormat = false): string|false
 {
@@ -1209,23 +1194,23 @@ function displayCompleteDate(string $date, bool $hour = false, string|false $def
 
 
 /**
- * @param $duree
+ * @param string $duree
  *
  * @return string
  */
-function displayDuree($duree)
+function displayDuree(string $duree): string
 {
     return (strlen($duree) == 2) ? $duree . ' min' : $duree;
 }
 
 /**
- * @param $date1
+ * @param string $date1
  * @param string $date2
  *
  * @return string
- * @throws Exception
+ * @throws DateMalformedStringException
  */
-function getHoursFromDate($date1, $date2 = '')
+function getHoursFromDate(string $date1, string $date2 = ''): string
 {
     $Date1 = new DateTime($date1);
 
@@ -1239,13 +1224,13 @@ function getHoursFromDate($date1, $date2 = '')
 }
 
 /**
- * @param $date
- * @param $format
+ * @param string $date
+ * @param string $format
  *
  * @return string
- * @throws Exception
+ * @throws DateMalformedStringException
  */
-function displayFrDate($date, $format = 'Y-m-d')
+function displayFrDate(string $date, string $format = 'Y-m-d'): string
 {
     if (isValidDateTime($date, $format)) {
 
@@ -1258,13 +1243,13 @@ function displayFrDate($date, $format = 'Y-m-d')
 }
 
 /**
- * @param $date
- * @param $format
+ * @param string $date
+ * @param string $format
  *
  * @return string
- * @throws Exception
+ * @throws DateMalformedStringException
  */
-function displayDBDate($date, $format = 'd/m/Y')
+function displayDBDate(string $date, string $format = 'd/m/Y'): string
 {
     if (isValidDateTime($date, $format)) {
 
@@ -1277,25 +1262,25 @@ function displayDBDate($date, $format = 'd/m/Y')
 }
 
 /**
- * @param $s
+ * @param string $s
  *
- * @return array[]|false|string[]
+ * @return false|string[]
  */
-function splitAtUpperCase($s)
+function splitAtUpperCase(string $s): array|false
 {
     return preg_split('/(?=[A-Z])/', $s, -1, PREG_SPLIT_NO_EMPTY);
 }
 
 /**
- * @param $array
- * @param $searchingFor
+ * @param array $array
+ * @param string $searchingFor
  *
  * @return bool
  */
-function checkIfInArrayString($array, $searchingFor)
+function checkIfInArrayString(array $array, string $searchingFor): bool
 {
     foreach ($array as $element) {
-        if (strpos($searchingFor, $element) !== false) {
+        if (str_contains($searchingFor, $element)) {
             return true;
         }
     }
@@ -1306,9 +1291,9 @@ function checkIfInArrayString($array, $searchingFor)
 /**
  * @return bool
  */
-function checkMaintenance()
+function checkMaintenance(): bool
 {
-    if ('true' === getOptionPreference('maintenance')) {
+    if ('true' === getOption('PREFERENCE', 'maintenance')) {
         if (isIpAdministrator()) {
             return false;
         }
@@ -1320,7 +1305,7 @@ function checkMaintenance()
 /**
  * @return bool
  */
-function isIpAdministrator()
+function isIpAdministrator(): bool
 {
     //Check IP permission
     $ip = getIP();
@@ -1337,7 +1322,7 @@ function isIpAdministrator()
     if (defined('IP_ALLOWED')) {
 
         //IPV6
-        if (false !== strpos($ip, ':')) {
+        if (str_contains($ip, ':')) {
             $ipv6 = implode(':', explode(':', $ip, -4));
             if (in_array($ipv6, IP_ALLOWED)) {
                 return true;
@@ -1355,7 +1340,7 @@ function isIpAdministrator()
 /**
  * @return array
  */
-function getPlugins()
+function getPlugins(): array
 {
 
     $plugins = [];
@@ -1375,12 +1360,12 @@ function getPlugins()
                     $version = WEB_PLUGIN_PATH . $dossier . '/version.json';
                 }
 
-                array_push($plugins, array(
+                $plugins[] = array(
                     'name' => $dossier,
                     'pluginPath' => WEB_PLUGIN_PATH . $dossier . '/',
                     'setupPath' => $setupPath,
                     'versionPath' => $version
-                ));
+                );
             }
         }
     }
@@ -1391,17 +1376,17 @@ function getPlugins()
 /**
  * @return array
  */
-function getPluginsName()
+function getPluginsName(): array
 {
     return array_keys(groupMultipleKeysArray(getPlugins(), 'name'));
 }
 
 /**
- * @param $setupPath
+ * @param string $setupPath
  *
- * @return bool|string
+ * @return false|string
  */
-function activePlugin($setupPath)
+function activePlugin(string $setupPath): false|string
 {
     stream_context_set_default([
         'ssl' => [
@@ -1413,11 +1398,11 @@ function activePlugin($setupPath)
 }
 
 /**
- * @param $pluginName
+ * @param string $pluginName
  *
  * @return bool
  */
-function pluginExist($pluginName)
+function pluginExist(string $pluginName): bool
 {
     $dir = WEB_PLUGIN_PATH . $pluginName;
 
@@ -1425,11 +1410,11 @@ function pluginExist($pluginName)
 }
 
 /**
- * @param $octets
+ * @param mixed $octets
  *
  * @return false|string
  */
-function getSizeName($octets)
+function getSizeName(mixed $octets): false|string
 {
     if (is_numeric($octets)) {
         for ($i = 0; $i < 8 && $octets >= 1024; $i++) {
@@ -1450,9 +1435,9 @@ function getSizeName($octets)
  * @param bool $DB
  *
  * @return bool
- * @throws Exception
+ * @throws DateMalformedStringException
  */
-function appBackup($DB = true)
+function appBackup(bool $DB = true): bool
 {
 
     //check existing main backup folder or created it
@@ -1470,11 +1455,11 @@ function appBackup($DB = true)
             if ($DB) {
 
                 //save db
-                \App\DB::backup(date('Y-m-d'));
+                DB::backup(date('Y-m-d'));
 
                 //check if db was saved
                 if (!file_exists($backUpFolder . DIRECTORY_SEPARATOR . 'db.sql.gz')) {
-                    error_log(date('d/m/Y H:i') . ' : La sauvegarde de la base de données de ' . WEB_TITLE . ' n\'a pas été effectuée.', 0);
+                    error_log(date('d/m/Y H:i') . ' : La sauvegarde de la base de données de ' . WEB_TITLE . ' n\'a pas été effectuée.');
                 }
             }
         }
@@ -1497,21 +1482,21 @@ function appBackup($DB = true)
 }
 
 /**
- * @param $text
+ * @param string $text
  */
-function appLog($text)
+function appLog(string $text): void
 {
     $AppLog = new AppLogging();
     $AppLog->write($text);
 }
 
 /**
- * @param $path
- * @param $url
+ * @param string $path
+ * @param string $url
  *
  * @return bool
  */
-function downloadFile($path, $url)
+function downloadFile(string $path, string $url): bool
 {
     $fh = fopen($path, 'wb');
     $ch = curl_init();
@@ -1529,12 +1514,12 @@ function downloadFile($path, $url)
 /**
  * Recursively copy files from one directory to another
  *
- * @param String $src - Source of files being moved
- * @param String $dest - Destination of files being moved
+ * @param string $src - Source of files being moved
+ * @param string $dest - Destination of files being moved
  *
  * @return bool
  */
-function rcopy($src, $dest)
+function rcopy(string $src, string $dest): bool
 {
 
     // If source is not a directory stop processing
@@ -1566,9 +1551,9 @@ function rcopy($src, $dest)
 /**
  * @param string $folder
  *
- * @return array|bool
+ * @return array|false
  */
-function saveFiles($folder = 'public')
+function saveFiles(string $folder = 'public'): array|false
 {
 
     // Get real path for our folder
@@ -1598,7 +1583,7 @@ function saveFiles($folder = 'public')
 
         $filesSize = 0;
 
-        foreach ($files as $name => $file) {
+        foreach ($files as $file) {
 
             // Skip directories (they would be added automatically)
             if (!$file->isDir()) {
@@ -1635,14 +1620,13 @@ function saveFiles($folder = 'public')
  * @param bool $recursive
  * @return bool
  */
-function createFolder($structure, $chmod = 0755, $recursive = false)
+function createFolder(string $structure, int $chmod = 0755, bool $recursive = false): bool
 {
     if (!is_dir($structure)) {
         if (!mkdir($structure, $chmod, $recursive)) {
             return false;
         }
     }
-
     return true;
 }
 
@@ -1653,7 +1637,7 @@ function createFolder($structure, $chmod = 0755, $recursive = false)
  * @param array $options can contains [mode, chmod, content]
  * @return bool
  */
-function createFile($structure, array $options = [])
+function createFile(string $structure, array $options = []): bool
 {
     $defaultOptions = array('mode' => 'w', 'chmod' => 0644, 'content' => null);
     $options = array_merge($defaultOptions, $options);
@@ -1681,7 +1665,7 @@ function createFile($structure, array $options = [])
  * @param array $options can contains [mode, chmod, content]
  * @return bool
  */
-function updateFile($structure, array $options = [])
+function updateFile(string $structure, array $options = []): bool
 {
     $defaultOptions = array('mode' => 'w', 'chmod' => 0644, 'content' => null);
     $options = array_merge($defaultOptions, $options);
@@ -1706,12 +1690,12 @@ function updateFile($structure, array $options = [])
 /**
  * Recursively move files from one directory to another
  *
- * @param String $src - Source of files being moved
- * @param String $dest - Destination of files being moved
+ * @param string $src - Source of files being moved
+ * @param string $dest - Destination of files being moved
  *
  * @return bool
  */
-function rmove($src, $dest)
+function rmove(string $src, string $dest): bool
 {
 
     // If source is not a directory stop processing
@@ -1752,12 +1736,12 @@ function rmove($src, $dest)
 }
 
 /**
- * @param $oldName
- * @param $newName
+ * @param string $oldName
+ * @param string $newName
  *
  * @return bool
  */
-function renameFile($oldName, $newName)
+function renameFile(string $oldName, string $newName): bool
 {
 
     if (!file_exists($newName)) {
@@ -1769,15 +1753,15 @@ function renameFile($oldName, $newName)
 }
 
 /**
- * @param $src
- * @param $path
- * @param $firstFolderName
- * @param $replaceInPath
+ * @param string $src
+ * @param string $path
+ * @param string $firstFolderName
+ * @param string $replaceInPath
  * @param bool $deleteZip
  *
  * @return bool
  */
-function unzipSkipFirstFolder($src, $path, $firstFolderName, $replaceInPath, $deleteZip = true)
+function unzipSkipFirstFolder(string $src, string $path, string $firstFolderName, string $replaceInPath, bool $deleteZip = true): bool
 {
     $tempFolder = $path . 'unzip';
     $pluginsName = getPluginsName();
@@ -1822,33 +1806,41 @@ function unzipSkipFirstFolder($src, $path, $firstFolderName, $replaceInPath, $de
 }
 
 /**
- * @param $src
- * @param $path
+ * @param string $src
+ * @param string $path
  * @param bool $deleteZip
  *
  * @return bool
  */
-function unzip($src, $path, $deleteZip = true)
+function unzip(string $src, string $path, bool $deleteZip = true): bool
 {
-    $zip = new ZipArchive;
-    if (true === $zip->open($src)) {
-        $zip->extractTo($path);
-        $zip->close();
+    $zip = new ZipArchive();
+
+    if ($zip->open($src) !== true) {
+        return false;
     }
 
-    if ($deleteZip) {
+    $extracted = $zip->extractTo($path);
+    $zip->close();
+
+    if (!$extracted) {
+        return false;
+    }
+
+    if ($deleteZip && file_exists($src)) {
         unlink($src);
     }
 
     return true;
 }
 
+
 /**
  * Remove dir with all files
  *
- * @param $dirPath
+ * @param string $dirPath
  */
-function deleteAllFolderContent($dirPath)
+function deleteAllFolderContent(string $dirPath): void
 {
     if (is_dir($dirPath)) {
         $objects = scandir($dirPath);
@@ -1871,7 +1863,7 @@ function deleteAllFolderContent($dirPath)
 /**
  * @return array
  */
-function getAppTypes()
+function getAppTypes(): array
 {
     //get plugin types
     $allTypes = getPluginsName();
@@ -1886,7 +1878,7 @@ function getAppTypes()
 /**
  * @return array
  */
-function listPays()
+function listPays(): array
 {
     return array
     (
@@ -2098,11 +2090,11 @@ function listPays()
 }
 
 /**
- * @param $iso
+ * @param int|string $iso
  *
- * @return mixed|string
+ * @return string
  */
-function getPaysName($iso)
+function getPaysName(int|string $iso): string
 {
     $countries = listPays();
     if (array_key_exists($iso, $countries)) {
@@ -2113,11 +2105,11 @@ function getPaysName($iso)
 }
 
 /**
- * @param $paysName
+ * @param string $paysName
  *
- * @return mixed|string
+ * @return false|int|string
  */
-function getIso($paysName)
+function getIso(string $paysName): false|int|string
 {
     $countries = listPays();
     if (in_array($paysName, $countries)) {
@@ -2130,7 +2122,7 @@ function getIso($paysName)
 /**
  *
  */
-function checkSession()
+function checkSession(): void
 {
     if (!headers_sent() && session_status() === PHP_SESSION_DISABLED) {
         session_start();
@@ -2143,6 +2135,7 @@ function checkSession()
  * @param bool $forSession
  *
  * @return bool|string
+ * @throws RandomException
  */
 function setToken(bool $forSession = true): bool|string
 {
@@ -2167,8 +2160,9 @@ function setToken(bool $forSession = true): bool|string
 
 /**
  * @return string
+ * @throws RandomException
  */
-function getTokenField()
+function getTokenField(): string
 {
     checkSession();
     if (!isset($_SESSION['_token'])) {
@@ -2181,7 +2175,7 @@ function getTokenField()
 /**
  * @return mixed
  */
-function getToken()
+function getToken(): mixed
 {
     if (isset($_SESSION['_token'])) {
         return $_SESSION['_token'];
@@ -2193,7 +2187,7 @@ function getToken()
 /**
  * remove token session
  */
-function unsetToken()
+function unsetToken(): void
 {
     if (isset($_SESSION['_token'])) {
         unset($_SESSION['_token']);
@@ -2203,7 +2197,7 @@ function unsetToken()
 /**
  * display notifications & alerts
  */
-function getSessionNotifications()
+function getSessionNotifications(): void
 {
     $sessionsNotifs = array(
         'notifications',
@@ -2223,14 +2217,14 @@ function getSessionNotifications()
 /**
  * Include or Require file, once or more and safely
  *
- * @param $filePath
+ * @param string $filePath
  * @param bool $requireMethod
  *
  * @param bool $once
  *
  * @return bool
  */
-function inc($filePath, $requireMethod = false, $once = false)
+function inc(string $filePath, bool $requireMethod = false, bool $once = false): bool
 {
     if (file_exists($filePath)) {
         if (!$requireMethod) {
@@ -2248,13 +2242,13 @@ function inc($filePath, $requireMethod = false, $once = false)
 }
 
 /**
- * @param $assetName
+ * @param string $assetName
  * @param bool $getStream
- * @param null $params
+ * @param mixed $params
  *
- * @return bool|false|string
+ * @return bool|string
  */
-function getAsset($assetName, $getStream = false, $params = null)
+function getAsset(string $assetName, bool $getStream = false, mixed $params = null): bool|string
 {
     $fileDirname = 'assets/' . $assetName . '.php';
     $filePath = WEB_LIB_PATH . $fileDirname;
@@ -2268,10 +2262,10 @@ function getAsset($assetName, $getStream = false, $params = null)
 
 /**
  * Purge du cache Varnish en utilisant la requête HTTP PURGE/PURGEALL
- * @param null $url
+ * @param ?string $url
  * @return bool
  */
-function purgeVarnishCache($url = null)
+function purgeVarnishCache(?string $url = null): bool
 {
 
     $return = false;
@@ -2292,115 +2286,106 @@ function purgeVarnishCache($url = null)
 }
 
 /**
- * @param $filename
- * @param int $desired_width
- * @param int $quality
+ * Génère une miniature ou une version WebP d'une image.
  *
- * @param bool $webp
- * @return bool|int
+ * @param string $filename Nom du fichier source (relatif à FILE_DIR_PATH)
+ * @param int $desired_width Largeur souhaitée de la miniature
+ * @param int $quality Qualité de l'image (1 à 100)
+ * @param bool $webp Générer en WebP si true
+ *
+ * @return bool True si la miniature est créée, false sinon
  */
-function thumb($filename, $desired_width = 100, $quality = 80, $webp = false)
+function thumb(string $filename, int $desired_width = 100, int $quality = 80, bool $webp = false): bool
 {
     $src = FILE_DIR_PATH . $filename;
-    $dest = FILE_DIR_PATH . 'thumb' . DIRECTORY_SEPARATOR . $desired_width . '_' . $filename;
+    $fileInfo = pathinfo($filename);
+    $nameWithoutExt = $fileInfo['filename'];
+
+    $destDir = FILE_DIR_PATH . ($webp ? 'webp' : 'thumb') . DIRECTORY_SEPARATOR;
+    $destExt = $webp ? '.webp' : '.' . strtolower($fileInfo['extension']);
+    $dest = $destDir . "{$desired_width}_{$nameWithoutExt}{$destExt}";
+
+    // Création des dossiers si nécessaires
+    if (!is_dir($destDir)) {
+        mkdir($destDir, 0705, recursive: true);
+    }
+
+    // Si la miniature existe déjà, inutile de la recréer
+    if (!is_file($src) || is_file($dest) || !isImage($src)) {
+        return false;
+    }
+
+    [$src_width, $src_height] = getimagesize($src);
+
+    if ($desired_width >= $src_width || $src_width <= 0 || $src_height <= 0) {
+        return false;
+    }
+
+    $source_image = match (strtoupper($fileInfo['extension'])) {
+        'JPG', 'JPEG' => @imagecreatefromjpeg($src),
+        'PNG'        => @imagecreatefrompng($src),
+        'GIF'        => @imagecreatefromgif($src),
+        'WEBP'       => function_exists('imagecreatefromwebp') ? @imagecreatefromwebp($src) : false,
+        default      => false
+    };
+
+    if (!$source_image) {
+        return false;
+    }
+
+    $desired_height = (int) floor($src_height * ($desired_width / $src_width));
+    if ($desired_height < 1) {
+        return false;
+    }
+
+    $virtual_image = imagecreatetruecolor($desired_width, $desired_height);
+
+    // Transparence pour PNG et WebP
+    if (in_array(strtoupper($fileInfo['extension']), ['PNG', 'WEBP'], true)) {
+        imagealphablending($virtual_image, false);
+        imagesavealpha($virtual_image, true);
+    }
+
+    imagecopyresampled(
+        $virtual_image,
+        $source_image,
+        0, 0, 0, 0,
+        $desired_width, $desired_height,
+        $src_width, $src_height
+    );
+
+    // Sauvegarde
+    $saved = false;
     if ($webp) {
-        $fileInfo = pathinfo($filename);
-        $dest = FILE_DIR_PATH . 'webp' . DIRECTORY_SEPARATOR . $desired_width . '_' . $fileInfo['filename'] . '.WEBP';
+        $saved = function_exists('imagewebp') && imagewebp($virtual_image, $dest, $quality);
+    } else {
+        $ext = strtoupper($fileInfo['extension']);
+        $saved = match ($ext) {
+            'JPG', 'JPEG' => imagejpeg($virtual_image, $dest, $quality),
+            'PNG'         => imagepng($virtual_image, $dest),
+            'GIF'         => imagegif($virtual_image, $dest),
+            'WEBP'        => function_exists('imagewebp') && imagewebp($virtual_image, $dest, $quality),
+            default       => false
+        };
     }
 
-    if (!file_exists(FILE_DIR_PATH . 'thumb/')) {
-        mkdir(FILE_DIR_PATH . 'thumb', 0705);
-    }
+    imagedestroy($virtual_image);
+    imagedestroy($source_image);
 
-    if (!file_exists(FILE_DIR_PATH . 'webp/')) {
-        mkdir(FILE_DIR_PATH . 'webp', 0705);
-    }
-
-    if (is_file($src) && !is_file($dest) && isImage($src)) {
-
-        list($src_width, $src_height, $src_type, $src_attr) = getimagesize($src);
-
-        //check if thumb can be realized
-        if ($desired_width < $src_width) {
-
-            // Find format
-            $ext = strtoupper(pathinfo($src, PATHINFO_EXTENSION));
-
-            /* read the source image */
-            if ($ext == "JPG" or $ext == "JPEG") {
-                $source_image = @imagecreatefromjpeg($src);
-            } elseif ($ext == "PNG") {
-                $source_image = @imagecreatefrompng($src);
-            } elseif ($ext == "GIF") {
-                $source_image = @imagecreatefromgif($src);
-            } elseif ($ext == "WEBP" && function_exists('imagecreatefromwebp')) {
-                $source_image = @imagecreatefromwebp($src);
-            } else {
-                return false;
-            }
-
-            if (!$source_image) {
-                return false;
-            }
-
-            $width = imagesx($source_image);
-            $height = imagesy($source_image);
-
-
-            /* find the "desired height" of this thumbnail, relative to the desired width  */
-            $desired_height = floor($height * ($desired_width / $width));
-
-            /* create a new, "virtual" image */
-            $virtual_image = imagecreatetruecolor($desired_width, $desired_height);
-
-            /* saving alpha color */
-            if ($ext == "PNG" || $ext == "WEBP") {
-                imageAlphaBlending($virtual_image, false);
-                imageSaveAlpha($virtual_image, true);
-            }
-
-            /* copy source image at a resized size */
-            imagecopyresampled($virtual_image, $source_image, 0, 0, 0, 0, $desired_width, $desired_height, $width, $height);
-
-            if ($webp) {
-                if (!function_exists('imagewebp')) {
-                    return false;
-                }
-                imagewebp($virtual_image, $dest, $quality);
-
-            } else {
-
-                /* create the physical thumbnail image to its destination */
-                if ($ext == "JPG" or $ext == "JPEG") {
-                    imagejpeg($virtual_image, $dest, $quality);
-                } elseif ($ext == "PNG") {
-                    imagepng($virtual_image, $dest);
-                } elseif ($ext == "GIF") {
-                    imagegif($virtual_image, $dest);
-                } elseif ($ext == "WEBP") {
-                    if (!function_exists('imagewebp')) {
-                        return false;
-                    }
-                    imagewebp($virtual_image, $dest, $quality);
-                }
-            }
-            return true;
-        }
-    }
-    return false;
+    return $saved;
 }
 
 /**
- * @param $filename
- * @param $desired_width
+ * @param string $filename
+ * @param int $desired_width
  * @param bool $webp
  * @param int $quality
  *
  * @return string
  */
-function getThumb($filename, $desired_width, $webp = false, $quality = 100)
+function getThumb(string $filename, int $desired_width, bool $webp = false, int $quality = 100): string
 {
-    if ($webp && !empty($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'image/webp') !== false) {
+    if ($webp && !empty($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'image/webp')) {
 
         $basepath = FILE_DIR_PATH . 'webp' . DIRECTORY_SEPARATOR . $desired_width . '_';
         $baseurl = WEB_DIR_INCLUDE . 'webp' . DIRECTORY_SEPARATOR . $desired_width . '_';
@@ -2437,12 +2422,12 @@ function getThumb($filename, $desired_width, $webp = false, $quality = 100)
 }
 
 /**
- * @param $filename
- * @param $desired_width
+ * @param string $filename
+ * @param int $desired_width
  *
  * @return bool
  */
-function deleteThumb($filename, $desired_width)
+function deleteThumb(string $filename, int $desired_width): bool
 {
     $thumbPath = FILE_DIR_PATH . 'thumb' . DIRECTORY_SEPARATOR . $desired_width . '_' . $filename;
     if (file_exists($thumbPath)) {
@@ -2456,11 +2441,11 @@ function deleteThumb($filename, $desired_width)
 }
 
 /**
- * @param $message
+ * @param string $message
  * @param string $status
  * @param mixed $data
  */
-function setPostResponse($message, $status = 'danger', $data = null)
+function setPostResponse(string $message, string $status = 'danger', mixed $data = null): void
 {
     checkSession();
 
@@ -2474,7 +2459,7 @@ function setPostResponse($message, $status = 'danger', $data = null)
  *
  * @param string $additionalText
  */
-function showPostResponse($additionalText = '')
+function showPostResponse(string $additionalText = ''): void
 {
     $html = '';
     if (!empty($_SESSION['messagePostResponse']) && !empty($_SESSION['statusPostResponse'])) {
@@ -2487,9 +2472,9 @@ function showPostResponse($additionalText = '')
 }
 
 /**
- * @return mixed|string
+ * @return mixed
  */
-function getDataPostResponse()
+function getDataPostResponse(): mixed
 {
     $dataPostResponse = '';
     if (!empty($_SESSION['dataPostResponse'])) {
@@ -2501,9 +2486,9 @@ function getDataPostResponse()
 }
 
 /**
- * @param $error
+ * @param mixed $error
  */
-function setSqlError($error)
+function setSqlError(mixed $error): void
 {
     checkSession();
 
@@ -2513,7 +2498,7 @@ function setSqlError($error)
 /**
  * @return mixed
  */
-function getSqlError()
+function getSqlError(): mixed
 {
     if (isset($_SESSION['sqlError'])) {
 
@@ -2548,7 +2533,7 @@ function updateDB(): bool
             foreach ($sqlToUpdate as $num => $sql) {
 
                 //Send sql request
-                $stmt = \App\DB::exec($sql);
+                $stmt = DB::exec($sql);
 
                 //If database return error
                 if (!$stmt) {
@@ -2592,13 +2577,13 @@ function updateDB(): bool
 }
 
 /**
- * @param $url
- * @param $params
+ * @param ?string $url
+ * @param mixed $params
  * @param array $headers
  * @param array $options
- * @return mixed|string
+ * @return string|bool
  */
-function postHttpRequest($url, $params, $headers = [], $options = [])
+function postHttpRequest(?string $url, mixed $params, array $headers = [], array $options = []): string|bool
 {
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_POST, true);
@@ -2623,12 +2608,12 @@ function postHttpRequest($url, $params, $headers = [], $options = [])
 }
 
 /**
- * @param $url
- *
+ * @param mixed $url
  * @param array $options
- * @return mixed|string
+ *
+ * @return bool|string
  */
-function getHttpRequest($url, $options = [])
+function getHttpRequest(mixed $url, array $options = []): bool|string
 {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -2656,12 +2641,12 @@ function getHttpRequest($url, $options = [])
 }
 
 /**
- * @param $path
- * @param null $params
+ * @param string $path
+ * @param mixed $params
  *
  * @return string
  */
-function getFileContent($path, $params = null)
+function getFileContent(string $path, mixed $params = null): string
 {
     if (is_array($params)) {
         extract($params, EXTR_SKIP);
@@ -2669,13 +2654,12 @@ function getFileContent($path, $params = null)
 
     ob_start();
     inc($path);
-    $pageContent = ob_get_clean();
+    $pageContent = ob_get_clean() ?: '';
 
-    if (is_array($params) && preg_match_all("/{{(.*?)}}/", $pageContent, $match)) {
-
-        foreach ($match[1] as $i => $zone) {
-
-            $pageContent = str_replace($match[0][$i], sprintf('%s', !empty($params[$zone]) ? $params[$zone] : ''), $pageContent);
+    if (!empty($params) && is_array($params) && preg_match_all('/{{\s*(.*?)\s*}}/', $pageContent, $matches)) {
+        foreach ($matches[1] as $i => $key) {
+            $replacement = $params[$key] ?? '';
+            $pageContent = str_replace($matches[0][$i], (string) $replacement, $pageContent);
         }
     }
 
@@ -2684,12 +2668,12 @@ function getFileContent($path, $params = null)
 
 
 /**
- * @param $object
- * @param $attribute
+ * @param mixed $object
+ * @param mixed $attribute
  *
  * @return bool|string
  */
-function getXmlAttribute($object, $attribute)
+function getXmlAttribute(mixed $object, mixed $attribute): bool|string
 {
     if (isset($object[$attribute])) {
         return (string)$object[$attribute];
@@ -2702,6 +2686,7 @@ function getXmlAttribute($object, $attribute)
  * Place fields for verification and control of the login form
  *
  * @return string
+ * @throws RandomException
  */
 function getFieldsControls(): string
 {
@@ -2718,11 +2703,11 @@ function getFieldsControls(): string
 }
 
 /**
- * @param int $parentId
+ * @param ?int $parentId
  *
- * @return array|bool
+ * @return array|false
  */
-function getMediaCategories($parentId = null)
+function getMediaCategories(?int $parentId = null): array|false
 {
 
     $Category = new Category();
@@ -2741,7 +2726,7 @@ function getMediaCategories($parentId = null)
  *
  * @return array
  */
-function getSpecificMediaCategory($id, $parentId = false, $categoryType = 'MEDIA')
+function getSpecificMediaCategory(int $id, bool $parentId = false, string $categoryType = 'MEDIA'): array
 {
     $Media = new Media();
     $Category = new Category();
@@ -2772,15 +2757,59 @@ function getSpecificMediaCategory($id, $parentId = false, $categoryType = 'MEDIA
 }
 
 /**
+ * @param array $post
+ * @param array $files
+ * @return string
+ */
+function handleMediaUploadAndSelection(array $post, array $files = []): string
+{
+    $html = '';
+    $selectedFilesCount = 0;
+
+    $Media = new Media();
+    $Media->setTypeId($post['library']);
+    $Media->setUserId(getUserIdSession());
+
+    // Upload de fichiers
+    if (!empty($files)) {
+        $Media->setUploadFiles($files['inputFile']);
+        $uploaded = $Media->upload();
+
+        $html .= trans('Fichiers importés') . ' : <strong>' . $uploaded['countUpload'] . '</strong><br>'
+            . trans('Fichiers enregistrés dans la BDD') . ' : <strong>' . $uploaded['countDbSaved'] . '</strong>'
+            . (!empty($uploaded['errors']) ? '<br><span class="text-danger">' . $uploaded['errors'] . '</span>' : '');
+    }
+
+    // Fichiers sélectionnés
+    if (!empty($post['textareaSelectedFile'])) {
+        $selectedFiles = str_contains($post['textareaSelectedFile'], '|||')
+            ? explode('|||', $post['textareaSelectedFile'])
+            : [$post['textareaSelectedFile']];
+
+        foreach ($selectedFiles as $file) {
+            $Media->setName($file);
+            if (!$Media->exist() && $Media->save()) {
+                $selectedFilesCount++;
+            }
+        }
+
+        $html .= '<br>' . trans('Fichiers sélectionnés enregistrés dans la BDD') . ' : <strong>' . $selectedFilesCount . '</strong>';
+    }
+
+    return $html;
+}
+
+
+/**
  * @param int $id
  * @param bool $parentId
  * @param bool $flatten
- * @param int $arraySort
+ * @param mixed $arraySort
  * @param string $type
  *
  * @return array
  */
-function getMediaByCategory($id, $parentId = false, $flatten = false, $arraySort = SORT_ASC, $type = 'MEDIA')
+function getMediaByCategory(int $id, bool $parentId = false, bool $flatten = false, mixed $arraySort = SORT_ASC, string $type = 'MEDIA'): array
 {
     $Media = new Media();
     $Media->setType($type);
@@ -2822,12 +2851,12 @@ function getMediaByCategory($id, $parentId = false, $flatten = false, $arraySort
 }
 
 /**
- * @param $allCategory
- * @param $allLibrary
+ * @param object|array $allCategory
+ * @param array $allLibrary
  *
  * @return array
  */
-function groupLibraryByParents($allCategory, $allLibrary)
+function groupLibraryByParents(object|array $allCategory, array $allLibrary): array
 {
 
     $allLibraryByParent = extractFromObjToSimpleArr($allCategory, 'id', 'parentId');
@@ -2841,7 +2870,7 @@ function groupLibraryByParents($allCategory, $allLibrary)
         } else {
 
             if ($allLibraryByParent[$parentId] == 10) {
-                $libraryParent[$id] = array('id' => $allLibraryByParent[$id], 'name' => $allLibrary[$parentId]);
+                $libraryParent[$id] = array('id' => $parentId, 'name' => $allLibrary[$parentId]);
 
             } else {
                 $libraryParent[$id] = array(
@@ -2857,27 +2886,27 @@ function groupLibraryByParents($allCategory, $allLibrary)
 }
 
 /**
- * @param int|float $amount
+ * @param mixed $amount
  * @param bool $forDB
  * @param int $decimals
  * @param string $dec_point
  *
  * @return string
  */
-function financial($amount, $forDB = false, $decimals = 2, $dec_point = '.')
+function financial(mixed $amount, bool $forDB = false, int $decimals = 2, string $dec_point = '.'): string
 {
     return is_numeric($amount) ? number_format($amount, $decimals, $dec_point, (!$forDB ? ' ' : '')) : $amount;
 }
 
 
 /**
- * @param $array
- * @param $key
- * @param $val
+ * @param array $array
+ * @param string $key
+ * @param mixed $val
  * @param string $return
- * @return bool|object
+ * @return mixed
  */
-function isValInMultiArrObj($array, $key, $val, $return = 'bool')
+function isValInMultiArrObj(array $array, string $key, mixed $val, string $return = 'bool'): mixed
 {
     foreach ($array as $item) {
 
@@ -2893,13 +2922,13 @@ function isValInMultiArrObj($array, $key, $val, $return = 'bool')
 }
 
 /**
- * Raise an grandchildren array, at the level of children
+ * Raise a grandchildren array, at the level of children
  *
- * @param array|null $multipleArrays
+ * @param ?array $multipleArrays
  *
- * @return array
+ * @return ?array
  */
-function transformMultipleArraysTo1(array $multipleArrays = null)
+function transformMultipleArraysTo1(?array $multipleArrays = null): ?array
 {
     foreach ($multipleArrays as $ckey => $child) {
         foreach ($child as $gckey => $grandchild) {
@@ -2922,13 +2951,13 @@ function transformMultipleArraysTo1(array $multipleArrays = null)
 }
 
 /**
- * Raise an string children array, at the top level
+ * Raise a string children array, at the top level
  *
- * @param array| $array
+ * @param array $array
  *
  * @return array
  */
-function flatten(array $array)
+function flatten(array $array): array
 {
     $return = [];
     array_walk_recursive($array, function ($a) use (&$return) {
@@ -2941,11 +2970,11 @@ function flatten(array $array)
 /**
  * Raise an objects children array, at the top level
  *
- * @param array| $array
+ * @param array $array
  *
  * @return array
  */
-function array_flatten(array $array)
+function array_flatten(array $array): array
 {
     $result = [];
     foreach ($array as $key => $value) {
@@ -2963,12 +2992,12 @@ function array_flatten(array $array)
 }
 
 /**
- * @param $data
+ * @param mixed $data
  * @param string $keyName
  *
  * @return array
  */
-function groupMultipleKeysObjectsArray($data, $keyName)
+function groupMultipleKeysObjectsArray(mixed $data, string $keyName): array
 {
     $output = [];
     if (!isArrayEmpty($data)) {
@@ -2995,7 +3024,7 @@ function groupMultipleKeysObjectsArray($data, $keyName)
  *
  * @return array
  */
-function groupMultipleKeysArray(array $data, $keyName)
+function groupMultipleKeysArray(array $data, string $keyName): array
 {
     $output = [];
     if (!isArrayEmpty($data)) {
@@ -3017,12 +3046,12 @@ function groupMultipleKeysArray(array $data, $keyName)
 }
 
 /**
- * @param $allContentArr
- * @param $key
+ * @param array|object|null $allContentArr
+ * @param mixed $key
  *
  * @return array
  */
-function extractFromObjArr($allContentArr, $key)
+function extractFromObjArr(null|array|object $allContentArr, mixed $key): array
 {
     $allContent = [];
     if (!empty($allContentArr)) {
@@ -3035,12 +3064,12 @@ function extractFromObjArr($allContentArr, $key)
 }
 
 /**
- * @param $allContentArr
- * @param $key
+ * @param array|object $allContentArr
+ * @param mixed $key
  *
  * @return array
  */
-function extractFromObjToArrForList($allContentArr, $key)
+function extractFromObjToArrForList(array|object $allContentArr, mixed $key): array
 {
     //extract object to array with key = id
     $newArray = extractFromObjArr($allContentArr, $key);
@@ -3072,15 +3101,15 @@ function extractFromObjToArrForList($allContentArr, $key)
 }
 
 /**
- * @param $allContentArr
- * @param $key
+ * @param array|object|null $allContentArr
+ * @param mixed $key
  * @param string $value
  * @param string $value2
  * @param string $separator
  *
  * @return array
  */
-function extractFromObjToSimpleArr($allContentArr, $key, $value = '', $value2 = '', $separator = ' ')
+function extractFromObjToSimpleArr(array|object|null $allContentArr, mixed $key, string $value = '', string $value2 = '', string $separator = ' '): array
 {
     $allContent = [];
 
@@ -3114,7 +3143,7 @@ function extractFromObjToSimpleArr($allContentArr, $key, $value = '', $value2 = 
  *
  * @return array
  */
-function buildTree(array $elements, $parentId = 0)
+function buildTree(array $elements, int $parentId = 0): array
 {
 
     $branch = [];
@@ -3135,19 +3164,19 @@ function buildTree(array $elements, $parentId = 0)
 }
 
 /**
- * @param $dbname
+ * @param string $dbname
  * @param string $groupBy
  * @param int $limit
  * @param string $column
  * @param string $order
  *
- * @return array|bool
+ * @return array|false
  */
-function getLastFromDb($dbname, $groupBy = '', $limit = 2, $column = 'updated_at', $order = 'DESC')
+function getLastFromDb(string $dbname, string $groupBy = '', int $limit = 2, string $column = 'updated_at', string $order = 'DESC'): array|false
 {
 
-    $dbh = \App\DB::connect();
-    if(\App\DB::checkTable(TABLEPREFIX . 'appoe_' . $dbname)) {
+    $dbh = DB::connect();
+    if(DB::checkTable(TABLEPREFIX . 'appoe_' . $dbname)) {
         $sql = 'SELECT * FROM ' . TABLEPREFIX . 'appoe_' . $dbname . ' ORDER BY ' . $column . ' ' . $order;
         $stmt = $dbh->prepare($sql);
         $stmt->execute();
@@ -3166,13 +3195,13 @@ function getLastFromDb($dbname, $groupBy = '', $limit = 2, $column = 'updated_at
 }
 
 /**
- * @param $forApp
+ * @param bool $forApp
  */
-function includePluginsFiles($forApp = false)
+function includePluginsFiles(bool $forApp = false): void
 {
     $plugins = getPlugins();
 
-    if (is_array($plugins) && !empty($plugins)) {
+    if (!empty($plugins)) {
 
         foreach ($plugins as $plugin) {
             $filePath = WEB_PLUGIN_PATH . $plugin['name'] . DIRECTORY_SEPARATOR . 'include';
@@ -3194,11 +3223,11 @@ function includePluginsFiles($forApp = false)
 /**
  *
  */
-function includePluginsFilesForApp()
+function includePluginsFilesForApp(): void
 {
     $plugins = getPlugins();
 
-    if (is_array($plugins) && !empty($plugins)) {
+    if (!empty($plugins)) {
 
         foreach ($plugins as $plugin) {
             $filePath = WEB_PLUGIN_PATH . $plugin['name'] . DIRECTORY_SEPARATOR . 'includeApp';
@@ -3215,11 +3244,11 @@ function includePluginsFilesForApp()
 /**
  *
  */
-function includePluginsFilesForAppInFooter()
+function includePluginsFilesForAppInFooter(): void
 {
     $plugins = getPlugins();
 
-    if (is_array($plugins) && !empty($plugins)) {
+    if (!empty($plugins)) {
 
         foreach ($plugins as $plugin) {
             $filePath = WEB_PLUGIN_PATH . $plugin['name'] . DIRECTORY_SEPARATOR . 'includeAppFooter';
@@ -3237,11 +3266,11 @@ function includePluginsFilesForAppInFooter()
 /**
  *
  */
-function includePluginsPrimaryMenu()
+function includePluginsPrimaryMenu(): void
 {
     $plugins = getPlugins();
 
-    if (is_array($plugins) && !empty($plugins)) {
+    if (!empty($plugins)) {
 
         foreach ($plugins as $plugin) {
             $filePath = WEB_PLUGIN_PATH . $plugin['name'] . DIRECTORY_SEPARATOR . 'menu';
@@ -3260,11 +3289,11 @@ function includePluginsPrimaryMenu()
 /**
  *
  */
-function includePluginsSecondaryMenu()
+function includePluginsSecondaryMenu(): void
 {
     $plugins = getPlugins();
 
-    if (is_array($plugins) && !empty($plugins)) {
+    if (!empty($plugins)) {
 
         foreach ($plugins as $plugin) {
             $filePath = WEB_PLUGIN_PATH . $plugin['name'] . DIRECTORY_SEPARATOR . 'littleMenu';
@@ -3284,12 +3313,12 @@ function includePluginsSecondaryMenu()
  * @param bool $forApp
  * @param bool $min
  */
-function includePluginsJs($forApp = false, $min = false)
+function includePluginsJs(bool $forApp = false, bool $min = false): void
 {
     if (!$min) {
         $plugins = getPlugins();
 
-        if (is_array($plugins) && !empty($plugins)) {
+        if (!empty($plugins)) {
 
             foreach ($plugins as $plugin) {
 
@@ -3325,12 +3354,12 @@ function includePluginsJs($forApp = false, $min = false)
 /**
  *
  */
-function includePluginsJsForApp()
+function includePluginsJsForApp(): void
 {
     echo '<script type="text/javascript" src="' . WEB_TEMPLATE_URL . 'js/all.js"></script>';
 
     $plugins = getPlugins();
-    if (is_array($plugins) && !empty($plugins)) {
+    if (!empty($plugins)) {
 
         foreach ($plugins as $plugin) {
 
@@ -3357,12 +3386,12 @@ function includePluginsJsForApp()
 /**
  * @param bool $min
  */
-function includePluginsStyles($min = false)
+function includePluginsStyles(bool $min = false): void
 {
     if (!$min) {
         $plugins = getPlugins();
 
-        if (is_array($plugins) && !empty($plugins)) {
+        if (!empty($plugins)) {
 
             foreach ($plugins as $plugin) {
 
@@ -3389,18 +3418,19 @@ function includePluginsStyles($min = false)
 }
 
 /**
- * @param $pluginName
+ * @param string $pluginName
  *
  * @return bool
  */
-function loadPluginForFilename($pluginName)
+function loadPluginForFilename(string $pluginName): bool
 {
     if (!isUserInApp()) {
         if (defined('PLUGIN_FOR_PUBLIC_FILENAME') && is_array(PLUGIN_FOR_PUBLIC_FILENAME)
             && array_key_exists($pluginName, PLUGIN_FOR_PUBLIC_FILENAME)) {
 
-            if ((!isArrayEmpty(PLUGIN_FOR_PUBLIC_FILENAME[$pluginName]) && !in_array(getPageParam('currentPageFilename'), PLUGIN_FOR_PUBLIC_FILENAME[$pluginName]))
-                || false === PLUGIN_FOR_PUBLIC_FILENAME[$pluginName]) {
+            if ((!isArrayEmpty(PLUGIN_FOR_PUBLIC_FILENAME[$pluginName])
+                    && !in_array(getPageParam('currentPageFilename'), PLUGIN_FOR_PUBLIC_FILENAME[$pluginName]))
+                || !PLUGIN_FOR_PUBLIC_FILENAME[$pluginName]) {
                 return false;
             }
 
@@ -3436,12 +3466,8 @@ function loadPluginForFilename($pluginName)
  *
  * @return bool
  */
-function exportCsv(array $headers, array $data, $filename = 'data', $delimiter = ',')
+function exportCsv(array $headers, array $data, string $filename = 'data', string $delimiter = ','): bool
 {
-    if (!is_array($headers) || !is_array($data)) {
-        return false;
-    }
-
     if (!headers_sent()) {
         header('Content-Encoding: UTF-8');
         header('Content-Type: text/csv; charset=utf-8');
@@ -3465,7 +3491,7 @@ function exportCsv(array $headers, array $data, $filename = 'data', $delimiter =
 /**
  * @return bool
  */
-function valideToken()
+function valideToken(): bool
 {
     if (!empty($_REQUEST['_token']) && !empty($_SESSION['_token']) && $_REQUEST['_token'] == $_SESSION['_token']) {
 
@@ -3480,7 +3506,7 @@ function valideToken()
 /**
  * @return bool
  */
-function valideAjaxToken()
+function valideAjaxToken(): bool
 {
     if (!empty($_REQUEST['_token']) && !empty($_SESSION['_token']) && $_REQUEST['_token'] == $_SESSION['_token']) {
 
@@ -3491,11 +3517,11 @@ function valideAjaxToken()
 }
 
 /**
- * @param $updateUserStatus
+ * @param bool $updateUserStatus
  *
  * @return bool
  */
-function checkPostAndTokenRequest($updateUserStatus = true)
+function checkPostAndTokenRequest(bool $updateUserStatus = true): bool
 {
     if ($_SERVER["REQUEST_METHOD"] == "POST"
         && !empty($_POST['_token']) && !empty($_SESSION['_token'])
@@ -3518,7 +3544,7 @@ function checkPostAndTokenRequest($updateUserStatus = true)
 /**
  * @return bool
  */
-function checkAjaxRequest()
+function checkAjaxRequest(): bool
 {
     if (
         !empty($_SERVER['HTTP_X_REQUESTED_WITH'])
@@ -3533,9 +3559,9 @@ function checkAjaxRequest()
 /**
  * Check if user are connected & return user id
  *
- * @return bool
+ * @return mixed
  */
-function getUserIdSession()
+function getUserIdSession(): mixed
 {
     $userConnexion = getUserConnexion();
 
@@ -3543,24 +3569,24 @@ function getUserIdSession()
 }
 
 /**
- * @param $slug
+ * @param string $slug
  *
  * @return bool
  */
-function isUserAuthorized($slug)
+function isUserAuthorized(string $slug): bool
 {
 
-    $Menu = new \App\Menu();
+    $Menu = new Menu();
 
     return $Menu->checkUserPermission(getUserRoleId(), $slug);
 }
 
 /**
- * @param string $idUser
+ * @param ?string $idUser
  *
  * @return bool|string
  */
-function checkAndGetUserId($idUser = null)
+function checkAndGetUserId(?string $idUser = null): bool|string
 {
     return !is_null($idUser) ? $idUser : getUserIdSession();
 }
@@ -3568,11 +3594,11 @@ function checkAndGetUserId($idUser = null)
 /**
  * @param bool $max : get the lower roles than the current user
  * @param bool $min : get the superior roles than the current user
- * @param null $roleIdReference : to compare with role IDs
+ * @param mixed $roleIdReference : to compare with role IDs
  *
  * @return array|bool
  */
-function getAllUsers($max = false, $min = false, $roleIdReference = null)
+function getAllUsers(bool $max = false, bool $min = false, mixed $roleIdReference = null): bool|array
 {
     //Get all users in a const
     if (!defined('ALLUSERS')) {
@@ -3603,11 +3629,11 @@ function getAllUsers($max = false, $min = false, $roleIdReference = null)
 }
 
 /**
- * @param $idUser
+ * @param ?string $idUser
  *
  * @return bool
  */
-function isUserExist($idUser)
+function isUserExist(?string $idUser): bool
 {
 
     $ALLUSERS = getAllUsers();
@@ -3620,11 +3646,11 @@ function isUserExist($idUser)
 }
 
 /**
- * @param $idUser
+ * @param ?string $idUser
  *
  * @return string|array
  */
-function getUserData($idUser = null)
+function getUserData(?string $idUser = null): array|string
 {
     $idUser = checkAndGetUserId($idUser);
 
@@ -3634,11 +3660,11 @@ function getUserData($idUser = null)
 }
 
 /**
- * @param $idUser
+ * @param ?string $idUser
  *
  * @return string
  */
-function getUserName($idUser = null)
+function getUserName(?string $idUser = null): string
 {
     $idUser = checkAndGetUserId($idUser);
 
@@ -3648,11 +3674,11 @@ function getUserName($idUser = null)
 }
 
 /**
- * @param $idUser
+ * @param ?string $idUser
  *
  * @return string
  */
-function getUserFirstName($idUser = null)
+function getUserFirstName(?string $idUser = null): string
 {
     $idUser = checkAndGetUserId($idUser);
 
@@ -3662,12 +3688,12 @@ function getUserFirstName($idUser = null)
 }
 
 /**
- * @param $idUser
+ * @param ?string $idUser
  * @param string $separator
  *
  * @return string
  */
-function getUserEntitled($idUser = null, $separator = ' ')
+function getUserEntitled(?string $idUser = null, string $separator = ' '): string
 {
     $idUser = checkAndGetUserId($idUser);
 
@@ -3677,11 +3703,11 @@ function getUserEntitled($idUser = null, $separator = ' ')
 }
 
 /**
- * @param $idUser
+ * @param ?string $idUser
  *
- * @return array|string
+ * @return string
  */
-function getUserLogin($idUser = null)
+function getUserLogin(?string $idUser = null): string
 {
     $idUser = checkAndGetUserId($idUser);
 
@@ -3691,11 +3717,11 @@ function getUserLogin($idUser = null)
 }
 
 /**
- * @param $idUser
+ * @param ?string $idUser
  *
- * @return array|string
+ * @return string
  */
-function getUserEmail($idUser = null)
+function getUserEmail(?string $idUser = null): string
 {
     $idUser = checkAndGetUserId($idUser);
 
@@ -3705,11 +3731,11 @@ function getUserEmail($idUser = null)
 }
 
 /**
- * @param $idUser
+ * @param ?string $idUser
  *
- * @return array|bool
+ * @return mixed
  */
-function getUserStatus($idUser = null)
+function getUserStatus(?string $idUser = null): mixed
 {
     $idUser = checkAndGetUserId($idUser);
 
@@ -3719,11 +3745,11 @@ function getUserStatus($idUser = null)
 }
 
 /**
- * @param string $idUser
+ * @param ?string $idUser
  *
- * @return string
+ * @return false|string
  */
-function getUserRoleId($idUser = null)
+function getUserRoleId(?string $idUser = null): false|string
 {
 
     $idUser = checkAndGetUserId($idUser);
@@ -3734,11 +3760,11 @@ function getUserRoleId($idUser = null)
 }
 
 /**
- * @param string $idUser
+ * @param ?string $idUser
  *
- * @return mixed
+ * @return string
  */
-function getUserRoleName($idUser = null)
+function getUserRoleName(?string $idUser = null): string
 {
 
     $idUser = checkAndGetUserId($idUser);
@@ -3751,7 +3777,7 @@ function getUserRoleName($idUser = null)
 /**
  * @return array
  */
-function getAdminRoles()
+function getAdminRoles(): array
 {
     return array(11 => 'Technicien', 12 => 'King');
 }
@@ -3759,26 +3785,24 @@ function getAdminRoles()
 /**
  * @return array
  */
-function getRoles()
+function getRoles(): array
 {
     $usersRoles = getAdminRoles();
     if (defined('ROLES')) {
 
-        $usersRoles = $usersRoles + ROLES;
+        $usersRoles += ROLES;
         ksort($usersRoles);
-
-        return $usersRoles;
     }
 
     return $usersRoles;
 }
 
 /**
- * @param $roleId
+ * @param string $roleId
  *
- * @return mixed
+ * @return string
  */
-function getRoleName($roleId)
+function getRoleName(string $roleId): string
 {
     if (defined('ROLES')) {
         $roleId = getRoleId($roleId);
@@ -3790,30 +3814,30 @@ function getRoleName($roleId)
 }
 
 /**
- * @param $cryptedRole
+ * @param string $cryptedRole
  *
  * @return string
  */
-function getRoleId($cryptedRole)
+function getRoleId(string $cryptedRole): string
 {
-    return strlen($cryptedRole) < 3 ? $cryptedRole : \App\Shinoui::Decrypter($cryptedRole);
+    return strlen($cryptedRole) < 3 ? $cryptedRole : Shinoui::Decrypter($cryptedRole);
 }
 
 
 /**
  * @return false|int|string
  */
-function getTechnicienRoleId()
+function getTechnicienRoleId(): false|int|string
 {
     return array_search('Technicien', getRoles());
 }
 
 /**
- * @param $roleId
+ * @param string $roleId
  *
  * @return bool
  */
-function isTechnicien($roleId)
+function isTechnicien(string $roleId): bool
 {
 
     $userRole = getRoleId($roleId);
@@ -3825,11 +3849,11 @@ function isTechnicien($roleId)
 }
 
 /**
- * @param $roleId
+ * @param string $roleId
  *
  * @return bool
  */
-function isKing($roleId)
+function isKing(string $roleId): bool
 {
 
     $userRole = getRoleId($roleId);
@@ -3844,7 +3868,7 @@ function isKing($roleId)
  * @param bool $destroyAndRedirect
  * Unset User Session & Cookie
  */
-function disconnectUser($destroyAndRedirect = true)
+function disconnectUser(bool $destroyAndRedirect = true): void
 {
     if (function_exists('mehoubarim_freeUser')) {
         mehoubarim_freeUser(getUserIdSession());
@@ -3877,10 +3901,10 @@ function disconnectUser($destroyAndRedirect = true)
 /**
  * @return bool|string
  */
-function getUserSession()
+function getUserSession(): bool|string
 {
     if (!empty($_SESSION['auth' . slugify($_SERVER['HTTP_HOST'])])) {
-        return \App\Shinoui::Decrypter($_SESSION['auth' . slugify($_SERVER['HTTP_HOST'])]);
+        return Shinoui::Decrypter($_SESSION['auth' . slugify($_SERVER['HTTP_HOST'])]);
     }
 
     return false;
@@ -3889,10 +3913,10 @@ function getUserSession()
 /**
  * @return bool|string
  */
-function getUserCookie()
+function getUserCookie(): bool|string
 {
     if (!empty($_COOKIE['hibour' . slugify($_SERVER['HTTP_HOST'])])) {
-        return \App\Shinoui::Decrypter($_COOKIE['hibour' . slugify($_SERVER['HTTP_HOST'])]);
+        return Shinoui::Decrypter($_COOKIE['hibour' . slugify($_SERVER['HTTP_HOST'])]);
     }
 
     return false;
@@ -3901,7 +3925,7 @@ function getUserCookie()
 /**
  * Set user Session
  */
-function setUserSession()
+function setUserSession(): void
 {
     checkSession();
 
@@ -3911,7 +3935,7 @@ function setUserSession()
 /**
  * @return bool
  */
-function isUserSessionExist()
+function isUserSessionExist(): bool
 {
     return isset($_SESSION['auth' . slugify($_SERVER['HTTP_HOST'])]);
 }
@@ -3919,7 +3943,7 @@ function isUserSessionExist()
 /**
  * @return bool
  */
-function isUserCookieExist()
+function isUserCookieExist(): bool
 {
     return isset($_COOKIE['hibour' . slugify($_SERVER['HTTP_HOST'])]);
 }
@@ -3927,7 +3951,7 @@ function isUserCookieExist()
 /**
  * @return array|bool
  */
-function getUserConnexion()
+function getUserConnexion(): bool|array
 {
 
     $checkStr = '!a6fgcb!f152ddb3!';
@@ -3955,7 +3979,7 @@ function getUserConnexion()
  * Check if user is in App directory
  * @return bool
  */
-function isUserInApp()
+function isUserInApp(): bool
 {
     $url_parts = explode('/', $_SERVER['PHP_SELF']);
 
@@ -3965,12 +3989,12 @@ function isUserInApp()
 /**
  * get real file path
  *
- * @param $chemin
+ * @param ?string $chemin
  * @param array $ext
  *
- * @return array|bool|mixed
+ * @return array|false
  */
-function getPathFiles($chemin, $ext = [])
+function getPathFiles(?string $chemin, array $ext = []): false|array
 {
     if (!empty($chemin) && is_array($ext)) {
         $files = glob($chemin . '*.{' . implode(',', $ext) . '}', GLOB_BRACE);
@@ -3985,7 +4009,7 @@ function getPathFiles($chemin, $ext = [])
  * Try to detect bots and subdomain
  * @return bool
  */
-function bot_detected()
+function bot_detected(): bool
 {
     return (
         (isset($_GET['access_method'])) || (isset($_SERVER['HTTP_USER_AGENT'])
@@ -3994,31 +4018,48 @@ function bot_detected()
 }
 
 /**
- * @param null $userRole
+ * @param mixed $userRole
  *
  * @return bool
  */
-function appoeMinRole($userRole = null)
+function appoeMinRole(mixed $userRole = null): bool
 {
     return APPOE_MIN_ROLE <= (is_null($userRole) ? getUserRoleId() : $userRole);
 }
 
 /**
- * @param $url
+ * Vérifie si une URL est accessible (statut HTTP valide).
  *
+ * @param ?string $url
  * @return bool
  */
-function url_exists($url)
+function url_exists(?string $url): bool
 {
-    return (!$fp = curl_init($url)) ? false : true;
+    if (empty($url)) {
+        return false;
+    }
+
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+        CURLOPT_NOBODY => true,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 5,
+        CURLOPT_FOLLOWLOCATION => true,
+    ]);
+
+    curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    return $httpCode >= 200 && $httpCode < 400;
 }
 
 /**
- * @param $tel
+ * @param mixed $tel
  *
  * @return bool
  */
-function isTel($tel)
+function isTel(mixed $tel): bool
 {
     $cleanTel = str_replace("-", "", filter_var($tel, FILTER_SANITIZE_NUMBER_INT));
 
@@ -4026,37 +4067,37 @@ function isTel($tel)
 }
 
 /**
- * @param $email
+ * @param mixed $email
  *
  * @return bool
  */
-function isEmail($email)
+function isEmail(mixed $email): bool
 {
     if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $emailParts = explode("@", $email);
 
-        return checkdnsrr(array_pop($emailParts), "MX");
+        return checkdnsrr(array_pop($emailParts));
     }
 
     return false;
 }
 
 /**
- * @param $url
+ * @param mixed $url
  *
- * @return bool
+ * @return mixed
  */
-function isUrl($url)
+function isUrl(mixed $url): mixed
 {
     return filter_var($url, FILTER_VALIDATE_URL);
 }
 
 /**
- * @param $ip
+ * @param ?string $ip
  *
- * @return mixed
+ * @return bool
  */
-function isIp($ip)
+function isIp(?string $ip): bool
 {
     return !empty($ip) && strlen($ip) <= 45 && (filter_var($ip, FILTER_VALIDATE_IP)
             || filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)
@@ -4066,15 +4107,15 @@ function isIp($ip)
 /**
  * @return string
  */
-function patternTel()
+function getPhoneInputPattern(): string
 {
-    return ' pattern="[0-9-+ ]+" ';
+    return 'pattern="[\d+\-\s]+"';
 }
 
 /**
  * @return string
  */
-function patternMail()
+function patternMail(): string
 {
     return ' pattern="[^@\s]+@[^@\s]+\.[^@\s]+" ';
 }
@@ -4082,7 +4123,7 @@ function patternMail()
 /**
  * @return string
  */
-function patternUrl()
+function patternUrl(): string
 {
     return ' pattern="https?://.+" ';
 }
@@ -4090,19 +4131,19 @@ function patternUrl()
 /**
  * get real web file url
  *
- * @param $file
- * @param null $param
+ * @param string $file
+ * @param ?string $param
  *
  * @return string
  */
-function webUrl($file, $param = null)
+function webUrl(string $file, ?string $param = null): string
 {
     $url = '';
     if (!is_null($param)) {
         $url .= $param;
     }
 
-    if (false !== strpos($file, '#') && substr($file, -1) == '/') {
+    if (str_contains($file, '#') && str_ends_with($file, '/')) {
         $file = substr($file, 0, -1);
 
         if ($file === '#') {
@@ -4110,11 +4151,11 @@ function webUrl($file, $param = null)
         }
     }
 
-    if (substr($file, 0, 4) === "http") {
+    if (str_starts_with($file, "http")) {
         return $file;
     }
 
-    if (false === strpos($file, '#') && false === strpos($file, '?') && substr($file, -1) != '/') {
+    if (!str_contains($file, '#') && !str_contains($file, '?') && !str_ends_with($file, '/')) {
         $file .= '/';
     }
 
@@ -4124,12 +4165,12 @@ function webUrl($file, $param = null)
 /**
  * get real web url file by filename
  *
- * @param $filename
- * @param null $param
+ * @param ?string $filename
+ * @param ?string $param
  *
  * @return string
  */
-function url($filename, $param = null)
+function url(?string $filename, ?string $param = null): string
 {
     if (!empty($filename)) {
         if ($Cms = getPageByFilename($filename)) {
@@ -4140,13 +4181,13 @@ function url($filename, $param = null)
 }
 
 /**
- * @param $link
+ * @param ?string $link
  *
  * @return string
  */
-function externalLink($link)
+function externalLink(?string $link): string
 {
-    if (!empty($link) && substr($link, 0, 4) === "http") {
+    if (!empty($link) && str_starts_with($link, "http")) {
 
         $linkData = parse_url($link);
 
@@ -4164,7 +4205,7 @@ function externalLink($link)
  *
  * @return string
  */
-function linkBuild($menu, $params = [])
+function linkBuild(mixed $menu, array $params = []): string
 {
     if (is_object($menu)) {
 
@@ -4181,12 +4222,12 @@ function linkBuild($menu, $params = [])
         $params = array_merge($defaultParams, $params);
 
         //External link
-        if (substr($slug, 0, 4) === "http") {
+        if (str_starts_with($slug, "http")) {
 
             $target = '';
             $linkData = parse_url($slug);
 
-            if ($_SERVER['SERVER_NAME'] != $linkData['host'] || false !== strpos($linkData['path'], '.')) {
+            if ($_SERVER['SERVER_NAME'] != $linkData['host'] || str_contains($linkData['path'], '.')) {
                 $target = 'target="_blank"';
             }
 
@@ -4194,7 +4235,7 @@ function linkBuild($menu, $params = [])
         }
 
         //Anchor
-        if ($slug === '#' || $params['parent'] == true) {
+        if ($slug === '#' || $params['parent']) {
             return '<a href="#" onclick="return false;" class="' . $params['class'] . '" ' . $title . '>' . trad($menu->name) . '</a>';
         }
 
@@ -4221,12 +4262,12 @@ function linkBuild($menu, $params = [])
 /**
  * get real admin file url
  *
- * @param $file
- * @param null $param
+ * @param string $file
+ * @param ?string $param
  *
  * @return string
  */
-function getUrl($file, $param = null)
+function getUrl(string $file, ?string $param = null): string
 {
     $url = '';
     if (!is_null($param)) {
@@ -4237,12 +4278,12 @@ function getUrl($file, $param = null)
 }
 
 /**
- * @param $file
- * @param null $param
+ * @param string $file
+ * @param ?string $param
  *
  * @return string
  */
-function getPluginUrl($file, $param = null)
+function getPluginUrl(string $file, ?string $param = null): string
 {
     $url = '';
     if (!is_null($param)) {
@@ -4253,11 +4294,11 @@ function getPluginUrl($file, $param = null)
 }
 
 /**
- * @param $type
+ * @param string $type
  *
  * @return bool|string
  */
-function getPageTypes($type)
+function getPageTypes(string $type): bool|string
 {
     if (in_array(mb_strtolower($type), array_keys(PAGE_TYPES))) {
         return PAGE_TYPES[mb_strtolower($type)];
@@ -4267,11 +4308,11 @@ function getPageTypes($type)
 }
 
 /**
- * @param $path
+ * @param string $path
  *
- * @return mixed
+ * @return string
  */
-function getFileName($path)
+function getFileName(string $path): string
 {
     $pathInfos = pathinfo($path);
 
@@ -4279,12 +4320,12 @@ function getFileName($path)
 }
 
 /**
- * @param $fileOptions
+ * @param ?string $fileOptions
  * @param string $key
  *
  * @return array|mixed
  */
-function getSerializedOptions($fileOptions, $key = '')
+function getSerializedOptions(?string $fileOptions, string $key = ''): mixed
 {
     $arrayOptions = [];
     if (!empty($fileOptions)) {
@@ -4303,20 +4344,20 @@ function getSerializedOptions($fileOptions, $key = '')
 }
 
 /**
- * @param $filesArray
- * @param $position
- * @param int|bool $forcedPosition
+ * @param array $filesArray
+ * @param mixed $position
+ * @param bool|int $forcedPosition
  *
  * @return array
  */
-function getFileTemplatePosition($filesArray, $position, $forcedPosition = false)
+function getFileTemplatePosition(array $filesArray, mixed $position, bool|int $forcedPosition = false): array
 {
 
     $newFilesArray = [];
     if ($filesArray && !isArrayEmpty($filesArray)) {
-        foreach ($filesArray as $key => $file) {
+        foreach ($filesArray as $file) {
             if (is_object($file) && $position == getSerializedOptions($file->options, 'templatePosition')) {
-                array_push($newFilesArray, $file);
+                $newFilesArray[] = $file;
             }
         }
 
@@ -4342,11 +4383,11 @@ function getFileTemplatePosition($filesArray, $position, $forcedPosition = false
  * @param bool $thumbSize
  * @param bool $onlyUrl
  * @param bool $onlyPath
- *
  * @param bool $webp
+ *
  * @return bool|string
  */
-function getFirstImage(array $imageArray, $otherClass = '', $thumbSize = false, $onlyUrl = false, $onlyPath = false, $webp = false)
+function getFirstImage(array $imageArray, string $otherClass = '', bool $thumbSize = false, bool $onlyUrl = false, bool $onlyPath = false, bool $webp = false):  bool|string
 {
     if ($imageArray) {
         $firstImage = current($imageArray);
@@ -4368,15 +4409,15 @@ function getFirstImage(array $imageArray, $otherClass = '', $thumbSize = false, 
 }
 
 /**
- * @param $videoArray
- * @param $otherClass
- * @param $otherAttr
- * @param $onlyUrl
- * @param $onlyPath
+ * @param array $videoArray
+ * @param string $otherClass
+ * @param string $otherAttr
+ * @param bool $onlyUrl
+ * @param bool $onlyPath
  *
  * @return bool|string
  */
-function getFirstVideo(array $videoArray, $otherClass = '', $otherAttr = '', $onlyUrl = false, $onlyPath = false)
+function getFirstVideo(array $videoArray, string $otherClass = '', string $otherAttr = '', bool $onlyUrl = false, bool $onlyPath = false): bool|string
 {
     if ($videoArray) {
         $firstVideo = current($videoArray);
@@ -4397,11 +4438,11 @@ function getFirstVideo(array $videoArray, $otherClass = '', $otherAttr = '', $on
 }
 
 /**
- * @param $imageArray
+ * @param array|object $imageArray
  *
- * @return bool|string
+ * @return false|string
  */
-function getLastImage($imageArray)
+function getLastImage(array|object $imageArray): false|string
 {
     if ($imageArray) {
         $lastImage = end($imageArray);
@@ -4415,18 +4456,18 @@ function getLastImage($imageArray)
 }
 
 /**
- * @param $imageArray
+ * @param array|object $imageArray
  *
- * @return bool|string
+ * @return false|string
  */
-function getLittleImage($imageArray)
+function getLittleImage(array|object $imageArray): false|string
 {
     if ($imageArray) {
 
         $littleImage = current($imageArray);
         $littleImageSize = getimagesize(FILE_DIR_PATH . $littleImage->name);
 
-        foreach ($imageArray as $key => $img) {
+        foreach ($imageArray as $img) {
             if (isImage(FILE_DIR_PATH . $img->name)) {
 
                 $imageSize = getimagesize(FILE_DIR_PATH . $img->name);
@@ -4455,18 +4496,17 @@ function getLittleImage($imageArray)
 }
 
 /**
- * @param $imageArray
+ * @param array $imageArray
  *
  * @return array
  */
-function getOnlyImages($imageArray)
+function getOnlyImages(array $imageArray): array
 {
     $imagesFiltredArray = [];
     if ($imageArray) {
-
         foreach ($imageArray as $image) {
             if (isImage(FILE_DIR_PATH . $image->name)) {
-                array_push($imagesFiltredArray, WEB_DIR_INCLUDE . $image->name);
+                $imagesFiltredArray[] = WEB_DIR_INCLUDE . $image->name;
             }
         }
     }
@@ -4479,13 +4519,13 @@ function getOnlyImages($imageArray)
  * @param string $class
  * @param string $attr
  * @param bool $thumbSize
- *
  * @param int $quality
  * @param bool $webp
  * @param bool $onlyUrl
+ *
  * @return string
  */
-function showImage(stdClass $media, $class = '', $attr = '', $thumbSize = false, $quality = 80, $webp = false, $onlyUrl = false)
+function showImage(stdClass $media, string $class = '', string $attr = '', bool $thumbSize = false, int $quality = 80, bool $webp = false, bool $onlyUrl = false): string
 {
     if (property_exists($media, 'name') && property_exists($media, 'title')) {
 
@@ -4502,12 +4542,12 @@ function showImage(stdClass $media, $class = '', $attr = '', $thumbSize = false,
 /**
  * @param stdClass $media
  * @param bool $thumbSize
- *
  * @param int $quality
  * @param bool $webp
- * @return string|null
+ *
+ * @return ?string
  */
-function imgUrl(stdClass $media, $thumbSize = false, $quality = 80, $webp = false)
+function imgUrl(stdClass $media, bool $thumbSize = false, int $quality = 80, bool $webp = false): ?string
 {
     if (property_exists($media, 'name')) {
         return !$thumbSize ? WEB_DIR_INCLUDE . $media->name : getThumb($media->name, $thumbSize, $webp, $quality);
@@ -4517,73 +4557,52 @@ function imgUrl(stdClass $media, $thumbSize = false, $quality = 80, $webp = fals
 }
 
 /**
- * @param $path
+ * @param string $path
  *
  * @return mixed
  */
-function getFileExtension($path)
+function getFileExtension(string $path): mixed
 {
     $pathInfos = pathinfo($path);
 
-    return isset($pathInfos['extension']) ? $pathInfos['extension'] : false;
+    return $pathInfos['extension'] ?? false;
 }
 
 /**
- * @param $extension
- *
+ * @param string $extension
  * @return string
  */
-function getImgAccordingExtension($extension)
+function getImgAccordingExtension(string $extension): string
 {
-
     $src = WEB_TEMPLATE_URL . 'images/';
-    switch (strtolower($extension)) {
-        case 'jpg':
-        case 'jpeg':
-        case 'gif':
-        case 'png':
-        case 'svg':
-        case 'webp':
-            return 'img';
-        case 'pdf':
-            return $src . 'Pdf.png';
-        case 'doc':
-        case 'docx':
-            return $src . 'Word.png';
-        case 'xls':
-        case 'xlsx':
-            return $src . 'Excel.png';
-        case 'ppt':
-        case 'pptx':
-            return $src . 'PowerPoint.png';
-        case 'mp3':
-        case 'wma':
-        case 'wov':
-            return $src . 'Music.png';
-        case 'mp4':
-        case 'webm':
-        case 'ogg':
-        case 'ogv':
-            return $src . 'Videos.png';
-        default:
-            return $src . 'AllFileType.png';
-    }
+    $ext = strtolower($extension);
+
+    return match ($ext) {
+        'jpg', 'jpeg', 'gif', 'png', 'svg', 'webp' => 'img',
+        'pdf' => $src . 'Pdf.png',
+        'doc', 'docx' => $src . 'Word.png',
+        'xls', 'xlsx' => $src . 'Excel.png',
+        'ppt', 'pptx' => $src . 'PowerPoint.png',
+        'mp3', 'wma', 'wov' => $src . 'Music.png',
+        'mp4', 'webm', 'ogg', 'ogv' => $src . 'Videos.png',
+        default => $src . 'AllFileType.png',
+    };
 }
 
 /**
- * @param $msg
+ * @param string $msg
  *
  * @return string
  */
-function getContainerErrorMsg($msg)
+function getContainerErrorMsg(string $msg): string
 {
     return '<div class="container-fluid"><div class="row"><div class="col-12"><p>' . $msg . '</p></div></div></div>';
 }
 
 /**
- *
+ * @return void
  */
-function setPays()
+function setPays(): void
 {
     if (empty($_SESSION['pays'])) {
         $json = file_get_contents('https://geobytes.com/GetCityDetails?fqcn=' . getIP());
@@ -4593,11 +4612,11 @@ function setPays()
 }
 
 /**
- * @param $numTel
+ * @param string $numTel
  *
  * @return string
  */
-function FormatTel($numTel)
+function FormatTel(string $numTel): string
 {
     $i = 0;
     $j = 0;
@@ -4622,9 +4641,9 @@ function FormatTel($numTel)
  * @param string $str
  * @param string $charset
  *
- * @return string|null
+ * @return ?string
  */
-function removeAccents(string $str, string $charset = 'UTF-8'): string|null
+function removeAccents(string $str, string $charset = 'UTF-8'): ?string
 {
     $str = htmlentities($str, ENT_NOQUOTES, $charset);
 
@@ -4637,79 +4656,75 @@ function removeAccents(string $str, string $charset = 'UTF-8'): string|null
 
 
 /**
- * @param $start
- * @param null $end
+ * Retourne une description textuelle de la différence entre deux dates.
  *
+ * @param DateTime|string $start
+ * @param DateTime|string|null $end
  * @return string
  * @throws DateMalformedStringException
  */
-function formatDateDiff($start, $end = null): string
+function formatDateDiff(DateTime|string $start, DateTime|string|null $end = null): string
 {
-    if (!($start instanceof DateTime)) {
+    if (!$start instanceof DateTime) {
         $start = new DateTime($start);
     }
 
     if ($end === null) {
         $end = new DateTime();
+    } elseif (!$end instanceof DateTime) {
+        $end = new DateTime($end);
     }
-
-    if (!($end instanceof DateTime)) {
-        $end = new DateTime($start);
-    }
-
-    $interval = $start->diff($end);
 
     if ($start == $end) {
         return "Aujourd'hui";
     }
-    $doPlural = function ($nb, $str) {
-        return $nb > 1 && $str != 'mois' ? $str . 's' : $str;
-    };
 
-    $format = [];
+    $interval = $start->diff($end);
+
+    $doPlural = fn(int $nb, string $str): string =>
+    $nb > 1 && $str !== 'mois' ? $str . 's' : $str;
+
+    $parts = [];
+
     if ($interval->y !== 0) {
-        $format[] = "%y " . $doPlural($interval->y, "année");
+        $parts[] = "%y " . $doPlural($interval->y, "année");
     }
     if ($interval->m !== 0) {
-        $format[] = "%m " . $doPlural($interval->m, "mois");
+        $parts[] = "%m " . $doPlural($interval->m, "mois");
     }
     if ($interval->d !== 0) {
-        $format[] = "%d " . $doPlural($interval->d, "jour");
+        $parts[] = "%d " . $doPlural($interval->d, "jour");
     }
     if ($interval->h !== 0) {
-        $format[] = "%h " . $doPlural($interval->h, "heure");
+        $parts[] = "%h " . $doPlural($interval->h, "heure");
     }
     if ($interval->i !== 0) {
-        $format[] = "%i " . $doPlural($interval->i, "minute");
+        $parts[] = "%i " . $doPlural($interval->i, "minute");
     }
     if ($interval->s !== 0) {
-        if (!count($format)) {
-            return "moins d\'une minute";
-        } else {
-            $format[] = "%s " . $doPlural($interval->s, "seconde");
+        if (empty($parts)) {
+            return "moins d'une minute";
         }
-    }
-    if (!empty($interval->format('%r'))) {
-        $time = 'il y a ';
-    } else {
-        $time = 'dans ';
+        $parts[] = "%s " . $doPlural($interval->s, "seconde");
     }
 
-    if (count($format) > 1) {
-        $format = array_shift($format) . " et " . array_shift($format);
+    $prefix = $interval->invert ? 'il y a ' : 'dans ';
+
+    if (count($parts) > 1) {
+        $format = array_shift($parts) . ' et ' . array_shift($parts);
     } else {
-        $format = array_pop($format);
+        $format = array_pop($parts);
     }
 
-    return $time . $interval->format($format);
+    return $prefix . $interval->format($format);
 }
 
 /**
- * @param $nb
+ * @param mixed $nb
  *
- * @return string
+ * @return mixed|string
  */
-function formatBillingNB($nb)
+function formatBillingNB(mixed $nb): mixed
 {
     switch ($nb) {
         case $nb < 10:
@@ -4732,57 +4747,55 @@ function formatBillingNB($nb)
 }
 
 /**
- * Doc on https://www.kernel.org/doc/Documentation/filesystems/proc.txt (section 1.8)
- * Return CPU of :
- * user - normal processes executing in user mode
- * nice - niced processes executing in user mode
- * sys - processes executing in kernel mode
- * idle - twiddling thumbs
- * @return array
+ * Retourne l'utilisation CPU en pourcentage par type de processus.
+ *
+ * @link https://www.kernel.org/doc/Documentation/filesystems/proc.txt (section 1.8)
+ * @return array{user: float, nice: float, sys: float, idle: float}
  */
-function getServerPerformances()
+function getServerPerformances(): array
 {
-    $cpu = [];
-    $dif = [];
-
     $stat1 = file('/proc/stat');
     sleep(1);
     $stat2 = file('/proc/stat');
 
-    $info1 = explode(" ", preg_replace("!cpu +!", "", $stat1[0]));
-    $info2 = explode(" ", preg_replace("!cpu +!", "", $stat2[0]));
+    $cpu1 = preg_split('/\s+/', trim($stat1[0]));
+    $cpu2 = preg_split('/\s+/', trim($stat2[0]));
 
-    $dif['user'] = $info2[0] - $info1[0];
-    $dif['nice'] = $info2[1] - $info1[1];
-    $dif['sys'] = $info2[2] - $info1[2];
-    $dif['idle'] = $info2[3] - $info1[3];
+    // Suppression du label "cpu"
+    array_shift($cpu1);
+    array_shift($cpu2);
 
-    $total = array_sum($dif);
+    $labels = ['user', 'nice', 'sys', 'idle'];
+    $diffs = [];
 
-    foreach ($dif as $x => $y) {
-        $cpu[$x] = str_replace(',', '.', round($y / $total * 100, 1));
+    foreach ($labels as $i => $label) {
+        $diffs[$label] = (int)$cpu2[$i] - (int)$cpu1[$i];
     }
 
-    return $cpu;
+    $total = array_sum($diffs);
+
+    return array_map(function ($value) use ($total) {
+        return round(($value / $total) * 100, 1);
+    }, $diffs);
 }
 
 /**
- * @param $cpu
+ * Retourne une couleur indicative en fonction de la charge CPU.
  *
- * @return string
+ * @param int|float $cpu Pourcentage d'utilisation du CPU.
+ * @return string Couleur : 'success', 'warning' ou 'danger'.
  */
-function getServerPerformanceColor($cpu)
+function getServerPerformanceColor(int|float $cpu): string
 {
-
-    $color = 'success';
-
-    if ($cpu > 50) {
-        $color = 'warning';
-    } elseif ($cpu > 80) {
-        $color = 'danger';
+    if ($cpu > 80) {
+        return 'danger';
     }
 
-    return $color;
+    if ($cpu > 50) {
+        return 'warning';
+    }
+
+    return 'success';
 }
 
 /**
@@ -4791,8 +4804,9 @@ function getServerPerformanceColor($cpu)
  * @param array $options
  * @return bool
  * @throws Exception
+ * @throws RandomException
  */
-function emailVerification(array $data, array $otherAddr = [], array $options = [])
+function emailVerification(array $data, array $otherAddr = [], array $options = []): bool
 {
     //Encrypt key for email
     $key = setToken(false);
@@ -4832,41 +4846,47 @@ function emailVerification(array $data, array $otherAddr = [], array $options = 
 }
 
 /**
- * @param $get
- * @param int $timeLimit in hours
- * @return bool|void|array
+ * Vérifie et approuve un lien de confirmation d'email.
+ *
+ * @param array $get Données GET contenant l'email et la clé.
+ * @param int $timeLimit Durée limite de validité du lien, en heures.
+ * @return string|false Adresse email si validée, sinon false.
  */
-function approveEmail($get, $timeLimit = 5)
+function approveEmail(array $get, int $timeLimit = 5): string|false
 {
     if (!empty($get['email']) && !empty($get['key'])) {
 
-        //Clean data
+        // Clean data
         $email = cleanData(base64_decode($get['email']));
         $key = cleanData(base64_decode($get['key']));
 
-        //Check mail in db
+        // Check mail in db
         $Option = new Option();
         $Option->setType('CONFIRMATIONMAIL');
         $Option->setKey($email);
+
         if ($demande = $Option->showByKey()) {
 
-            //Check encrypted key
+            // Check encrypted key
             if (password_verify($demande->val, $key)) {
 
-                //Delete confirmation email
+                // Delete confirmation email
                 $Option->setId($demande->id);
                 if ($Option->delete()) {
 
-                    //Check time lost since sending the email
-                    if ((strtotime($demande->updated_at) + ($timeLimit * 60 * 60)) > time()) {
+                    // Check time since sending the email
+                    $expirationTime = strtotime($demande->updated_at) + ($timeLimit * 3600);
+                    if ($expirationTime > time()) {
                         return $email;
                     }
                 }
             }
         }
     }
+
     return false;
 }
+
 
 /**
  * @param array $data
@@ -4876,7 +4896,7 @@ function approveEmail($get, $timeLimit = 5)
  * @return bool
  * @throws Exception
  */
-function sendMail(array $data, array $otherAddr = [], array $options = [])
+function sendMail(array $data, array $otherAddr = [], array $options = []): bool
 {
     $Mail = new PHPMailer();
 
@@ -4962,7 +4982,7 @@ function sendMail(array $data, array $otherAddr = [], array $options = [])
     if (!empty($data['files'])) {
         $files = $data['files'];
 
-        $File = new \App\File();
+        $File = new File();
 
         if (is_array($files['name'])) {
             for ($i = 0; $i < count($files['name']); $i++) {
@@ -5007,39 +5027,51 @@ function sendMail(array $data, array $otherAddr = [], array $options = [])
 }
 
 /**
- * @param $month
+ * Retourne le nom du mois correspondant à un numéro, ou le tableau complet des mois si aucun numéro n'est fourni.
  *
- * @return array|boolean
+ * @param string|int $month Numéro du mois (1 à 12)
+ * @return array|string Le nom du mois ou le tableau complet
  */
-function getMonth($month = '')
+function getMonth(string|int $month = ''): array|string
 {
-    $month_arr[1] = "Janvier";
-    $month_arr[2] = "Février";
-    $month_arr[3] = "Mars";
-    $month_arr[4] = "Avril";
-    $month_arr[5] = "Mai";
-    $month_arr[6] = "Juin";
-    $month_arr[7] = "Juillet";
-    $month_arr[8] = "Août";
-    $month_arr[9] = "Septembre";
-    $month_arr[10] = "Octobre";
-    $month_arr[11] = "Novembre";
-    $month_arr[12] = "Décembre";
+    $monthArr = [
+        1 => "Janvier",
+        2 => "Février",
+        3 => "Mars",
+        4 => "Avril",
+        5 => "Mai",
+        6 => "Juin",
+        7 => "Juillet",
+        8 => "Août",
+        9 => "Septembre",
+        10 => "Octobre",
+        11 => "Novembre",
+        12 => "Décembre",
+    ];
 
-    return !empty($month) && array_key_exists($month, $month_arr) ? $month_arr[$month] : $month_arr;
+    $month = (int) $month;
+    return $month >= 1 && $month <= 12 ? $monthArr[$month] : $monthArr;
 }
 
 /**
- * @param $date
+ * Calcule l'âge à partir d'une date de naissance.
  *
- * @return false|string
+ * @param string $date Date de naissance au format reconnu par strtotime.
+ * @return int|null Âge calculé ou null si la date est invalide.
  */
-function age($date)
+function age(string $date): ?int
 {
-    $dna = strtotime($date);
-    $now = time();
-    $age = date('Y', $now) - date('Y', $dna);
-    if (strcmp(date('md', $dna), date('md', $now)) > 0) {
+    $birthTimestamp = strtotime($date);
+    if ($birthTimestamp === false) {
+        return null; // Date invalide
+    }
+
+    $birthDate = new DateTimeImmutable("@$birthTimestamp");
+    $now = new DateTimeImmutable('now');
+    $age = (int) $now->format('Y') - (int) $birthDate->format('Y');
+
+    // Si l'anniversaire n'est pas encore passé cette année, on enlève 1
+    if ($now->format('md') < $birthDate->format('md')) {
         $age--;
     }
 
@@ -5048,9 +5080,9 @@ function age($date)
 
 
 /**
- * @param $file
+ * @param string $file
  */
-function fichierType($file)
+function fichierType(string $file): void
 {
 
     $type = pathinfo(strtolower($file), PATHINFO_EXTENSION);
@@ -5080,7 +5112,7 @@ function fichierType($file)
  *
  * @return string
  */
-function getLogo($appoeLogo = false, $onlySrc = false)
+function getLogo(bool $appoeLogo = false, bool $onlySrc = false): string
 {
     $src = APP_IMG_URL . 'appoe-logo-black-sm.png';
     if (true === $appoeLogo) {
@@ -5110,11 +5142,11 @@ function getLogo($appoeLogo = false, $onlySrc = false)
 }
 
 /**
- * @param $url
+ * @param mixed $url
  *
  * @return string
  */
-function getOnlyPath($url)
+function getOnlyPath(mixed $url): string
 {
     return isUrl($url) ? $_SERVER['DOCUMENT_ROOT'] . parse_url($url, PHP_URL_PATH) : '';
 }
@@ -5122,7 +5154,7 @@ function getOnlyPath($url)
 /**
  * @return string
  */
-function getAppoeVersion()
+function getAppoeVersion(): string
 {
 
     Version::setFile(WEB_APP_PATH . 'version.json');
@@ -5134,13 +5166,13 @@ function getAppoeVersion()
 }
 
 /**
- * @param $hours
- * @return float|int|mixed|string
+ * @param string $hours
+ * @return int
  */
-function hoursToMinutes($hours)
+function hoursToMinutes(string $hours): int
 {
     $minutes = 0;
-    if (strpos($hours, ':') !== false) {
+    if (str_contains($hours, ':')) {
         list($hours, $minutes) = explode(':', $hours);
         settype($minutes, 'integer');
     }
@@ -5149,11 +5181,11 @@ function hoursToMinutes($hours)
 }
 
 /**
- * @param $time
+ * @param mixed $time
  * @param string $format
- * @return int|string
+ * @return string
  */
-function minutesToHours($time, $format = '%s:%s')
+function minutesToHours(mixed $time, string $format = '%s:%s'): string
 {
     settype($time, 'integer');
     if ($time < 0 || $time >= 1440) {
@@ -5169,142 +5201,111 @@ function minutesToHours($time, $format = '%s:%s')
     }
     return sprintf($format, $hours, $minutes);
 }
-
 /**
- * fonction permettant de transformer une valeur numérique en valeur en lettre
- * @param int $Nombre le nombre a convertir
- * @param int $Devise (0 = aucune, 1 = Euro €, 2 = Dollar $)
- * @param int $Langue (0 = Français, 1 = Belgique, 2 = Suisse)
+ * Convertit une valeur numérique en toutes lettres avec devise.
+ *
+ * @param float $nombre Le montant à convertir.
+ * @param int $devise 0 = aucune, 1 = Euro €, 2 = Dollar $
+ * @param int $langue 0 = Français, 1 = Belgique, 2 = Suisse
  * @return string
  */
-function moneyAsLetters($Nombre, $Devise = 1, $Langue = 0)
+function moneyAsLetters(float $nombre, int $devise = 1, int $langue = 0): string
 {
-    $dblEnt = '';
-    $byDec = '';
-    $bNegatif = '';
-    $strDev = '';
-    $strCentimes = '';
+    $isNegative = false;
 
-    if ($Nombre < 0) {
-        $bNegatif = true;
-        $Nombre = abs($Nombre);
-    }
-    $dblEnt = intval($Nombre);
-    $byDec = round(($Nombre - $dblEnt) * 100);
-    if ($byDec == 0) {
-        if ($dblEnt > 999999999999999) {
-            return "#TropGrand";
-        }
-    } else {
-        if ($dblEnt > 9999999999999.99) {
-            return "#TropGrand";
-        }
-    }
-    switch ($Devise) {
-        case 0 :
-            if ($byDec > 0) {
-                $strDev = " virgule";
-            }
-            break;
-        case 1 :
-            $strDev = " Euro";
-            if ($byDec > 0) {
-                $strCentimes = $strCentimes . " Centimes";
-            }
-            break;
-        case 2 :
-            $strDev = " Dollar";
-            if ($byDec > 0) {
-                $strCentimes = $strCentimes . " Cent";
-            }
-            break;
-    }
-    if (($dblEnt > 1) && ($Devise != 0)) {
-        $strDev = $strDev . "s";
-    }
-    if ($byDec > 0) {
-        $NumberLetter = ConvNumEnt(floatval($dblEnt), $Langue) . $strDev . " et " . ConvNumDizaine($byDec, $Langue) . $strCentimes;
-    } else {
-        $NumberLetter = ConvNumEnt(floatval($dblEnt), $Langue) . $strDev;
+    if ($nombre < 0) {
+        $isNegative = true;
+        $nombre = abs($nombre);
     }
 
-    return $NumberLetter;
+    $entier = (int)floor($nombre);
+    $centimes = (int)round(($nombre - $entier) * 100);
+
+    // Vérification de la borne maximale
+    $limite = $centimes === 0 ? 999_999_999_999_999 : 9_999_999_999_999.99;
+    if ($nombre > $limite) {
+        return '#TropGrand';
+    }
+
+    // Gestion des devises
+    $libelleDevise = '';
+    $libelleCentimes = '';
+
+    switch ($devise) {
+        case 1:
+            $libelleDevise = ' Euro';
+            $libelleCentimes = ' Centimes';
+            break;
+        case 2:
+            $libelleDevise = ' Dollar';
+            $libelleCentimes = ' Cent';
+            break;
+        case 0:
+            $libelleDevise = $centimes > 0 ? ' virgule' : '';
+            break;
+    }
+
+    // Pluriels
+    if ($entier > 1 && $devise !== 0) {
+        $libelleDevise .= 's';
+    }
+
+    $lettres = ConvNumEnt($entier, $langue) . $libelleDevise;
+
+    if ($centimes > 0) {
+        $lettres .= ' et ' . ConvNumDizaine($centimes, $langue) . $libelleCentimes;
+    }
+
+    return $isNegative ? 'moins ' . $lettres : $lettres;
 }
 
+
 /**
- * @param $Nombre
- * @param $Langue
+ * Convertit un nombre entier en toutes lettres jusqu'au billion.
  *
- * @return mixed|string
+ * @param int|float $nombre
+ * @param string $langue
+ * @return string
  */
-function ConvNumEnt($Nombre, $Langue)
+function ConvNumEnt(int|float $nombre, string $langue): string
 {
-    $byNum = $iTmp = $dblReste = '';
-    $StrTmp = '';
-    $NumEnt = '';
-    $iTmp = $Nombre - (intval($Nombre / 1000) * 1000);
-    $NumEnt = ConvNumCent(intval($iTmp), $Langue);
-    $dblReste = intval($Nombre / 1000);
-    $iTmp = $dblReste - (intval($dblReste / 1000) * 1000);
-    $StrTmp = ConvNumCent(intval($iTmp), $Langue);
-    switch ($iTmp) {
-        case 0 :
-            break;
-        case 1 :
-            $StrTmp = "mille ";
-            break;
-        default :
-            $StrTmp = $StrTmp . " mille ";
-    }
-    $NumEnt = $StrTmp . $NumEnt;
-    $dblReste = intval($dblReste / 1000);
-    $iTmp = $dblReste - (intval($dblReste / 1000) * 1000);
-    $StrTmp = ConvNumCent(intval($iTmp), $Langue);
-    switch ($iTmp) {
-        case 0 :
-            break;
-        case 1 :
-            $StrTmp = $StrTmp . " million ";
-            break;
-        default :
-            $StrTmp = $StrTmp . " millions ";
-    }
-    $NumEnt = $StrTmp . $NumEnt;
-    $dblReste = intval($dblReste / 1000);
-    $iTmp = $dblReste - (intval($dblReste / 1000) * 1000);
-    $StrTmp = ConvNumCent(intval($iTmp), $Langue);
-    switch ($iTmp) {
-        case 0 :
-            break;
-        case 1 :
-            $StrTmp = $StrTmp . " milliard ";
-            break;
-        default :
-            $StrTmp = $StrTmp . " milliards ";
-    }
-    $NumEnt = $StrTmp . $NumEnt;
-    $dblReste = intval($dblReste / 1000);
-    $iTmp = $dblReste - (intval($dblReste / 1000) * 1000);
-    $StrTmp = ConvNumCent(intval($iTmp), $Langue);
-    switch ($iTmp) {
-        case 0 :
-            break;
-        case 1 :
-            $StrTmp = $StrTmp . " billion ";
-            break;
-        default :
-            $StrTmp = $StrTmp . " billions ";
-    }
-    $NumEnt = $StrTmp . $NumEnt;
+    $suffixes = ['', 'mille', 'million', 'milliard', 'billion'];
+    $parties = [];
+    $reste = (int)$nombre;
 
-    return $NumEnt;
+    foreach ($suffixes as $indice => $suffixe) {
+        $groupe = $reste % 1000;
+        $reste = intdiv($reste, 1000);
+
+        if ($groupe === 0) {
+            $parties[$indice] = '';
+            continue;
+        }
+
+        $enLettres = ConvNumCent($groupe, $langue);
+
+        if ($indice === 1 && $groupe === 1) {
+            // "un mille" devient simplement "mille"
+            $parties[$indice] = 'mille';
+        } elseif ($indice > 1) {
+            // ajouter "s" pour les millions/milliards/billions si > 1
+            $parties[$indice] = $enLettres . ' ' . $suffixe . ($groupe > 1 ? 's' : '');
+        } else {
+            // unités simples
+            $parties[$indice] = $enLettres;
+        }
+    }
+
+    // On filtre les chaînes vides, on inverse l’ordre (du plus grand au plus petit), et on assemble
+    return trim(implode(' ', array_reverse(array_filter($parties))));
 }
 
+
 /**
- * @param $Nombre
- * @param $Langue
+ * @param int $nombre
+ * @param int $langue
  *
- * @return mixed|string
+ * @return string
  */
 function ConvNumDizaine(int $nombre, int $langue): string
 {
@@ -5360,10 +5361,10 @@ function ConvNumDizaine(int $nombre, int $langue): string
 
 
 /**
- * @param $Nombre
- * @param $Langue
+ * @param int $nombre
+ * @param string $langue
  *
- * @return mixed|string
+ * @return string
  */
 function ConvNumCent(int $nombre, string $langue): string
 {
@@ -5387,17 +5388,22 @@ function ConvNumCent(int $nombre, string $langue): string
 
 
 /****** JOURS FERIES ******/
-function dimanche_paques($annee)
+/**
+ * @param ?int $annee
+ *
+ * @return false|string
+ */
+function dimanche_paques(?int $annee): false|string
 {
     return date("Y-m-d", easter_date($annee));
 }
 
 /**
- * @param $annee
+ * @param ?int $annee
  *
  * @return false|string
  */
-function vendredi_saint($annee)
+function vendredi_saint(?int $annee): false|string
 {
     $dimanche_paques = dimanche_paques($annee);
 
@@ -5405,11 +5411,11 @@ function vendredi_saint($annee)
 }
 
 /**
- * @param $annee
+ * @param ?int $annee
  *
  * @return false|string
  */
-function lundi_paques($annee)
+function lundi_paques(?int $annee): false|string
 {
     $dimanche_paques = dimanche_paques($annee);
 
@@ -5417,11 +5423,11 @@ function lundi_paques($annee)
 }
 
 /**
- * @param $annee
+ * @param ?int $annee
  *
  * @return false|string
  */
-function jeudi_ascension($annee)
+function jeudi_ascension(?int $annee): false|string
 {
     $dimanche_paques = dimanche_paques($annee);
 
@@ -5429,11 +5435,11 @@ function jeudi_ascension($annee)
 }
 
 /**
- * @param $annee
+ * @param ?int $annee
  *
  * @return false|string
  */
-function lundi_pentecote($annee)
+function lundi_pentecote(?int $annee): false|string
 {
     $dimanche_paques = dimanche_paques($annee);
 
@@ -5442,12 +5448,12 @@ function lundi_pentecote($annee)
 
 
 /**
- * @param $annee
+ * @param ?int $annee
  * @param bool $alsacemoselle
  *
  * @return array
  */
-function jours_feries($annee, $alsacemoselle = false)
+function jours_feries(?int $annee, bool $alsacemoselle = false): array
 {
     $jours_feries = array(
         dimanche_paques($annee),
@@ -5473,12 +5479,12 @@ function jours_feries($annee, $alsacemoselle = false)
 }
 
 /**
- * @param $jour
+ * @param string $jour
  * @param bool $alsaceMoselle
  *
  * @return bool
  */
-function isferie($jour, $alsaceMoselle = false)
+function isferie(string $jour, bool $alsaceMoselle = false): bool
 {
     $jour = date("Y-m-d", strtotime($jour));
     $annee = substr($jour, 0, 4);

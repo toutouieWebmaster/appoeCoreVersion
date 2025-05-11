@@ -230,9 +230,7 @@ class CmsMenu
         if ($error[0] != '00000') {
             return false;
         } else {
-            $data = $stmt->fetchAll(PDO::FETCH_OBJ);
-
-            return $data;
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
         }
     }
 

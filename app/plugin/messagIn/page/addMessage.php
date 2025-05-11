@@ -1,4 +1,6 @@
-<?php require('header.php');
+<?php use App\Form;
+
+require('header.php');
 require_once('../process/postProcess.php');
 getTitle(getAppPageName(), getAppPageSlug());
 showPostResponse(); ?>
@@ -28,15 +30,15 @@ showPostResponse(); ?>
             <div class="my-4"></div>
             <div class="row">
                 <div class="col-12">
-                    <?= \App\Form::textarea('Texte', 'text', '', 5, true, '', 'ckeditor'); ?>
+                    <?= Form::textarea('Texte', 'text', '', 5, true, '', 'ckeditor'); ?>
                 </div>
             </div>
 
             <div class="my-4"></div>
             <div class="row">
                 <div class="col-12">
-                    <?= \App\Form::target('ADDMESSAGE'); ?>
-                    <?= \App\Form::submit('Envoyer', 'ADDMESSAGESUBMIT'); ?>
+                    <?= Form::target('ADDMESSAGE'); ?>
+                    <?= Form::submit('Envoyer', 'ADDMESSAGESUBMIT'); ?>
                 </div>
             </div>
         </form>

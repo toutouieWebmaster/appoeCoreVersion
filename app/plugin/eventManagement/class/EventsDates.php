@@ -189,7 +189,7 @@ class EventsDates {
 		if ( $error[0] != '00000' ) {
 			return false;
 		} else {
-			return $count >= 1 ? false : true;
+			return !($count >= 1);
 		}
 	}
 

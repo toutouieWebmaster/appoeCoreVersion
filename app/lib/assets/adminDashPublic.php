@@ -14,7 +14,7 @@ if (isUserAuthorized('updatePageContent')): ?>
                 <img src="<?= APP_IMG_URL; ?>cog.svg" alt="">
             </a>
         <?php endif;
-        if (getOptionPreference('cacheProcess') === 'true'): ?>
+        if (getOption('PREFERENCE', 'cacheProcess') === 'true'): ?>
             <a href="#" id="clearCach" data-page-slug="<?= getPageParam('currentPageSlug'); ?>" data-page-lang="<?= LANG; ?>"
                title="Vider le cache">
                 <img src="<?= APP_IMG_URL; ?>clear.svg" alt="">

@@ -1,4 +1,6 @@
-<?php require('header.php'); ?>
+<?php use App\Plugin\EventManagement\Auteur;
+
+require('header.php'); ?>
 <?php require_once(EVENTMANAGEMENT_PATH . 'process/addEvent.php');
 echo getTitle( getAppPageName(), getAppPageSlug() );
 showPostResponse( getDataPostResponse() ); ?>
@@ -8,7 +10,7 @@ showPostResponse( getDataPostResponse() ); ?>
             <div class="row">
                 <div class="col-12 col-lg-4">
                     <?php
-                    $Auteur = new \App\Plugin\EventManagement\Auteur();
+                    $Auteur = new Auteur();
                     $auteurs = extractFromObjToSimpleArr($Auteur->showByType(), 'id', 'name');
 
                     echo App\Form::select('Auteur', 'auteurId', $auteurs, !empty($_POST['auteurId']) ? $_POST['auteurId'] : '', true);

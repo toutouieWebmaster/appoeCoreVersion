@@ -3,6 +3,7 @@
 use App\Plugin\Cms\Cms;
 use App\Plugin\ItemGlue\Article;
 use App\Plugin\Rating\Rating;
+use App\Plugin\Shop\Product;
 
 function getAverage($data)
 {
@@ -90,17 +91,10 @@ function showRatings($type, $typeId, $clicable = true, $sizeClass = 'largeStars'
 function getObj($type)
 {
 
-    switch ($type) {
-        case 'ITEMGLUE':
-            return new Article();
-            break;
-        case 'CMS':
-            return new Cms();
-            break;
-        case 'SHOP':
-            return new \App\Plugin\Shop\Product();
-            break;
-        default:
-            return false;
-    }
+    return match ($type) {
+        'ITEMGLUE' => new Article(),
+        'CMS' => new Cms(),
+        'SHOP' => new Product(),
+        default => false,
+    };
 }

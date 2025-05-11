@@ -25,9 +25,7 @@ function interMap_writeMapFile($data, $title)
 function interMap_readMapFile($title)
 {
     $json = file_get_contents(WEB_PLUGIN_PATH . 'interactiveMap/' . slugify($title) . '.json');
-    $parsed_json = json_decode($json, true);
-
-    return $parsed_json;
+    return json_decode($json, true);
 }
 
 /**

@@ -1,5 +1,5 @@
 <?php
-if (getOptionPreference('forceHTTPS') === 'true') {
+if (getOption('PREFERENCE', 'forceHTTPS') === 'true') {
 
     if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
 

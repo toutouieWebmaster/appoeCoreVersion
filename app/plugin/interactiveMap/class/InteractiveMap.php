@@ -49,7 +49,7 @@ class InteractiveMap
     public function __construct($id = null)
     {
         if (is_null($this->dbh)) {
-            $this->dbh = \App\DB::connect();
+            $this->dbh = DB::connect();
         }
 
         if (!is_null($id)) {

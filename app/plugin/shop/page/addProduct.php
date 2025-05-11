@@ -1,7 +1,10 @@
 <?php
+
+use App\Category;
+
 require('header.php');
 require_once(SHOP_PATH . 'process/addProduct.php');
-$Category = new \App\Category();
+$Category = new Category();
 $Category->setType('SHOP');
 $listCatgories = extractFromObjToArrForList($Category->showByType(), 'id');
 echo getTitle( getAppPageName(), getAppPageSlug() );
