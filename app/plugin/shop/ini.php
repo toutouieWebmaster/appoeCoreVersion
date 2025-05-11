@@ -1,6 +1,6 @@
 <?php
-define('SHOP_PATH', WEB_PLUGIN_PATH . 'shop/');
-define('SHOP_URL', WEB_PLUGIN_URL . 'shop/');
+const SHOP_PATH = WEB_PLUGIN_PATH . 'shop/';
+const SHOP_URL = WEB_PLUGIN_URL . 'shop/';
 
 const PLUGIN_TABLES = array(
 	TABLEPREFIX.'appoe_plugin_shop_commandes',

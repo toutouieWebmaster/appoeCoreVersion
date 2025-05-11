@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Plugin\Twitter;
 
 /**
@@ -7,4 +9,5 @@ namespace App\Plugin\Twitter;
  */
 class TwitterOAuthException extends \Exception
 {
+    // force phpcbf and prettier to format the same way
 }

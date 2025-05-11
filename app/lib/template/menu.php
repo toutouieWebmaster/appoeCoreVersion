@@ -26,14 +26,14 @@ if (is_array($autorisedMenu)) {
     <?php if (!empty($menuAll[10])) :
         foreach ($menuAll[10] as $menu):
             if (!empty($menuAll[$menu['id']])): sort($menuAll[$menu['id']]); ?>
-                <li class="<?= 'icon-' . $menu['slug']; ?> <?= activePage($menu['slug'], 'active'); ?>"
+                <li class="<?= 'icon-' . $menu['slug']; ?> <?= activePage($menu['slug']); ?>"
                     id="menu-<?= $menu['slug']; ?>">
                     <a href="#<?= 'menu-admin' . $menu['id']; ?>" data-toggle="collapse" aria-expanded="false"
                        class="accordion-toggle wave-effect sidebarLink"><?= trans($menu['name']); ?></a>
                     <ul class="collapse list-unstyled" id="<?= 'menu-admin' . $menu['id']; ?>"
                         data-parent="#adminMenu">
                         <?php foreach ($menuAll[$menu['id']] as $sous_menu): ?>
-                            <li class="<?= activePage($sous_menu['slug'], 'active'); ?>"
+                            <li class="<?= activePage($sous_menu['slug']); ?>"
                                 id="sousmenu-<?= $sous_menu['slug']; ?>">
                                 <?php if (!empty($menuAll[$sous_menu['id']])): ?>
                                     <a href="#<?= 'menu-admin' . $sous_menu['id']; ?>"
@@ -42,7 +42,7 @@ if (is_array($autorisedMenu)) {
                                     <ul class="collapse list-unstyled" id="<?= 'menu-admin' . $sous_menu['id']; ?>"
                                         data-parent="#<?= 'menu-admin' . $menu['id']; ?>">
                                         <?php foreach ($menuAll[$sous_menu['id']] as $sous_sous_menu): ?>
-                                            <li class="<?= activePage($sous_sous_menu['slug'], 'active') . ' icon-' . $sous_sous_menu['slug']; ?>"
+                                            <li class="<?= activePage($sous_sous_menu['slug']) . ' icon-' . $sous_sous_menu['slug']; ?>"
                                                 id="menu-<?= $menu['slug']; ?>">
                                                 <a href="<?= (!empty($sous_sous_menu['pluginName'])) ? getPluginUrl($sous_sous_menu['pluginName'] . '/page/' . $sous_sous_menu['slug']) : getUrl($sous_sous_menu['slug']); ?>/"><?= trans($sous_sous_menu['name']); ?></a>
                                             </li>
@@ -58,7 +58,7 @@ if (is_array($autorisedMenu)) {
                     </ul>
                 </li>
             <?php else: ?>
-                <li class="<?= activePage($menu['slug'], 'active') . ' icon-' . $menu['slug']; ?>"
+                <li class="<?= activePage($menu['slug']) . ' icon-' . $menu['slug']; ?>"
                     id="menu-<?= $menu['slug']; ?>">
                     <a class="wave-effect"
                        href="<?= (!empty($menu['pluginName']) ? getPluginUrl($menu['pluginName'] . '/page/' . $menu['slug']) : (getUrl(($menu['slug'] == 'index') ? 'home' : $menu['slug']))); ?>/"><?= trans($menu['name']); ?></a>

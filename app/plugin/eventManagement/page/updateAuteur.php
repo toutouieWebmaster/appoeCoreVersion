@@ -1,6 +1,8 @@
-<?php if (!empty($_GET['id'])): ?>
+<?php use App\Plugin\EventManagement\Auteur;
+
+if (!empty($_GET['id'])): ?>
     <?php require('header.php'); ?>
-    <?php $Auteur = new \App\Plugin\EventManagement\Auteur();
+    <?php $Auteur = new Auteur();
     $Auteur->setId($_GET['id']);
     if ($Auteur->show()) :
         require_once(EVENTMANAGEMENT_PATH . 'process/updateAuteur.php');
@@ -17,7 +19,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <?= App\Form::text('Provenance', 'city', 'text', $Auteur->getCity(), false); ?>
+                        <?= App\Form::text('Provenance', 'city', 'text', $Auteur->getCity()); ?>
                     </div>
                 </div>
                 <div class="my-4"></div>

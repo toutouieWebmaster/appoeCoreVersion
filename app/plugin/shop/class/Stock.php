@@ -1,5 +1,7 @@
 <?php
 namespace App\Plugin\Shop;
+use App\DB;
+
 class Stock
 {
     private $id;
@@ -13,7 +15,7 @@ class Stock
     public function __construct($id_stock = null)
     {
         if (is_null($this->dbh)) {
-            $this->dbh = \App\DB::connect();
+            $this->dbh = DB::connect();
         }
 
         if (!is_null($id_stock)) {
@@ -161,8 +163,7 @@ class Stock
         if ($error[0] != '00000') {
             return false;
         } else {
-            $data = $stmt->fetchAll(\PDO::FETCH_OBJ);
-            return $data;
+            return $stmt->fetchAll(\PDO::FETCH_OBJ);
         }
     }
 

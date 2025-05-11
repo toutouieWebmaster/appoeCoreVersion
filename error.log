@@ -6,3 +6,463 @@
 (
 )
 
+[30-Apr-2025 16:16:35 Europe/Paris] Command: "C:/xampp/mysql/bin/mysqldump.exe" --no-tablespace --opt -h"127.0.0.1" -u"root" --password="" "appoe_demo" | gzip > "C:\xampp\htdocs\APPOE\app\backup\2025-04-30\db.sql.gz"
+[30-Apr-2025 16:16:35 Europe/Paris] Return var: 255
+[30-Apr-2025 16:16:35 Europe/Paris] Output: Array
+(
+)
+
+[30-Apr-2025 16:18:43 Europe/Paris] PHP Fatal error:  Uncaught Error: Call to undefined function getPageName() in C:\xampp\htdocs\APPOE\public\html\header.php:4
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\functions.php(2237): include()
+#1 C:\xampp\htdocs\APPOE\index.php(23): inc('C:/xampp/htdocs...')
+#2 {main}
+  thrown in C:\xampp\htdocs\APPOE\public\html\header.php on line 4
+[30-Apr-2025 16:18:44 Europe/Paris] PHP Fatal error:  Uncaught Error: Call to undefined function getPageName() in C:\xampp\htdocs\APPOE\public\html\header.php:4
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\functions.php(2237): include()
+#1 C:\xampp\htdocs\APPOE\index.php(23): inc('C:/xampp/htdocs...')
+#2 {main}
+  thrown in C:\xampp\htdocs\APPOE\public\html\header.php on line 4
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$medias is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 31
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$metas is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 35
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categoriesDetails is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 38
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categories is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 39
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$medias is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$metas is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categoriesDetails is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categories is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$medias is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$metas is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categoriesDetails is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categories is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$medias is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$metas is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categoriesDetails is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categories is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$medias is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 31
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$metas is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 35
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categoriesDetails is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 38
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categories is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 39
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$medias is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 31
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$metas is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 35
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categoriesDetails is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 38
+[30-Apr-2025 18:26:56 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categories is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 39
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$medias is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 31
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$metas is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 35
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categoriesDetails is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 38
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categories is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 39
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$medias is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$metas is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categoriesDetails is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categories is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$medias is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$metas is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categoriesDetails is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categories is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$medias is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$metas is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categoriesDetails is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categories is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 95
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$medias is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 31
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$metas is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 35
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categoriesDetails is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 38
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categories is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 39
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$medias is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 31
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$metas is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 35
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categoriesDetails is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 38
+[30-Apr-2025 18:27:01 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\ItemGlue\Article::$categories is deprecated in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 39
+[30-Apr-2025 18:38:27 Europe/Paris] PHP Fatal error:  Uncaught Error: Cannot access private property App\Plugin\ItemGlue\Article::$medias in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php:539
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\system\middleware_public.php(136): getArtFeaturedImg(Object(App\Plugin\ItemGlue\Article), Array)
+#1 C:\xampp\htdocs\APPOE\index.php(9): require_once('C:\\xampp\\htdocs...')
+#2 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 539
+[30-Apr-2025 18:39:57 Europe/Paris] PHP Fatal error:  Uncaught Error: Cannot access private property App\Plugin\ItemGlue\Article::$metas in C:\xampp\htdocs\APPOE\public\html\article.php:49
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\functions.php(2237): include()
+#1 C:\xampp\htdocs\APPOE\app\functions.php(2671): inc('C:/xampp/htdocs...')
+#2 C:\xampp\htdocs\APPOE\app\plugin\cms\class\CmsTemplate.php(22): getFileContent('C:/xampp/htdocs...')
+#3 C:\xampp\htdocs\APPOE\index.php(25): App\Plugin\Cms\CmsTemplate->__construct('C:/xampp/htdocs...', Array, true)
+#4 {main}
+  thrown in C:\xampp\htdocs\APPOE\public\html\article.php on line 49
+[30-Apr-2025 18:41:23 Europe/Paris] PHP Fatal error:  Uncaught Error: Cannot access private property App\Plugin\ItemGlue\Article::$categories in C:\xampp\htdocs\APPOE\public\html\article.php:106
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\functions.php(2237): include()
+#1 C:\xampp\htdocs\APPOE\app\functions.php(2671): inc('C:/xampp/htdocs...')
+#2 C:\xampp\htdocs\APPOE\app\plugin\cms\class\CmsTemplate.php(22): getFileContent('C:/xampp/htdocs...')
+#3 C:\xampp\htdocs\APPOE\index.php(25): App\Plugin\Cms\CmsTemplate->__construct('C:/xampp/htdocs...', Array, true)
+#4 {main}
+  thrown in C:\xampp\htdocs\APPOE\public\html\article.php on line 106
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 18:42:48 Europe/Paris] PHP Deprecated:  Function strftime() is deprecated in C:\xampp\htdocs\APPOE\app\plugin\appointment\include\appointment_functions.php on line 1682
+[30-Apr-2025 20:52:12 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$content is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 73
+[30-Apr-2025 20:52:12 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$meta is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 77
+[30-Apr-2025 20:52:12 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$media is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 80
+[30-Apr-2025 20:52:12 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$content is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 73
+[30-Apr-2025 20:52:12 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$meta is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 77
+[30-Apr-2025 20:52:12 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$media is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 80
+[30-Apr-2025 20:52:12 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$content is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 73
+[30-Apr-2025 20:52:12 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$meta is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 77
+[30-Apr-2025 20:52:12 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$media is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 80
+[30-Apr-2025 21:17:18 Europe/Paris] PHP Fatal error:  Uncaught Error: Call to undefined method stdClass::getMedias() in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php:539
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\public\html\blog.php(21): getArtFeaturedImg(Object(stdClass), Array)
+#1 C:\xampp\htdocs\APPOE\app\functions.php(2237): include('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\APPOE\app\functions.php(2671): inc('C:/xampp/htdocs...')
+#3 C:\xampp\htdocs\APPOE\app\plugin\cms\class\CmsTemplate.php(22): getFileContent('C:/xampp/htdocs...')
+#4 C:\xampp\htdocs\APPOE\index.php(25): App\Plugin\Cms\CmsTemplate->__construct('C:/xampp/htdocs...', Array, true)
+#5 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 539
+[30-Apr-2025 21:17:57 Europe/Paris] PHP Fatal error:  Uncaught Error: Call to undefined method stdClass::getMedias() in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php:539
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\public\html\blog.php(21): getArtFeaturedImg(Object(stdClass), Array)
+#1 C:\xampp\htdocs\APPOE\app\functions.php(2237): include('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\APPOE\app\functions.php(2671): inc('C:/xampp/htdocs...')
+#3 C:\xampp\htdocs\APPOE\app\plugin\cms\class\CmsTemplate.php(22): getFileContent('C:/xampp/htdocs...')
+#4 C:\xampp\htdocs\APPOE\index.php(25): App\Plugin\Cms\CmsTemplate->__construct('C:/xampp/htdocs...', Array, true)
+#5 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 539
+[01-May-2025 10:03:41 Europe/Paris] Command: "C:/xampp/mysql/bin/mysqldump.exe" --no-tablespace --opt -h"127.0.0.1" -u"root" --password="" "appoe_demo" | gzip > "C:\xampp\htdocs\APPOE\app\backup\2025-05-01\db.sql.gz"
+[01-May-2025 10:03:41 Europe/Paris] Return var: 255
+[01-May-2025 10:03:41 Europe/Paris] Output: Array
+(
+)
+
+[01-May-2025 10:04:22 Europe/Paris] PHP Deprecated:  htmlspecialchars_decode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 693
+[01-May-2025 10:04:22 Europe/Paris] PHP Deprecated:  htmlspecialchars_decode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 693
+[01-May-2025 10:04:22 Europe/Paris] PHP Deprecated:  htmlspecialchars_decode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\APPOE\app\functions.php on line 693
+[01-May-2025 10:12:27 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$content is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 73
+[01-May-2025 10:12:27 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$meta is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 77
+[01-May-2025 10:12:27 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$media is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 80
+[01-May-2025 10:12:27 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$content is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 73
+[01-May-2025 10:12:27 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$meta is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 77
+[01-May-2025 10:12:27 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$media is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 80
+[01-May-2025 10:12:27 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$content is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 73
+[01-May-2025 10:12:27 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$meta is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 77
+[01-May-2025 10:12:27 Europe/Paris] PHP Deprecated:  Creation of dynamic property App\Plugin\Shop\Product::$media is deprecated in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 80
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Creation of dynamic property Spipu\Html2Pdf\Html2Pdf::$_pdfa is deprecated in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\spipu\html2pdf\src\Html2Pdf.php on line 192
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $isunicode declared before required parameter $currentfont is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_fonts.php on line 1997
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $isunicode declared before required parameter $currentfont is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_fonts.php on line 2023
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $setbom declared before required parameter $currentfont is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_fonts.php on line 2039
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $isunicode declared before required parameter $currentfont is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_fonts.php on line 2039
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $setbom declared before required parameter $currentfont is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_fonts.php on line 2059
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $forcertl declared before required parameter $currentfont is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_fonts.php on line 2059
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $isunicode declared before required parameter $currentfont is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_fonts.php on line 2059
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $str declared before required parameter $currentfont is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_fonts.php on line 2076
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $setbom declared before required parameter $currentfont is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_fonts.php on line 2076
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $forcertl declared before required parameter $currentfont is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_fonts.php on line 2076
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $isunicode declared before required parameter $currentfont is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_fonts.php on line 2076
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $str declared before required parameter $currentfont is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_fonts.php on line 2092
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $forcertl declared before required parameter $currentfont is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_fonts.php on line 2092
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $isunicode declared before required parameter $currentfont is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_fonts.php on line 2092
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $default_css declared before required parameter $tagvspaces is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_static.php on line 1139
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $tagvs declared before required parameter $tagvspaces is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_static.php on line 1139
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $tidy_options declared before required parameter $tagvspaces is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_static.php on line 1139
+[01-May-2025 10:55:39 Europe/Paris] PHP Deprecated:  Optional parameter $points declared before required parameter $k is implicitly treated as a required parameter in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\include\tcpdf_static.php on line 2510
+[01-May-2025 10:55:39 Europe/Paris] PHP Fatal error:  Uncaught Exception: TCPDF ERROR: Some data has already been output, can't send PDF file in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\tcpdf.php:2950
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\tcpdf.php(7642): TCPDF->Error('Some data has a...')
+#1 C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\spipu\html2pdf\src\Html2Pdf.php(575): TCPDF->Output('Panier.pdf', 'I')
+#2 C:\xampp\htdocs\APPOE\app\plugin\pdf\include\functions_pdf.php(40): Spipu\Html2Pdf\Html2Pdf->output('Panier.pdf', 'I')
+#3 C:\xampp\htdocs\APPOE\app\plugin\pdf\index.php(17): getPdf('panier', Array, 'P', 'Panier', 'I', false)
+#4 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\plugin\pdf\vendor\tecnickcom\tcpdf\tcpdf.php on line 2950
+[04-May-2025 09:05:25 Europe/Paris] Command: "C:/xampp/mysql/bin/mysqldump.exe" --no-tablespace --opt -h"127.0.0.1" -u"root" --password="" "appoe_demo" | gzip > "C:\xampp\htdocs\APPOE\app\backup\2025-05-04\db.sql.gz"
+[04-May-2025 09:05:25 Europe/Paris] Return var: 255
+[04-May-2025 09:05:25 Europe/Paris] Output: Array
+(
+)
+
+[04-May-2025 09:19:33 Europe/Paris] PHP Fatal error:  Uncaught TypeError: isArrayEmpty(): Argument #1 ($array) must be of type array, bool given, called in C:\xampp\htdocs\APPOE\app\functions.php on line 3462 and defined in C:\xampp\htdocs\APPOE\app\functions.php:544
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\functions.php(3462): isArrayEmpty(false)
+#1 C:\xampp\htdocs\APPOE\app\functions.php(3424): loadPluginForFilename('leaflet')
+#2 C:\xampp\htdocs\APPOE\app\lib\template\header_admin_template.php(20): includePluginsStyles()
+#3 C:\xampp\htdocs\APPOE\app\plugin\cms\template\header.php(2): require_once('C:\\xampp\\htdocs...')
+#4 C:\xampp\htdocs\APPOE\app\plugin\cms\page\header.php(1): require('C:\\xampp\\htdocs...')
+#5 C:\xampp\htdocs\APPOE\app\plugin\cms\page\updatePageContent.php(2): require('C:\\xampp\\htdocs...')
+#6 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\functions.php on line 544
+[04-May-2025 12:26:02 Europe/Paris] PHP Fatal error:  Uncaught TypeError: getSerializedOptions(): Argument #1 ($fileOptions) must be of type string, null given, called in C:\xampp\htdocs\APPOE\app\functions.php on line 4351 and defined in C:\xampp\htdocs\APPOE\app\functions.php:4320
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\functions.php(4351): getSerializedOptions(NULL, 'templatePositio...')
+#1 C:\xampp\htdocs\APPOE\public\html\index.php(555): getFileTemplatePosition(Array, 2, true)
+#2 C:\xampp\htdocs\APPOE\app\functions.php(2214): include('C:\\xampp\\htdocs...')
+#3 C:\xampp\htdocs\APPOE\app\functions.php(2648): inc('C:/xampp/htdocs...')
+#4 C:\xampp\htdocs\APPOE\app\plugin\cms\class\CmsTemplate.php(22): getFileContent('C:/xampp/htdocs...')
+#5 C:\xampp\htdocs\APPOE\index.php(25): App\Plugin\Cms\CmsTemplate->__construct('C:/xampp/htdocs...', Array, true)
+#6 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\functions.php on line 4320
+[04-May-2025 12:26:07 Europe/Paris] PHP Fatal error:  Uncaught TypeError: getUserStatus(): Return value must be of type array|false, int returned in C:\xampp\htdocs\APPOE\app\functions.php:3736
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\system\middleware.php(8): getUserStatus()
+#1 C:\xampp\htdocs\APPOE\app\lib\template\header_admin_template.php(3): require_once('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\APPOE\app\plugin\eventManagement\template\header.php(2): require_once('C:\\xampp\\htdocs...')
+#3 C:\xampp\htdocs\APPOE\app\plugin\eventManagement\page\header.php(1): require_once('C:\\xampp\\htdocs...')
+#4 C:\xampp\htdocs\APPOE\app\plugin\eventManagement\page\addEvent.php(1): require('C:\\xampp\\htdocs...')
+#5 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\functions.php on line 3736
+[04-May-2025 12:27:48 Europe/Paris] PHP Fatal error:  Uncaught TypeError: displayDuree(): Argument #1 ($duree) must be of type string, null given, called in C:\xampp\htdocs\APPOE\app\plugin\eventManagement\page\event.php on line 48 and defined in C:\xampp\htdocs\APPOE\app\functions.php:1184
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\plugin\eventManagement\page\event.php(48): displayDuree(NULL)
+#1 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\functions.php on line 1184
+[04-May-2025 12:35:17 Europe/Paris] PHP Fatal error:  Uncaught TypeError: displayDuree(): Argument #1 ($duree) must be of type string, null given, called in C:\xampp\htdocs\APPOE\app\plugin\eventManagement\page\event.php on line 48 and defined in C:\xampp\htdocs\APPOE\app\functions.php:1184
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\plugin\eventManagement\page\event.php(48): displayDuree(NULL)
+#1 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\functions.php on line 1184
+[05-May-2025 11:24:53 Europe/Paris] Command: "C:/xampp/mysql/bin/mysqldump.exe" --no-tablespace --opt -h"127.0.0.1" -u"root" --password="" "appoe_demo" | gzip > "C:\xampp\htdocs\APPOE\app\backup\2025-05-05\db.sql.gz"
+[05-May-2025 11:24:53 Europe/Paris] Return var: 255
+[05-May-2025 11:24:53 Europe/Paris] Output: Array
+(
+)
+
+[05-May-2025 11:24:53 Europe/Paris] PHP Fatal error:  Uncaught TypeError: getSerializedOptions(): Argument #1 ($fileOptions) must be of type string, null given, called in C:\xampp\htdocs\APPOE\app\functions.php on line 4351 and defined in C:\xampp\htdocs\APPOE\app\functions.php:4320
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\functions.php(4351): getSerializedOptions(NULL, 'templatePositio...')
+#1 C:\xampp\htdocs\APPOE\public\html\index.php(555): getFileTemplatePosition(Array, 2, true)
+#2 C:\xampp\htdocs\APPOE\app\functions.php(2214): include('C:\\xampp\\htdocs...')
+#3 C:\xampp\htdocs\APPOE\app\functions.php(2648): inc('C:/xampp/htdocs...')
+#4 C:\xampp\htdocs\APPOE\app\plugin\cms\class\CmsTemplate.php(22): getFileContent('C:/xampp/htdocs...')
+#5 C:\xampp\htdocs\APPOE\index.php(25): App\Plugin\Cms\CmsTemplate->__construct('C:/xampp/htdocs...', Array, true)
+#6 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\functions.php on line 4320
+[05-May-2025 11:27:07 Europe/Paris] PHP Fatal error:  Uncaught TypeError: getSerializedOptions(): Argument #1 ($fileOptions) must be of type string, null given, called in C:\xampp\htdocs\APPOE\app\functions.php on line 4351 and defined in C:\xampp\htdocs\APPOE\app\functions.php:4320
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\functions.php(4351): getSerializedOptions(NULL, 'templatePositio...')
+#1 C:\xampp\htdocs\APPOE\public\html\index.php(555): getFileTemplatePosition(Array, 2, true)
+#2 C:\xampp\htdocs\APPOE\app\functions.php(2214): include('C:\\xampp\\htdocs...')
+#3 C:\xampp\htdocs\APPOE\app\functions.php(2648): inc('C:/xampp/htdocs...')
+#4 C:\xampp\htdocs\APPOE\app\plugin\cms\class\CmsTemplate.php(22): getFileContent('C:/xampp/htdocs...')
+#5 C:\xampp\htdocs\APPOE\index.php(25): App\Plugin\Cms\CmsTemplate->__construct('C:/xampp/htdocs...', Array, true)
+#6 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\functions.php on line 4320
+[05-May-2025 11:28:17 Europe/Paris] PHP Fatal error:  Uncaught TypeError: externalLink(): Argument #1 ($link) must be of type string, null given, called in C:\xampp\htdocs\APPOE\public\html\portfolio.php on line 39 and defined in C:\xampp\htdocs\APPOE\app\functions.php:4180
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\public\html\portfolio.php(39): externalLink(NULL)
+#1 C:\xampp\htdocs\APPOE\app\functions.php(2214): include('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\APPOE\app\functions.php(2648): inc('C:/xampp/htdocs...')
+#3 C:\xampp\htdocs\APPOE\app\plugin\cms\class\CmsTemplate.php(22): getFileContent('C:/xampp/htdocs...')
+#4 C:\xampp\htdocs\APPOE\index.php(25): App\Plugin\Cms\CmsTemplate->__construct('C:/xampp/htdocs...', Array, true)
+#5 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\functions.php on line 4180
+[05-May-2025 11:36:03 Europe/Paris] PHP Fatal error:  Uncaught ValueError: imagecreatetruecolor(): Argument #2 ($height) must be greater than 0 in C:\xampp\htdocs\APPOE\app\functions.php:2331
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\functions.php(2331): imagecreatetruecolor(1, 0.0)
+#1 C:\xampp\htdocs\APPOE\app\functions.php(2412): thumb('BLOG_APPOE_PLUG...', 1, 80, true)
+#2 C:\xampp\htdocs\APPOE\app\functions.php(4545): getThumb('BLOG_APPOE_PLUG...', 1, true, 80)
+#3 C:\xampp\htdocs\APPOE\app\functions.php(4524): imgUrl(Object(stdClass), true, 80, true)
+#4 C:\xampp\htdocs\APPOE\public\html\portfolio.php(41): showImage(Object(stdClass), 'port-main-img', '', true, 80, true)
+#5 C:\xampp\htdocs\APPOE\app\functions.php(2214): include('C:\\xampp\\htdocs...')
+#6 C:\xampp\htdocs\APPOE\app\functions.php(2648): inc('C:/xampp/htdocs...')
+#7 C:\xampp\htdocs\APPOE\app\plugin\cms\class\CmsTemplate.php(22): getFileContent('C:/xampp/htdocs...')
+#8 C:\xampp\htdocs\APPOE\index.php(25): App\Plugin\Cms\CmsTemplate->__construct('C:/xampp/htdocs...', Array, true)
+#9 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\functions.php on line 2331
+[05-May-2025 11:36:51 Europe/Paris] PHP Fatal error:  Uncaught ValueError: imagecreatetruecolor(): Argument #2 ($height) must be greater than 0 in C:\xampp\htdocs\APPOE\app\functions.php:2331
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\functions.php(2331): imagecreatetruecolor(1, 0.0)
+#1 C:\xampp\htdocs\APPOE\app\functions.php(2412): thumb('BLOG_APPOE_PLUG...', 1, 80, true)
+#2 C:\xampp\htdocs\APPOE\app\functions.php(4545): getThumb('BLOG_APPOE_PLUG...', 1, true, 80)
+#3 C:\xampp\htdocs\APPOE\app\functions.php(4524): imgUrl(Object(stdClass), true, 80, true)
+#4 C:\xampp\htdocs\APPOE\public\html\portfolio.php(41): showImage(Object(stdClass), 'port-main-img', '', true, 80, true)
+#5 C:\xampp\htdocs\APPOE\app\functions.php(2214): include('C:\\xampp\\htdocs...')
+#6 C:\xampp\htdocs\APPOE\app\functions.php(2648): inc('C:/xampp/htdocs...')
+#7 C:\xampp\htdocs\APPOE\app\plugin\cms\class\CmsTemplate.php(22): getFileContent('C:/xampp/htdocs...')
+#8 C:\xampp\htdocs\APPOE\index.php(25): App\Plugin\Cms\CmsTemplate->__construct('C:/xampp/htdocs...', Array, true)
+#9 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\functions.php on line 2331
+[05-May-2025 11:36:58 Europe/Paris] PHP Fatal error:  Uncaught ValueError: imagecreatetruecolor(): Argument #2 ($height) must be greater than 0 in C:\xampp\htdocs\APPOE\app\functions.php:2331
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\functions.php(2331): imagecreatetruecolor(1, 0.0)
+#1 C:\xampp\htdocs\APPOE\app\functions.php(2412): thumb('BLOG_APPOE_PLUG...', 1, 80, true)
+#2 C:\xampp\htdocs\APPOE\app\functions.php(4545): getThumb('BLOG_APPOE_PLUG...', 1, true, 80)
+#3 C:\xampp\htdocs\APPOE\app\functions.php(4524): imgUrl(Object(stdClass), true, 80, true)
+#4 C:\xampp\htdocs\APPOE\public\html\portfolio.php(41): showImage(Object(stdClass), 'port-main-img', '', true, 80, true)
+#5 C:\xampp\htdocs\APPOE\app\functions.php(2214): include('C:\\xampp\\htdocs...')
+#6 C:\xampp\htdocs\APPOE\app\functions.php(2648): inc('C:/xampp/htdocs...')
+#7 C:\xampp\htdocs\APPOE\app\plugin\cms\class\CmsTemplate.php(22): getFileContent('C:/xampp/htdocs...')
+#8 C:\xampp\htdocs\APPOE\index.php(25): App\Plugin\Cms\CmsTemplate->__construct('C:/xampp/htdocs...', Array, true)
+#9 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\functions.php on line 2331
+[05-May-2025 11:54:00 Europe/Paris] PHP Fatal error:  Uncaught Error: Call to undefined method stdClass::getMedias() in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php:539
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\public\html\blog.php(21): getArtFeaturedImg(Object(stdClass), Array)
+#1 C:\xampp\htdocs\APPOE\app\functions.php(2214): include('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\APPOE\app\functions.php(2639): inc('C:/xampp/htdocs...')
+#3 C:\xampp\htdocs\APPOE\app\plugin\cms\class\CmsTemplate.php(22): getFileContent('C:/xampp/htdocs...')
+#4 C:\xampp\htdocs\APPOE\index.php(25): App\Plugin\Cms\CmsTemplate->__construct('C:/xampp/htdocs...', Array, true)
+#5 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 539
+[05-May-2025 11:54:09 Europe/Paris] PHP Fatal error:  Uncaught Error: Call to undefined method stdClass::getMedias() in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php:539
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\public\html\blog.php(21): getArtFeaturedImg(Object(stdClass), Array)
+#1 C:\xampp\htdocs\APPOE\app\functions.php(2214): include('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\APPOE\app\functions.php(2639): inc('C:/xampp/htdocs...')
+#3 C:\xampp\htdocs\APPOE\app\plugin\cms\class\CmsTemplate.php(22): getFileContent('C:/xampp/htdocs...')
+#4 C:\xampp\htdocs\APPOE\index.php(25): App\Plugin\Cms\CmsTemplate->__construct('C:/xampp/htdocs...', Array, true)
+#5 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 539
+[05-May-2025 11:57:45 Europe/Paris] PHP Fatal error:  Uncaught Error: Cannot access private property App\Plugin\ItemGlue\Article::$medias in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php:539
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\system\middleware_public.php(136): getArtFeaturedImg(Object(App\Plugin\ItemGlue\Article), Array)
+#1 C:\xampp\htdocs\APPOE\index.php(9): require_once('C:\\xampp\\htdocs...')
+#2 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 539
+[05-May-2025 11:58:29 Europe/Paris] PHP Fatal error:  Uncaught Error: Call to undefined method stdClass::getMedias() in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php:539
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\public\html\blog.php(21): getArtFeaturedImg(Object(stdClass), Array)
+#1 C:\xampp\htdocs\APPOE\app\functions.php(2214): include('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\APPOE\app\functions.php(2639): inc('C:/xampp/htdocs...')
+#3 C:\xampp\htdocs\APPOE\app\plugin\cms\class\CmsTemplate.php(22): getFileContent('C:/xampp/htdocs...')
+#4 C:\xampp\htdocs\APPOE\index.php(25): App\Plugin\Cms\CmsTemplate->__construct('C:/xampp/htdocs...', Array, true)
+#5 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\plugin\itemGlue\include\itemGlue_functions.php on line 539
+[05-May-2025 12:05:29 Europe/Paris] PHP Fatal error:  Uncaught TypeError: extractFromObjToSimpleArr(): Argument #1 ($allContentArr) must be of type object|array, null given, called in C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php on line 77 and defined in C:\xampp\htdocs\APPOE\app\functions.php:3095
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php(77): extractFromObjToSimpleArr(NULL, 'meta_key', 'meta_value')
+#1 C:\xampp\htdocs\APPOE\app\plugin\shop\include\shop_functions.php(91): shop_getProductDetails(3)
+#2 C:\xampp\htdocs\APPOE\public\html\boutique.php(48): shop_getProductDetails()
+#3 C:\xampp\htdocs\APPOE\app\functions.php(2214): include('C:\\xampp\\htdocs...')
+#4 C:\xampp\htdocs\APPOE\app\functions.php(2639): inc('C:/xampp/htdocs...')
+#5 C:\xampp\htdocs\APPOE\app\plugin\cms\class\CmsTemplate.php(22): getFileContent('C:/xampp/htdocs...')
+#6 C:\xampp\htdocs\APPOE\index.php(25): App\Plugin\Cms\CmsTemplate->__construct('C:/xampp/htdocs...', Array, true)
+#7 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\functions.php on line 3095
+[06-May-2025 08:24:16 Europe/Paris] PHP Warning:  Undefined variable $params in C:\xampp\htdocs\APPOE\public\pdfTemplates\article.php on line 29
+[06-May-2025 08:24:16 Europe/Paris] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\APPOE\public\pdfTemplates\article.php on line 29
+[06-May-2025 08:27:25 Europe/Paris] PHP Fatal error:  Uncaught Error: Call to undefined method Spipu\Html2Pdf\Html2Pdf::setSecurity() in C:\xampp\htdocs\APPOE\app\plugin\pdf\include\functions_pdf.php:42
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\plugin\pdf\index.php(19): getPdf('article', Array, 'P', 'Article - Canic...', 'I', false)
+#1 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\plugin\pdf\include\functions_pdf.php on line 42
+[06-May-2025 08:30:48 Europe/Paris] PHP Warning:  Undefined variable $params in C:\xampp\htdocs\APPOE\public\pdfTemplates\article.php on line 29
+[06-May-2025 08:30:48 Europe/Paris] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\APPOE\public\pdfTemplates\article.php on line 29
+[06-May-2025 08:32:16 Europe/Paris] PHP Warning:  Undefined variable $params in C:\xampp\htdocs\APPOE\public\pdfTemplates\article.php on line 29
+[06-May-2025 08:32:16 Europe/Paris] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\APPOE\public\pdfTemplates\article.php on line 29
+[06-May-2025 08:34:57 Europe/Paris] PHP Warning:  Undefined variable $params in C:\xampp\htdocs\APPOE\public\pdfTemplates\article.php on line 29
+[06-May-2025 08:34:57 Europe/Paris] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\APPOE\public\pdfTemplates\article.php on line 29
+[06-May-2025 08:35:55 Europe/Paris] PHP Warning:  Undefined variable $params in C:\xampp\htdocs\APPOE\public\pdfTemplates\article.php on line 29
+[06-May-2025 08:35:55 Europe/Paris] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\APPOE\public\pdfTemplates\article.php on line 29
+[06-May-2025 08:37:49 Europe/Paris] PHP Warning:  Undefined variable $img in C:\xampp\htdocs\APPOE\public\pdfTemplates\article.php on line 29
+[06-May-2025 08:38:23 Europe/Paris] PHP Fatal error:  Uncaught TypeError: getPdfTemplate(): Return value must be of type string, array returned in C:\xampp\htdocs\APPOE\app\plugin\pdf\include\functions_pdf.php:60
+Stack trace:
+#0 C:\xampp\htdocs\APPOE\app\plugin\pdf\include\functions_pdf.php(41): getPdfTemplate('article', Array)
+#1 C:\xampp\htdocs\APPOE\app\plugin\pdf\index.php(19): getPdf('article', Array, 'P', 'Article - Canic...', 'I', false)
+#2 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\plugin\pdf\include\functions_pdf.php on line 60
+[06-May-2025 08:39:50 Europe/Paris] PHP Warning:  Undefined variable $img in C:\xampp\htdocs\APPOE\public\pdfTemplates\article.php on line 30
+[06-May-2025 08:39:50 Europe/Paris] PHP Deprecated:  parse_url(): Passing null to parameter #1 ($url) of type string is deprecated in C:\xampp\htdocs\APPOE\public\pdfTemplates\article.php on line 30
+[06-May-2025 08:56:55 Europe/Paris] Command: "C:/xampp/mysql/bin/mysqldump.exe" --no-tablespace --opt -h"127.0.0.1" -u"root" --password="" "appoe_demo" | gzip > "C:\xampp\htdocs\APPOE\app\backup\2025-05-06\db.sql.gz"
+[06-May-2025 08:56:55 Europe/Paris] Return var: 255
+[06-May-2025 08:56:55 Europe/Paris] Output: Array
+(
+)
+
+[07-May-2025 09:06:47 Europe/Paris] Command: "C:/xampp/mysql/bin/mysqldump.exe" --no-tablespace --opt -h"127.0.0.1" -u"root" --password="" "appoe_demo" | gzip > "C:\xampp\htdocs\APPOE\app\backup\2025-05-07\db.sql.gz"
+[07-May-2025 09:06:47 Europe/Paris] Return var: 255
+[07-May-2025 09:06:47 Europe/Paris] Output: Array
+(
+)
+
+[07-May-2025 11:30:40 Europe/Paris] PHP Fatal error:  Uncaught Error: Cannot access private property App\Plugin\Appointment\Rdv::$idClient in C:\xampp\htdocs\APPOE\app\plugin\appointment\ajax\mail.php:109
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\APPOE\app\plugin\appointment\ajax\mail.php on line 109
+[08-May-2025 09:22:02 Europe/Paris] Command: "C:/xampp/mysql/bin/mysqldump.exe" --no-tablespace --opt -h"127.0.0.1" -u"root" --password="" "appoe_demo" | gzip > "C:\xampp\htdocs\APPOE\app\backup\2025-05-08\db.sql.gz"
+[08-May-2025 09:22:02 Europe/Paris] Return var: 255
+[08-May-2025 09:22:02 Europe/Paris] Output: Array
+(
+)
+

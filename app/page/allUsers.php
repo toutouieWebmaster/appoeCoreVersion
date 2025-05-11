@@ -1,6 +1,6 @@
 <?php require('header.php');
 echo getTitle(getAppPageName(), getAppPageSlug());
-$defaultEmail = getOptionData('defaultEmail'); ?>
+$defaultEmail = getOption('DATA', 'defaultEmail'); ?>
     <div class="row">
         <div class="col-12">
             <div class="table-responsive">

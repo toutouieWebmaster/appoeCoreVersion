@@ -67,7 +67,7 @@ class Option
                 (14, "THEME", "", "--colorTertiary", "#3eb293", NOW()),
                 (15, "THEME", "", "--colorTertiaryOpacity", "rgba(62, 178, 147, 0.7)", NOW()),
                 (16, "THEME", "", "--textBgColorTertiary", "#FFF", NOW());';
-        return !DB::exec($sql) ? false : true;
+        return (bool)DB::exec($sql);
     }
 
     /**
@@ -206,9 +206,9 @@ class Option
     }
 
     /**
-     * @return false
+     * @return mixed|false
      */
-    public function getValByKey()
+    public function getValByKey(): mixed
     {
         if ($option = $this->showByKey()) {
             return $option->val;

@@ -44,7 +44,7 @@ function updateCmsContent($input, metaValue) {
 
 jQuery(document).ready(function ($) {
 
-    var zoning = true;
+    let zoning = true;
 
     if (!$('.templateZoneTitle').length) {
         zoning = false;
@@ -69,7 +69,7 @@ jQuery(document).ready(function ($) {
     });
 
     if (zoning) {
-        var html = '<div class="accordion" id="pageContentManageFormAccordion">';
+        let html = '<div class="accordion" id="pageContentManageFormAccordion">';
 
         $('.templateZone').each(function (num, el) {
 
@@ -89,7 +89,7 @@ jQuery(document).ready(function ($) {
 
         let userNavbarHeight = $('#site header nav.navbar').height();
         $(document.body).on('shown.bs.collapse', '.collapseZone', function () {
-            var $panel = $(this).closest('.card');
+            let $panel = $(this).closest('.card');
             $('html,body').animate({
                 scrollTop: $panel.offset().top - userNavbarHeight
             }, 500);
@@ -197,7 +197,7 @@ jQuery(document).ready(function ($) {
 
         if (confirm('Vous êtes sur le point de vider le cache de la page')) {
 
-            var $btn = $(this);
+            let $btn = $(this);
             $btn.html(loaderHtml());
 
             busyApp(false);

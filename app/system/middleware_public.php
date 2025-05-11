@@ -7,6 +7,7 @@ require_once(WEB_SYSTEM_PATH . 'auth_user.php');
 use App\DB;
 use App\Plugin\Cms\Cms;
 use App\Plugin\Cms\CmsMenu;
+use App\Plugin\ItemGlue\Article;
 use App\Plugin\Shop\Product;
 use App\Plugin\Shop\ProductContent;
 
@@ -24,6 +25,7 @@ if (checkMaintenance()) {
 
 //Backup database
 appBackup();
+
 if (DB::checkTable(TABLEPREFIX . 'appoe_plugin_cms')) {
     //Get Page
     $Cms = new Cms();
@@ -87,15 +89,8 @@ if (DB::checkTable(TABLEPREFIX . 'appoe_plugin_cms')) {
                         //Get Article infos
                         $Article = getArticlesBySlug($pluginSlug);
 
-                        //Check if Article exist
                         if ($Article) {
-                            setPageParam('currentPageID', $Article->getId());
-                            setPageParam('currentPageType','ARTICLE');
-                            setPageParam('currentPageName', $Article->getName());
-                            setPageParam('currentPageSlug', $Article->getSlug());
-                            setPageParam('currentPageDescription', $Article->getDescription());
-                            setPageParam('currentPageImage',getArtFeaturedImg($Article, ['tmpPos' => 1, 'onlyUrl' => true]));
-                            setArticle($Article);
+                            setArticleParams($Article);
                         }
                     }
 
@@ -125,23 +120,15 @@ if (DB::checkTable(TABLEPREFIX . 'appoe_plugin_cms')) {
         if (DB::checkTable(TABLEPREFIX . 'appoe_plugin_itemGlue_articles')) {
             //Get Article infos
             $Article = getArticlesBySlug($_GET['id']);
-
-            //Check if Article exist
             if ($Article) {
-                setPageParam('currentPageID', $Article->getId());
-                setPageParam('currentPageType','ARTICLE');
-                setPageParam('currentPageName', $Article->getName());
-                setPageParam('currentPageSlug', $Article->getSlug());
-                setPageParam('currentPageDescription', $Article->getDescription());
-                setPageParam('currentPageImage',getArtFeaturedImg($Article, ['tmpPos' => 1, 'onlyUrl' => true]));
-                setArticle($Article);
+                setArticleParams($Article);
             }
         }
     }
 
     //Create menu
-    $maintenance = getOptionPreference('maintenance');
-    $cacheProcess = getOptionPreference('cacheProcess');
+    $maintenance = getOption('PREFERENCE', 'maintenance');
+    $cacheProcess = getOption('PREFERENCE', 'cacheProcess');
     if (empty($_SESSION['MENU']) || getSessionLang() !== LANG
         || 'true' === $maintenance
         || 'false' === $cacheProcess) {

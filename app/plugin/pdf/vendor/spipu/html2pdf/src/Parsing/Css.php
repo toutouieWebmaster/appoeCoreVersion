@@ -7,13 +7,14 @@
  *
  * @package   Html2pdf
  * @author    Laurent MINGUET <webmaster@html2pdf.fr>
- * @copyright 2017 Laurent MINGUET
+ * @copyright 2025 Laurent MINGUET
  */
 
 namespace Spipu\Html2Pdf\Parsing;
 
 use Spipu\Html2Pdf\CssConverter;
 use Spipu\Html2Pdf\MyPdf;
+use Spipu\Html2Pdf\Security\SecurityInterface;
 
 class Css
 {
@@ -28,8 +29,11 @@ class Css
     protected $cssConverter;
 
     /**
-     * Reference to the pdf object
-     *
+     * @var SecurityInterface
+     */
+    private $security;
+
+    /**
      * @var MyPdf
      */
     protected $pdf         = null;
@@ -37,24 +41,34 @@ class Css
     protected $onlyLeft    = false; // flag if we are in a sub html => only "text-align:left" is used
     protected $defaultFont = null;  // default font to use if the asked font does not exist
 
-    public $value        = []; // current values
-    public $css          = []; // css values
-    public $cssKeys      = []; // css key, for the execution order
-    public $table        = []; // level history
+    public $value        = array(); // current values
+    public $css          = array(); // css values
+    public $cssKeys      = array(); // css key, for the execution order
+    public $table        = array(); // level history
 
     /**
-     * Constructor
-     *
-     * @param MyPdf        $pdf reference to the PDF $object
-     * @param TagParser    $tagParser
+     * @param MyPdf $pdf
+     * @param TagParser $tagParser
      * @param CssConverter $cssConverter
+     * @param SecurityInterface $security
      */
-    public function __construct(&$pdf, TagParser $tagParser, CssConverter $cssConverter)
-    {
+    public function __construct(
+        MyPdf $pdf,
+        TagParser $tagParser,
+        CssConverter $cssConverter,
+        SecurityInterface $security
+    ) {
+        $this->setSecurityService($security);
         $this->cssConverter = $cssConverter;
         $this->init();
         $this->setPdfParent($pdf);
         $this->tagParser = $tagParser;
+    }
+
+    public function setSecurityService(SecurityInterface $security): self
+    {
+        $this->security = $security;
+        return $this;
     }
 
     /**
@@ -93,7 +107,7 @@ class Css
    /**
     * Define the Default Font to use, if the font does not exist, or if no font asked
     *
-    * @param string  default font-family. If null : Arial for no font asked, and error fot ont does not exist
+    * @param string $default default font-family. If null : Arial for no font asked, and error fot ont does not exist
     *
     * @return string  old default font-family
     */
@@ -115,8 +129,8 @@ class Css
     protected function init()
     {
         // init the Style
-        $this->table = [];
-        $this->value = [];
+        $this->table = array();
+        $this->value = array();
         $this->initStyle();
 
         // Init the styles without legacy
@@ -171,9 +185,9 @@ class Css
             'position' => null,
             'repeat'   => null
         );
-        $this->value['border']           = [];
-        $this->value['padding']          = [];
-        $this->value['margin']           = [];
+        $this->value['border']           = array();
+        $this->value['padding']          = array();
+        $this->value['margin']           = array();
         $this->value['margin-auto']      = false;
 
         $this->value['list-style-type']  = '';
@@ -195,7 +209,7 @@ class Css
      */
     public function resetStyle($tagName = '')
     {
-        // prepare somme values
+        // prepare some values
         $border = $this->readBorder('solid 1px #000000');
         $units = array(
             '1px' => $this->cssConverter->convertToMM('1px'),
@@ -533,10 +547,10 @@ class Css
         }
 
         // read the class attribute
-        $class = [];
+        $class = array();
         $tmp = isset($param['class']) ? strtolower(trim($param['class'])) : '';
         $tmp = explode(' ', $tmp);
-        foreach ($tmp as $k => $v) {
+        foreach ($tmp as $v) {
             $v = trim($v);
             if ($v) {
                 $class[] = $v;
@@ -548,7 +562,7 @@ class Css
         $this->value['id_name']   = $name;
         $this->value['id_id']     = $id;
         $this->value['id_class']  = $class;
-        $this->value['id_lst']    = [];
+        $this->value['id_lst']    = array();
         $this->value['id_lst'][] = '*';
         $this->value['id_lst'][] = $tagName;
         if (!isset($this->value['svg'])) {
@@ -606,7 +620,7 @@ class Css
      */
     public function analyse($tagName, &$param, $legacy = null)
     {
-        // prepare the informations
+        // prepare the information
         $tagName = strtolower($tagName);
         $id   = isset($param['id'])   ? strtolower(trim($param['id']))    : null;
         if (!$id) {
@@ -618,11 +632,20 @@ class Css
         }
 
         // get the class names to use
-        $class = [];
+        $class = array();
         $tmp = isset($param['class']) ? strtolower(trim($param['class'])) : '';
         $tmp = explode(' ', $tmp);
-        foreach ($tmp as $k => $v) {
+        
+        // replace some values
+        $toReplace = array(
+            '[[page_cu]]' => $this->pdf->getMyNumPage()
+        );
+        
+        foreach ($tmp as $v) {
             $v = trim($v);
+            if (strlen($v)>0) {
+                $v = str_replace(array_keys($toReplace), array_values($toReplace), $v);
+            }
             if ($v) {
                 $class[] = $v;
             }
@@ -633,7 +656,7 @@ class Css
         $this->value['id_name']  = $name;
         $this->value['id_id']    = $id;
         $this->value['id_class'] = $class;
-        $this->value['id_lst']   = [];
+        $this->value['id_lst']   = array();
         $this->value['id_lst'][] = '*';
         $this->value['id_lst'][] = $tagName;
         if (count($class)) {
@@ -748,7 +771,7 @@ class Css
 
                 case 'width':
                     $this->value['width'] = $this->cssConverter->convertToMM($val, $this->getLastWidth());
-                    if ($this->value['width'] && substr($val, -1) === '%') {
+                    if ($this->value['width'] && str_ends_with($val, '%')) {
                         $correctWidth=true;
                     }
                     $noWidth = false;
@@ -1415,13 +1438,13 @@ class Css
     protected function getFromCSS()
     {
         // styles to apply
-        $styles = [];
+        $styles = array();
 
         // list of the selectors to get in the CSS files
-        $getit  = [];
+        $getit  = array();
 
         // get the list of the selectors of each tags
-        $lst = [];
+        $lst = array();
         $lst[] = $this->value['id_lst'];
         for ($i=count($this->table)-1; $i>=0; $i--) {
             $lst[] = $this->table[$i]['id_lst'];
@@ -1479,7 +1502,7 @@ class Css
             }
 
             // if the end of the key = the selector and the next step is ok => ok
-            if (substr($key, -strlen(' '.$name)) === ' '.$name && $this->getReccursiveStyle($key, $lst, $name)) {
+            if (str_ends_with($key, ' ' . $name) && $this->getReccursiveStyle($key, $lst, $name)) {
                 return true;
             }
         }
@@ -1615,7 +1638,7 @@ class Css
             $styles = explode(';', $styles);
 
             // parse each value
-            $css = [];
+            $css = array();
             foreach ($styles as $style) {
                 $tmp = explode(':', $style);
                 if (count($tmp) > 1) {
@@ -1635,7 +1658,7 @@ class Css
                 $name = trim($name);
 
                 // if a selector with something like :hover => continue
-                if (strpos($name, ':') !== false) {
+                if (str_contains($name, ':')) {
                     continue;
                 }
 
@@ -1649,7 +1672,7 @@ class Css
             }
         }
 
-        // get he list of the keys
+        // get the list of the keys
         $this->cssKeys = array_flip(array_keys($this->css));
     }
 
@@ -1678,13 +1701,14 @@ class Css
             if (isset($tmp['type']) && strtolower($tmp['type']) === 'text/css' && isset($tmp['href'])) {
 
                 // get the href
-                $url = $tmp['href'];
+                $url = (string) $tmp['href'];
 
                 // get the content of the css file
+                $this->security->checkValidPath($url);
                 $content = @file_get_contents($url);
 
                 // if "http://" in the url
-                if (strpos($url, 'http://') !== false) {
+                if (str_contains($url, 'http://')) {
 
                     // get the domain "http://xxx/"
                     $url = str_replace('http://', '', $url);

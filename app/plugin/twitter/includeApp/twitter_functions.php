@@ -22,10 +22,10 @@ function twitter_share_article($message)
 {
 
     $Manager = new Manager();
-    return $Manager->twitter_share_article($message) ? true : false;
+    return (bool)$Manager->twitter_share_article($message);
 }
 
-function twitter_send_message_to_lists(array $lists, $message)
+function twitter_send_message_to_lists(?array $lists, $message)
 {
 
     if (is_array($lists) && twitter_is_active()) {

@@ -3,22 +3,27 @@
 namespace App\Plugin\Shop;
 class Product
 {
-    private $id;
+    private ?int $id;
     private $type;
-    private $name;
-    private $slug;
-    private $price;
-    private $poids = null;
-    private $dimension = null;
-    private $status = 1;
+    private string $name;
+    private string $slug;
+    private mixed $price;
+    private mixed $poids = null;
+    private mixed $dimension = null;
+    private int $status = 1;
 
-    private $remainingQuantity = null;
-    private $orderedQuantity = null;
-    private $remainingDate = null;
+    private mixed $remainingQuantity = null;
+    private mixed $orderedQuantity = null;
+    private mixed $remainingDate = null;
 
-    private $dbh = null;
+    public mixed $content;
+    public mixed $media;
+    public mixed $meta;
+    public mixed $categories;
 
-    public function __construct($id_produit = null)
+    private ?\PDO $dbh = null;
+
+    public function __construct(?int $id_produit = null)
     {
         if (is_null($this->dbh)) {
             $this->dbh = \App\DB::connect();
@@ -30,18 +35,59 @@ class Product
         }
     }
 
+    public function getContent(): mixed
+    {
+        return $this->content;
+    }
+
+    public function setContent(mixed $content): void
+    {
+        $this->content = $content;
+    }
+
+    public function getMedia(): mixed
+    {
+        return $this->media;
+    }
+
+    public function setMedia(mixed $media): void
+    {
+        $this->media = $media;
+    }
+
+    public function getMeta(): mixed
+    {
+        return $this->meta;
+    }
+
+    public function setMeta(mixed $meta): void
+    {
+        $this->meta = $meta;
+    }
+
+    public function getCategories(): mixed
+    {
+        return $this->categories;
+    }
+
+    public function setCategories(mixed $categories): void
+    {
+        $this->categories = $categories;
+    }
+
+
     /**
-     * @return null
+     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * @param null $id
+     * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }

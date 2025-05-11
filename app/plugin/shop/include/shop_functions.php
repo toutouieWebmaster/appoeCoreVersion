@@ -1,6 +1,7 @@
 <?php
 
 use App\CategoryRelations;
+use App\Plugin\Shop\Client;
 use App\Plugin\Shop\Commande;
 use App\Plugin\Shop\CommandeDetails;
 use App\Plugin\Shop\Product;
@@ -18,11 +19,11 @@ function shop_financial($amount)
 }
 
 /**
- * @param $slug
- * @param $lang
- * @return \App\Plugin\Shop\Product|bool
+ * @param string $slug
+ * @param string $lang
+ * @return Product|false
  */
-function shop_getProductDetailsFromSlug($slug, $lang = LANG)
+function shop_getProductDetailsFromSlug(string $slug, string $lang = LANG): Product|false
 {
 
     $Product = new Product();
@@ -35,11 +36,11 @@ function shop_getProductDetailsFromSlug($slug, $lang = LANG)
         $ProductMedia = new ShopMedia($Product->getId());
         $CategoryRelation = new CategoryRelations('SHOP', $Product->getId());
 
-        $Product->content = $ProductContent;
-        $Product->meta = extractFromObjToSimpleArr($ProductMeta->getData(), 'meta_key', 'meta_value');
+        $Product->setContent($ProductContent);
+        $Product->setMeta(extractFromObjToSimpleArr($ProductMeta->getData(), 'meta_key', 'meta_value'));
 
-        $Product->media = $ProductMedia->showFiles();
-        $Product->categories = extractFromObjToSimpleArr($CategoryRelation->getData(), 'categoryId', 'name');
+        $Product->setMedia($ProductMedia->showFiles());
+        $Product->setCategories(extractFromObjToSimpleArr($CategoryRelation->getData(), 'categoryId', 'name'));
 
         return $Product;
     }
@@ -50,7 +51,7 @@ function shop_getProductDetailsFromSlug($slug, $lang = LANG)
 /**
  * @param null $idProduct
  * @param $lang
- * @return \App\Plugin\Shop\Product|array|Product
+ * @return Product|array
  */
 function shop_getProductDetails($idProduct = null, $lang = LANG)
 {
@@ -89,7 +90,7 @@ function shop_getProductDetails($idProduct = null, $lang = LANG)
     foreach ($allProducts as $product) {
 
         $productData = shop_getProductDetails($product->id);
-        array_push($data, $productData);
+        $data[] = $productData;
     }
 
     return $data;
@@ -164,7 +165,7 @@ function shop_getShoppingCard($saveCommande = false)
                             $totalProductsPrice += $product['totalPrice'];
 
                             //put results into array
-                            array_push($allDataProducts, $product);
+                            $allDataProducts[] = $product;
                         }
                     }
                 }
@@ -191,7 +192,9 @@ function shop_getShoppingCard($saveCommande = false)
                 //add client to user Interface
                 $allDataProducts['client'] = $Client;
 
-                shop_setTotalShopping($totalProductsPrice + $totalTransport);
+                $totalShopping = (float) $totalProductsPrice + (float) $totalTransport;
+
+                shop_setTotalShopping($totalShopping);
 
                 $Commande = new Commande();
                 if (empty($_SESSION['COMMANDE'])) {
@@ -298,16 +301,16 @@ function shop_getTotalShopping($forDB = false)
  */
 function shop_checkExistClient()
 {
-    return !empty($_COOKIE['CLIENT']) ? true : false;
+    return !empty($_COOKIE['CLIENT']);
 }
 
 /**
- * @return \App\Plugin\Shop\Client|bool
+ * @return Client|bool
  */
 function shop_getClientInfo()
 {
     if (!empty($_COOKIE['CLIENT'])) {
-        $Client = new \App\Plugin\Shop\Client();
+        $Client = new Client();
         $Client->setId($_COOKIE['CLIENT']);
         if ($Client->show()) {
             return $Client;
@@ -441,49 +444,50 @@ function shop_getCountShippingCard()
 /**
  * @return bool
  */
-function shop_checkValidProductsCookies()
-{
-    if (isset($_COOKIE['PRODUCT'])) {
-
-        $totalPriceProducts = 0;
-        $totalDimension = 0;
-        $totalPoids = 0;
-
-        foreach ($_COOKIE['product'] as $idProduct => $dataProduct) {
-
-            $dataProduct = unserialize(base64_decode($dataProduct));
-
-            $Product = new \App\Plugin\Shop\Product($dataProduct['id']);
-
-            $totalDimension += $dataProduct['quantity'] * $Product->getDimension();
-            $totalPoids += $dataProduct['quantity'] * $Product->getPoids();
-            $totalPriceProducts += $dataProduct['quantity'] * $Product->getPrice();
-
-            if (false === $Product->getLimitQuantity()) {
-
-                Flash::setMsg($Product->getName() . ' n\'est plus disponible');
-
-            } elseif (!is_null($Product->getLimitQuantity()) && $Product->getLimitQuantity() < $dataProduct['quantity']) {
-
-                Flash::setMsg('Il ne reste plus que ' . $Product->getLimitQuantity() . ' exemplaire(s) de ' . $Product->getName());
-
-            } elseif (false === $Product->getLimitDate()) {
-
-                Flash::setMsg($Product->getName() . ' a expiré');
-
-            } elseif ($dataProduct['totalPrice'] != ((float)$Product->getPrice() * $dataProduct['quantity'])) {
-
-                setcookie("PRODUCT[" . $idProduct . "]", "", time() - 3600, '/', WEB_DIR, false);
-                Flash::setMsg('Les données de ' . $Product->getName() . ' ont été modifiées');
-            }
-
-            if (!is_null(Flash::getMsg())) {
-                return false;
-            }
-        }
-    }
-    return true;
-}
+// FAIT APPEL A DES PROPRIETES INEXISTANTES ?
+//function shop_checkValidProductsCookies()
+//{
+//    if (isset($_COOKIE['PRODUCT'])) {
+//
+//        $totalPriceProducts = 0;
+//        $totalDimension = 0;
+//        $totalPoids = 0;
+//
+//        foreach ($_COOKIE['product'] as $idProduct => $dataProduct) {
+//
+//            $dataProduct = unserialize(base64_decode($dataProduct));
+//
+//            $Product = new \App\Plugin\Shop\Product($dataProduct['id']);
+//
+//            $totalDimension += $dataProduct['quantity'] * $Product->getDimension();
+//            $totalPoids += $dataProduct['quantity'] * $Product->getPoids();
+//            $totalPriceProducts += $dataProduct['quantity'] * $Product->getPrice();
+//
+//            if (false === $Product->getLimitQuantity()) {
+//
+//                Flash::setMsg($Product->getName() . ' n\'est plus disponible');
+//
+//            } elseif (!is_null($Product->getLimitQuantity()) && $Product->getLimitQuantity() < $dataProduct['quantity']) {
+//
+//                Flash::setMsg('Il ne reste plus que ' . $Product->getLimitQuantity() . ' exemplaire(s) de ' . $Product->getName());
+//
+//            } elseif (false === $Product->getLimitDate()) {
+//
+//                Flash::setMsg($Product->getName() . ' a expiré');
+//
+//            } elseif ($dataProduct['totalPrice'] != ((float)$Product->getPrice() * $dataProduct['quantity'])) {
+//
+//                setcookie("PRODUCT[" . $idProduct . "]", "", time() - 3600, '/', WEB_DIR, false);
+//                Flash::setMsg('Les données de ' . $Product->getName() . ' ont été modifiées');
+//            }
+//
+//            if (!is_null(Flash::getMsg())) {
+//                return false;
+//            }
+//        }
+//    }
+//    return true;
+//}
 
 /**
  * @param $id
@@ -492,7 +496,7 @@ function shop_checkValidProductsCookies()
 function getCategoriesByProduct($id)
 {
     //get product
-    $Product = new \App\Plugin\Shop\Product($id);
+    $Product = new Product($id);
 
     //get all categories in relation with article
     $CategoryRelation = new CategoryRelations('SHOP', $Product->getId());

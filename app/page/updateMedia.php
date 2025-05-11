@@ -4,6 +4,7 @@ require(WEB_PROCESS_PATH . 'media.php');
 
 use App\Category;
 use App\Media;
+use App\Form;
 
 $Media = new Media();
 $Media->setLang(APP_LANG);
@@ -25,7 +26,7 @@ foreach ($allLibraryParent as $id => $parentId) {
     } else {
 
         if ($allLibraryParent[$parentId] == 10) {
-            $libraryParent[$id] = array('id' => $allLibraryParent[$id], 'name' => $allLibrary[$parentId]);
+            $libraryParent[$id] = array('id' => $parentId, 'name' => $allLibrary[$parentId]);
 
         } else {
             $libraryParent[$id] = array('id' => $allLibraryParent[$parentId], 'name' => $allLibrary[$allLibraryParent[$parentId]]);
@@ -110,19 +111,19 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                     <form class="row" id="galleryForm" action="" method="post" enctype="multipart/form-data">
                         <?= getTokenField(); ?>
                         <div class="col-12 col-lg-6 my-2">
-                            <?= \App\Form::file('Importer depuis votre appareil', 'inputFile[]', false, 'multiple', '', 'Choisissez...', false); ?>
+                            <?= Form::file('Importer depuis votre appareil', 'inputFile[]', false, 'multiple', '', 'Choisissez...', false); ?>
                         </div>
                         <div class="col-12 col-lg-3 my-2">
                                 <textarea name="textareaSelectedFile" id="textareaSelectedFile"
                                           class="d-none"></textarea>
-                            <?= \App\Form::text('Choisissez dans la bibliothèque', 'inputSelectFiles', 'text', '0 fichiers', false, 300, 'readonly data-toggle="modal" data-target="#allMediasModal"'); ?>
+                            <?= Form::text('Choisissez dans la bibliothèque', 'inputSelectFiles', 'text', '0 fichiers', false, 300, 'readonly data-toggle="modal" data-target="#allMediasModal"'); ?>
                         </div>
                         <div class="col-12 col-lg-3 my-2">
-                            <?= \App\Form::select('Bibliothèques', 'library', $listCatgories, '', true); ?>
+                            <?= Form::select('Bibliothèques', 'library', $listCatgories, '', true); ?>
                         </div>
                         <div class="col-12">
-                            <?= \App\Form::target('ADDIMAGES'); ?>
-                            <?= \App\Form::submit('Enregistrer', 'addImageSubmit'); ?>
+                            <?= Form::target('ADDIMAGES'); ?>
+                            <?= Form::submit('Enregistrer', 'addImageSubmit'); ?>
                         </div>
                     </form>
                 </div>

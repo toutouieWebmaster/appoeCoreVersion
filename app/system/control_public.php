@@ -4,7 +4,7 @@ if (file_exists(ROOT_PATH . 'setup.php')) {
     exit();
 }
 
-if (getOptionPreference('forceHTTPS') === 'true') {
+if (getOption('PREFERENCE', 'forceHTTPS') === 'true') {
 
     if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
 

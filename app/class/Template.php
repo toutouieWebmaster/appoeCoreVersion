@@ -107,66 +107,58 @@ class Template
      */
     public function buildHtmlAdminZone($zone)
     {
-
         $html = '';
         $col = $this->defaultCol;
 
-        //Check for form types
-        if (false !== strpos($zone, '_')) {
+        // Vérifie s'il s'agit d'une zone avec un champ de formulaire
+        if (str_contains($zone, '_')) {
 
-            //Get data
-            list($metaKey, $formType, $params) = array_pad(explode('_', $zone), 3, '');
+            // Décompose la zone : metaKey_formType_[params]
+            [$metaKey, $formType, $params] = array_pad(explode('_', $zone), 3, '');
 
-            //Get input value
             $metaKeyDisplay = ucfirst(str_replace('-', ' ', $metaKey));
-            $idCmsContent = !empty($this->pageDbData[$metaKey]) ? $this->pageDbData[$metaKey]->id : '';
-            $valueCmsContent = !empty($this->pageDbData[$metaKey]) ? $this->pageDbData[$metaKey]->metaValue : '';
+            $idCmsContent = $this->pageDbData[$metaKey]->id ?? '';
+            $valueCmsContent = $this->pageDbData[$metaKey]->metaValue ?? '';
 
-            //Get input params
-            if (preg_match_all("/\[(.*?)\]/", $params, $match)) {
-
+            // Gestion des colonnes et paramètres
+            if (preg_match_all('/\[(.*?)\]/', $params, $match)) {
                 $zoneAddedOptions = $this->getParams($match[1][0]);
-
-                if (array_key_exists('col', $zoneAddedOptions)) {
-                    $col = $zoneAddedOptions['col'];
-                }
-
-            } else {
+                $col = $zoneAddedOptions['col'] ?? $col;
+            } elseif (!empty($params)) {
                 $col = $params;
             }
 
-            //Display input zone
             $html .= '<div class="col-12 col-lg-' . $col . ' my-2 templateZoneInput">';
 
-
-            //Check unique input
+            // Si le champ n'a pas encore été traité
             if (!in_array($metaKey, $this->allMetaKeys)) {
 
-                //Display form input
-                if (false !== strpos($formType, ':')) {
+                $attributes = 'data-idcmscontent="' . $idCmsContent . '"';
 
-                    //Get form options
+                if (str_contains($formType, ':')) {
                     $options = explode(':', $formType);
-
-                    //Get form type
                     $formType = array_shift($options);
 
-                    if ($formType == 'select') {
-                        $html .= Form::select($metaKeyDisplay, $metaKey, array_combine($options, $options), $valueCmsContent, false, 'data-idcmscontent="' . $idCmsContent . '"');
+                    if ($formType === 'select') {
+                        $html .= Form::select(
+                            $metaKeyDisplay,
+                            $metaKey,
+                            array_combine($options, $options),
+                            $valueCmsContent,
+                            false,
+                            $attributes
+                        );
                     }
                 } else {
-                    if ($formType == 'textBig') {
-                        $html .= Form::textarea($metaKeyDisplay, $metaKey, $valueCmsContent, 8, false, 'data-idcmscontent="' . $idCmsContent . '"', '');
-                    } elseif ($formType == 'textarea') {
-                        $html .= Form::textarea($metaKeyDisplay, $metaKey, htmlSpeCharDecode($valueCmsContent), 8, false, 'data-idcmscontent="' . $idCmsContent . '"', 'appoeditor');
-                    } elseif ($formType == 'urlFile') {
-                        $html .= Form::text($metaKeyDisplay, $metaKey, 'url', $valueCmsContent, false, 250, 'data-idcmscontent="' . $idCmsContent . '" rel="cms-img-popover"', '', 'urlFile');
-                    } else {
-                        $html .= Form::text($metaKeyDisplay, $metaKey, $formType, $valueCmsContent, false, 250, 'data-idcmscontent="' . $idCmsContent . '"', '', '');
-                    }
+                    $html .= match ($formType) {
+                        'textBig' => Form::textarea($metaKeyDisplay, $metaKey, $valueCmsContent, 8, false, $attributes, ''),
+                        'textarea' => Form::textarea($metaKeyDisplay, $metaKey, htmlSpeCharDecode($valueCmsContent), 8, false, $attributes, 'appoeditor'),
+                        'urlFile' => Form::text($metaKeyDisplay, $metaKey, 'url', $valueCmsContent, false, 250, $attributes . ' rel="cms-img-popover"', '', 'urlFile'),
+                        default => Form::text($metaKeyDisplay, $metaKey, $formType, $valueCmsContent, false, 250, $attributes, '', ''),
+                    };
                 }
 
-                array_push($this->allMetaKeys, $metaKey);
+                $this->allMetaKeys[] = $metaKey;
             }
 
             $html .= '</div>';
@@ -193,13 +185,13 @@ class Template
         foreach ($zones as $i => $adminZone) {
 
             //Check for form type
-            if (false !== strpos($adminZone, '_')) {
+            if (str_contains($adminZone, '_')) {
 
                 //Get data
                 list($metaKey, $formType, $col) = array_pad(explode('_', $adminZone), 3, '');
 
                 //Check form type with options
-                if (false !== strpos($formType, ':')) {
+                if (str_contains($formType, ':')) {
 
                     $options = explode(':', $formType);
                     $formType = array_shift($options);
@@ -215,7 +207,7 @@ class Template
                 }
 
             } else {
-                if (false !== strpos($adminZone, '#')) {
+                if (str_contains($adminZone, '#')) {
 
                     //Get data
                     list($htmlTag, $text, $zoneName) = array_pad(explode('#', $adminZone), 3, random_int(999, 9999));
@@ -235,7 +227,7 @@ class Template
 
                     //Get closed html tag condition
                     $closeTag = false;
-                    if (false !== strpos($adminZone, '/')) {
+                    if (str_contains($adminZone, '/')) {
                         $closeTag = true;
                         $adminZone = str_replace('/', '', $adminZone);
                     }

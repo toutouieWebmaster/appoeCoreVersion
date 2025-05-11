@@ -1,6 +1,7 @@
 <?php
 require('header.php');
 
+use App\Form;
 use App\Plugin\Cms\Cms;
 use App\Plugin\Cms\CmsMenu;
 use App\Plugin\ItemGlue\Article;
@@ -149,35 +150,35 @@ showPostResponse(); ?>
                         <?= getTokenField(); ?>
                         <div class="row">
                             <div class="col-12 mt-2">
-                                <?= \App\Form::radio('Type de menu', 'radioBtnIdCMS', array('Page' => 'Page', 'URL' => 'URL', 'Article' => 'Article'), !empty($_POST['radioBtnIdCMS']) ? $_POST['radioBtnIdCMS'] : 'Page', true, 'custom-control-inline'); ?>
+                                <?= Form::radio('Type de menu', 'radioBtnIdCMS', array('Page' => 'Page', 'URL' => 'URL', 'Article' => 'Article'), !empty($_POST['radioBtnIdCMS']) ? $_POST['radioBtnIdCMS'] : 'Page', true, 'custom-control-inline'); ?>
                             </div>
                             <div class="col-12 my-2 idCmsChoise" data-cmstype="URL" style="display: none;">
-                                <?= \App\Form::text('Lien URL', 'idCms', 'text', !empty($_POST['idCms']) ? $_POST['idCms'] : '', true, 255, 'disabled'); ?>
+                                <?= Form::text('Lien URL', 'idCms', 'text', !empty($_POST['idCms']) ? $_POST['idCms'] : '', true, 255, 'disabled'); ?>
                             </div>
                             <div class="col-12 my-2 idCmsChoise" data-cmstype="Page">
-                                <?= \App\Form::select('Page', 'idCms', $allPages, !empty($_POST['idCms']) ? $_POST['idCms'] : '', true); ?>
+                                <?= Form::select('Page', 'idCms', $allPages, !empty($_POST['idCms']) ? $_POST['idCms'] : '', true); ?>
                             </div>
                             <div class="col-12 my-2 idArticleChoise" data-cmstype="Article" style="display: none;">
-                                <?= \App\Form::select('Article', 'idArticle', $allArticles, !empty($_POST['idArticle']) ? $_POST['idArticle'] : '', true, 'disabled'); ?>
+                                <?= Form::select('Article', 'idArticle', $allArticles, !empty($_POST['idArticle']) ? $_POST['idArticle'] : '', true, 'disabled'); ?>
                                 <input type="hidden" name="name" value="">
                             </div>
                             <div class="col-12 my-2 idArticleChoise" data-cmstype="Article" style="display: none;">
-                                <?= \App\Form::select('Page de l\'article', 'slugArticlePage', $allArticlesPages, !empty($_POST['slugArticlePage']) ? $_POST['slugArticlePage'] : '', true, 'disabled'); ?>
+                                <?= Form::select('Page de l\'article', 'slugArticlePage', $allArticlesPages, !empty($_POST['slugArticlePage']) ? $_POST['slugArticlePage'] : '', true, 'disabled'); ?>
                             </div>
                             <div class="col-12 my-2 idCmsChoise" data-cmstype="URL" style="display: none;">
-                                <?= \App\Form::text('Nom', 'name', 'text', !empty($_POST['name']) ? $_POST['name'] : '', true, 70, 'disabled'); ?>
+                                <?= Form::text('Nom', 'name', 'text', !empty($_POST['name']) ? $_POST['name'] : '', true, 70, 'disabled'); ?>
                             </div>
                             <div class="col-12 my-2">
-                                <?= \App\Form::text('Position / Ordre', 'position', 'tel', !empty($_POST['position']) ? $_POST['position'] : '', false); ?>
+                                <?= Form::text('Position / Ordre', 'position', 'tel', !empty($_POST['position']) ? $_POST['position'] : ''); ?>
                             </div>
                             <div class="col-12 my-2">
-                                <?= \App\Form::select('Emplacement', 'location', CMS_LOCATIONS, !empty($_POST['location']) ? $_POST['location'] : '', true); ?>
+                                <?= Form::select('Emplacement', 'location', CMS_LOCATIONS, !empty($_POST['location']) ? $_POST['location'] : '', true); ?>
                             </div>
                             <div class="col-12 my-2" id="parentPageForm"></div>
                         </div>
                     </div>
                     <div class="modal-footer" id="modalAddMenuPageFooter">
-                        <?= \App\Form::target('ADDMENUPAGE'); ?>
+                        <?= Form::target('ADDMENUPAGE'); ?>
                         <button type="submit" name="ADDMENUPAGESUBMIT"
                                 class="btn btn-primary"><?= trans('Enregistrer'); ?></button>
                         <button type="button" class="btn btn-secondary"

@@ -5,7 +5,7 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
         //get products
         $Product = new \App\Plugin\Shop\Product();
         $Product->setStatus(0);
-        $allProduct = $Product->showAll(false);
+        $allProduct = $Product->showAll();
 
         //get commandes
         $Commande = new \App\Plugin\Shop\Commande();

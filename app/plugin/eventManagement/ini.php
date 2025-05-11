@@ -1,6 +1,6 @@
 <?php
-define( 'EVENTMANAGEMENT_PATH', WEB_PLUGIN_PATH . 'eventManagement/' );
-define( 'EVENTMANAGEMENT_URL', WEB_PLUGIN_URL . 'eventManagement/' );
+const EVENTMANAGEMENT_PATH = WEB_PLUGIN_PATH . 'eventManagement/';
+const EVENTMANAGEMENT_URL = WEB_PLUGIN_URL . 'eventManagement/';
 
 const INDOOR_OFF = array(
 	1 => 'IN',

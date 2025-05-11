@@ -7,7 +7,7 @@
  *
  * @package   Html2pdf
  * @author    Laurent MINGUET <webmaster@html2pdf.fr>
- * @copyright 2017 Laurent MINGUET
+ * @copyright 2025 Laurent MINGUET
  */
 namespace Spipu\Html2Pdf\Parsing;
 
@@ -50,7 +50,7 @@ class TagParser
         $name      = strtolower($match[2]);
 
         // required parameters (depends on the tag name)
-        $defaultParams = [];
+        $defaultParams = array();
         $defaultParams['style'] = '';
         if ($name === 'img') {
             $defaultParams['alt'] = '';
@@ -152,7 +152,7 @@ class TagParser
 
         // reading styles: decomposition and standardization
         $styles = explode(';', $param['style']);
-        $param['style'] = [];
+        $param['style'] = array();
         foreach ($styles as $style) {
             $tmp = explode(':', $style);
             if (count($tmp) > 1) {
@@ -207,11 +207,11 @@ class TagParser
      */
     public function extractTagAttributes($code)
     {
-        $param = [];
+        $param = array();
         $regexes = array(
             '([a-zA-Z0-9_]+)=([^"\'\s>]+)',  // read the parameters : name=value
-            '([a-zA-Z0-9_]+)=["]([^"]*)["]', // read the parameters : name="value"
-            "([a-zA-Z0-9_]+)=[']([^']*)[']"  // read the parameters : name='value'
+            '([a-zA-Z0-9_]+)=\s*["]([^"]*)["]', // read the parameters : name="value"
+            "([a-zA-Z0-9_]+)=\s*[']([^']*)[']"  // read the parameters : name='value'
         );
 
         foreach ($regexes as $regex) {

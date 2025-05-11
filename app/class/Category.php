@@ -4,24 +4,49 @@ namespace App;
 
 use PDO;
 
+/**
+ *
+ */
 class Category
 {
-    private $id;
-    private $type;
-    private $name;
-    private $parentId;
-    private $position = 999;
-    private $status = 1;
+    /**
+     * @var int
+     */
+    private int $id;
+    /**
+     * @var string
+     */
+    private string $type;
+    /**
+     * @var string
+     */
+    private string $name;
+    /**
+     * @var int
+     */
+    private int $parentId;
+    /**
+     * @var int
+     */
+    private int $position = 999;
+    /**
+     * @var int
+     */
+    private int $status = 1;
 
-    private $dbh = null;
+    /**
+     * @var PDO|null
+     */
+    private ?PDO $dbh = null;
 
-    public function __construct($idCategory = null)
+    /**
+     * @param int|null $idCategory
+     */
+    public function __construct(?int $idCategory = null)
     {
-        if (is_null($this->dbh)) {
-            $this->dbh = DB::connect();
-        }
+        $this->dbh ??= DB::connect();
 
-        if (!is_null($idCategory)) {
+        if ($idCategory !== null) {
             $this->id = $idCategory;
             $this->show();
         }
@@ -30,7 +55,7 @@ class Category
     /**
      * @return bool
      */
-    public function show()
+    public function show(): bool
     {
 
         $sql = 'SELECT * FROM ' . TABLEPREFIX . 'appoe_categories WHERE id = :id';
@@ -54,7 +79,7 @@ class Category
      * Feed class attributs
      * @param $data
      */
-    public function feed($data)
+    public function feed($data): void
     {
         if (isset($data)) {
             foreach ($data as $attribut => $value) {
@@ -68,65 +93,65 @@ class Category
     }
 
     /**
-     * @return null
+     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * @param null $id
+     * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
     /**
-     * @param mixed $type
+     * @param string $type
      */
-    public function setType($type)
+    public function setType(string $type): void
     {
         $this->type = $type;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getParentId()
+    public function getParentId(): int
     {
         return $this->parentId;
     }
 
     /**
-     * @param mixed $parentId
+     * @param int $parentId
      */
-    public function setParentId($parentId)
+    public function setParentId(int $parentId): void
     {
         $this->parentId = $parentId;
     }
@@ -134,7 +159,7 @@ class Category
     /**
      * @return int
      */
-    public function getPosition()
+    public function getPosition(): int
     {
         return $this->position;
     }
@@ -142,28 +167,31 @@ class Category
     /**
      * @param int $position
      */
-    public function setPosition($position)
+    public function setPosition(int $position): void
     {
         $this->position = $position;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getStatus()
+    public function getStatus(): int
     {
         return $this->status;
     }
 
     /**
-     * @param mixed $status
+     * @param int $status
      */
-    public function setStatus($status)
+    public function setStatus(int $status): void
     {
         $this->status = $status;
     }
 
-    public function createTable()
+    /**
+     * @return bool
+     */
+    public function createTable(): bool
     {
         $sql = 'CREATE TABLE IF NOT EXISTS `' . TABLEPREFIX . 'appoe_categories` (
   					`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -188,10 +216,10 @@ class Category
     }
 
     /**
-     * @param $parentId
+     * @param ?int $parentId
      * @return array|bool
      */
-    public function showByType($parentId = null)
+    public function showByType(?int $parentId = null): mixed
     {
 
         $params = array(':type' => $this->type);
@@ -212,10 +240,10 @@ class Category
     }
 
     /**
-     * @param $categoriesCount
+     * @param bool $categoriesCount
      * @return array|bool
      */
-    public function showAll($categoriesCount = false)
+    public function showAll(bool $categoriesCount = false): false|array
     {
 
         $sql = 'SELECT * FROM ' . TABLEPREFIX . 'appoe_categories WHERE status = 1 ORDER BY name ASC';
@@ -237,7 +265,7 @@ class Category
     /**
      * @return bool
      */
-    public function save()
+    public function save(): bool
     {
         $sql = 'INSERT INTO ' . TABLEPREFIX . 'appoe_categories (type, name, parentId, position) VALUES(:type, :name, :parentId, :position)';
         $stmt = $this->dbh->prepare($sql);
@@ -261,7 +289,7 @@ class Category
      *
      * @return bool
      */
-    public function notExist($forUpdate = false)
+    public function notExist(bool $forUpdate = false): bool
     {
 
         $sql = 'SELECT * FROM ' . TABLEPREFIX . 'appoe_categories WHERE name = :name AND type = :type AND parentId = :parentId';
@@ -299,7 +327,7 @@ class Category
      *
      * @return bool
      */
-    public function delete()
+    public function delete(): bool
     {
         $this->status = 0;
         return $this->update();
@@ -308,7 +336,7 @@ class Category
     /**
      * @return bool
      */
-    public function update()
+    public function update(): bool
     {
         $sql = 'UPDATE ' . TABLEPREFIX . 'appoe_categories SET name = :name, parentId = :parentId, position = :position, status = :status WHERE id = :id';
         $stmt = $this->dbh->prepare($sql);

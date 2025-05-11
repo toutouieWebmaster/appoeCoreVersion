@@ -50,7 +50,7 @@ class MailLogger
                 `sent` tinyint(1) NOT NULL DEFAULT "1",
                 UNIQUE (`date`, `object`, `fromEmail`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;';
-        return !DB::exec($sql) ? false : true;
+        return (bool)DB::exec($sql);
     }
 
     /**

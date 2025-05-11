@@ -8,14 +8,18 @@ use PDO;
 class Article
 {
     private $id;
-    private $name;
-    private $description = null;
-    private $slug;
-    private $content;
+    private string $name;
+    private mixed $description = null;
+    private string $slug;
+    private string $content;
     private $statut = 1;
     private $userId;
     private $createdAt;
     private $updatedAt;
+    private ?array $medias = [];
+    private ?array $metas = [];
+    private ?array $categoriesDetails = [];
+    private ?array $categories = [];
 
     private $lang;
 
@@ -71,6 +75,46 @@ class Article
                 $this->$method($value);
             }
         }
+    }
+
+    public function getMedias(): ?array
+    {
+        return $this->medias;
+    }
+
+    public function setMedias(?array $medias): void
+    {
+        $this->medias = $medias;
+    }
+
+    public function getMetas(): ?array
+    {
+        return $this->metas;
+    }
+
+    public function setMetas(?array $metas): void
+    {
+        $this->metas = $metas;
+    }
+
+    public function getCategoriesDetails(): ?array
+    {
+        return $this->categoriesDetails;
+    }
+
+    public function setCategoriesDetails(?array $categoriesDetails): void
+    {
+        $this->categoriesDetails = $categoriesDetails;
+    }
+
+    public function getCategories(): ?array
+    {
+        return $this->categories;
+    }
+
+    public function setCategories(?array $categories): void
+    {
+        $this->categories = $categories;
     }
 
     /**
@@ -333,6 +377,26 @@ class Article
         }
         return false;
     }
+
+    /**
+     * @param $parentId
+     * @return bool|array
+     */
+    public function showWithPosition($parentId)
+    {
+        $sql = 'SELECT name, position FROM `appoe_categories` WHERE `parentId` = :parentId';
+
+
+        $params = array(':parentId' => $parentId);
+
+
+        $return = DB::exec($sql, $params);
+        if ($return) {
+            return $return->fetchAll(PDO::FETCH_OBJ);
+        }
+        return false;
+    }
+
 
     /**
      * @param bool $countArticles
@@ -606,15 +670,14 @@ class Article
         $return = DB::exec($sql, $params);
 
         if ($return) {
-
-            $lastInsertId = DB::lastInsertId();
-            $this->id = $lastInsertId;
-            $this->setId($this->id);
-
-            appLog('Creating Article -> id: ' . $this->id);
-            return true;
+           $id = DB::lastInsertId();
+            if ($id) {
+                $this->setId($this->id);
+                appLog('Creating Article -> id: ' . $this->id);
+                return true;
+            }
         }
-        return false;
+       return false;
     }
 
     /**

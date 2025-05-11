@@ -1,6 +1,7 @@
 <?php
 require('header.php');
 
+use App\Form;
 use App\Plugin\People\People;
 
 if (!empty($_GET['id'])):
@@ -18,7 +19,7 @@ if (!empty($_GET['id'])):
                 <input type="hidden" name="id" value="<?= $People->getId(); ?>">
                 <div class="row">
                     <div class="col-12 col-lg-4 my-2">
-                        <?= \App\Form::text('Enregistrement de type', 'type', 'text', $People->getType(), true, 150, 'list="typeList" autocomplete="off"'); ?>
+                        <?= Form::text('Enregistrement de type', 'type', 'text', $People->getType(), true, 150, 'list="typeList" autocomplete="off"'); ?>
                         <datalist id="typeList">
                             <?php foreach (getAppTypes() as $type => $name): ?>
                                 <option value="<?= $type; ?>"><?= $name; ?></option>
@@ -26,49 +27,49 @@ if (!empty($_GET['id'])):
                         </datalist>
                     </div>
                     <div class="col-12 col-lg-4 my-2">
-                        <?= \App\Form::select('Nature de la personne', 'nature', getPeopleNatureName(), $People->getNature(), true); ?>
+                        <?= Form::select('Nature de la personne', 'nature', getPeopleNatureName(), $People->getNature(), true); ?>
                     </div>
                     <div class="col-12 col-lg-4 my-2">
-                        <?= \App\Form::text('Nom', 'name', 'text', $People->getName(), true, 150); ?>
+                        <?= Form::text('Nom', 'name', 'text', $People->getName(), true, 150); ?>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 col-lg-4 my-2">
-                        <?= \App\Form::text('Prénom', 'firstName', 'text', $People->getFirstName(), false, 150); ?>
+                        <?= Form::text('Prénom', 'firstName', 'text', $People->getFirstName(), false, 150); ?>
                     </div>
 
                     <div class="col-12 col-lg-4 my-2">
-                        <?= \App\Form::text('Date de naissance', 'birthDate', 'date', $People->getBirthDate(), false, 10); ?>
+                        <?= Form::text('Date de naissance', 'birthDate', 'date', $People->getBirthDate(), false, 10); ?>
                     </div>
                     <div class="col-12 col-lg-4 my-2">
-                        <?= \App\Form::text('Adresse Email', 'email', 'email', $People->getEmail(), false, 255); ?>
+                        <?= Form::text('Adresse Email', 'email', 'email', $People->getEmail(), false, 255); ?>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 col-lg-4 my-2">
-                        <?= \App\Form::text('Téléphone', 'tel', 'tel', $People->getTel(), false, 10); ?>
+                        <?= Form::text('Téléphone', 'tel', 'tel', $People->getTel(), false, 10); ?>
                     </div>
 
                     <div class="col-12 col-lg-8 my-2">
-                        <?= \App\Form::text('Adresse postale', 'address', 'text', $People->getAddress(), false, 255); ?>
+                        <?= Form::text('Adresse postale', 'address', 'text', $People->getAddress(), false, 255); ?>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 col-lg-2 my-2">
-                        <?= \App\Form::text('Code postal', 'zip', 'tel', $People->getZip(), false, 7); ?>
+                        <?= Form::text('Code postal', 'zip', 'tel', $People->getZip(), false, 7); ?>
                     </div>
                     <div class="col-12 col-lg-5 my-2">
-                        <?= \App\Form::text('Ville', 'city', 'text', $People->getCity(), false, 100); ?>
+                        <?= Form::text('Ville', 'city', 'text', $People->getCity(), false, 100); ?>
                     </div>
                     <div class="col-12 col-lg-5 my-2">
-                        <?= \App\Form::select('Pays', 'country', listPays(), !empty($People->getCountry()) ? $People->getCountry() : 'FR', false); ?>
+                        <?= Form::select('Pays', 'country', listPays(), !empty($People->getCountry()) ? $People->getCountry() : 'FR'); ?>
                     </div>
                 </div>
                 <div class="my-2"></div>
                 <div class="row">
                     <div class="col-12">
-                        <?= \App\Form::target('UPDATEPERSON'); ?>
-                        <?= \App\Form::submit('Enregistrer', 'UPDATEPERSONSUBMIT'); ?>
+                        <?= Form::target('UPDATEPERSON'); ?>
+                        <?= Form::submit('Enregistrer', 'UPDATEPERSONSUBMIT'); ?>
                     </div>
                 </div>
             </form>

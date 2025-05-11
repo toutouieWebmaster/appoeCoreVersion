@@ -2,6 +2,7 @@
 
 use App\Category;
 use App\CategoryRelations;
+use App\Form;
 use App\Plugin\ItemGlue\Article;
 use App\Plugin\ItemGlue\ArticleMedia;
 use App\Plugin\ItemGlue\ArticleRelation;
@@ -119,16 +120,16 @@ if (!empty($_GET['id'])):
                                 <?= getTokenField(); ?>
                                 <input type="hidden" name="articleId" value="<?= $Article->getId(); ?>">
                                 <div class="col-12">
-                                    <?= \App\Form::textarea('articleContent', 'articleContent', htmlSpeCharDecode($Article->getContent()), 5, true, '', 'appoeditor', 'Contenu de l\'article'); ?>
+                                    <?= Form::textarea('articleContent', 'articleContent', htmlSpeCharDecode($Article->getContent()), 5, true, '', 'appoeditor', 'Contenu de l\'article'); ?>
 
                                 </div>
                                 <div class="my-4"></div>
                                 <div class="col-12">
-                                    <?= \App\Form::checkbox('Catégories', 'categories', $listCatgories, $allCategoryRelations, 'checkCategories'); ?>
+                                    <?= Form::checkbox('Catégories', 'categories', $listCatgories, $allCategoryRelations, 'checkCategories'); ?>
                                 </div>
                                 <div class="col-12">
-                                    <?= \App\Form::target('SAVEARTICLECONTENT'); ?>
-                                    <?= \App\Form::submit('Enregistrer', 'SAVEARTICLECONTENTSUBMIT'); ?>
+                                    <?= Form::target('SAVEARTICLECONTENT'); ?>
+                                    <?= Form::submit('Enregistrer', 'SAVEARTICLECONTENTSUBMIT'); ?>
                                 </div>
                             </form>
                         </div>
@@ -142,16 +143,16 @@ if (!empty($_GET['id'])):
                         <?= getTokenField(); ?>
                         <input type="hidden" name="articleId" value="<?= $Article->getId(); ?>">
                         <div class="col-12 col-lg-6 my-2">
-                            <?= \App\Form::file('Importer depuis votre appareil', 'inputFile[]', false, 'multiple', '', 'Choisissez...', false); ?>
+                            <?= Form::file('Importer depuis votre appareil', 'inputFile[]', false, 'multiple', '', 'Choisissez...', false); ?>
                         </div>
                         <div class="col-12 col-lg-6 my-2">
                                 <textarea name="textareaSelectedFile" id="textareaSelectedFile"
                                           class="d-none"></textarea>
-                            <?= \App\Form::text('Choisissez dans la bibliothèque', 'inputSelectFiles', 'text', '0 fichiers', false, 300, 'readonly data-toggle="modal" data-target="#allMediasModal"'); ?>
+                            <?= Form::text('Choisissez dans la bibliothèque', 'inputSelectFiles', 'text', '0 fichiers', false, 300, 'readonly data-toggle="modal" data-target="#allMediasModal"'); ?>
                         </div>
                         <div class="col-12">
-                            <?= \App\Form::target('ADDIMAGESTOARTICLE'); ?>
-                            <?= \App\Form::submit('Enregistrer', 'ADDIMAGESTOARTICLESUBMIT'); ?>
+                            <?= Form::target('ADDIMAGESTOARTICLE'); ?>
+                            <?= Form::submit('Enregistrer', 'ADDIMAGESTOARTICLESUBMIT'); ?>
                         </div>
                     </form>
                     <?php if ($allArticleMedias): ?>
@@ -203,14 +204,14 @@ if (!empty($_GET['id'])):
                             <form action="" method="post" id="addArticleMetaForm">
                                 <input type="hidden" name="idArticle" value="<?= $Article->getId(); ?>">
                                 <input type="hidden" name="UPDATEMETAARTICLE" value="">
-                                <?= \App\Form::target('ADDARTICLEMETA'); ?>
+                                <?= Form::target('ADDARTICLEMETA'); ?>
                                 <?= getTokenField(); ?>
                                 <div class="row">
                                     <div class="col-12 my-2">
-                                        <?= \App\Form::text('Titre', 'metaKey', 'text', '', true, 150); ?>
+                                        <?= Form::text('Titre', 'metaKey', 'text', '', true, 150); ?>
                                     </div>
                                     <div class="col-12 my-2">
-                                        <?= \App\Form::textarea('Contenu', 'metaValue', '', 5, true, '', 'appoeditor'); ?>
+                                        <?= Form::textarea('Contenu', 'metaValue', '', 5, true, '', 'appoeditor'); ?>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -221,7 +222,7 @@ if (!empty($_GET['id'])):
                                         </button>
                                     </div>
                                     <div class="col-12 col-lg-9 my-2">
-                                        <?= \App\Form::submit('Enregistrer', 'ADDMETAPRODUCTSUBMIT'); ?>
+                                        <?= Form::submit('Enregistrer', 'ADDMETAPRODUCTSUBMIT'); ?>
                                     </div>
                                 </div>
                             </form>
@@ -237,10 +238,10 @@ if (!empty($_GET['id'])):
                             <form method="post" id="relationUsersForm">
                                 <?= getTokenField(); ?>
                                 <input type="hidden" name="articleId" value="<?= $Article->getId(); ?>">
-                                <?= \App\Form::checkbox('Utilisateurs', 'userRelation', $listUsers, $allRelations); ?>
+                                <?= Form::checkbox('Utilisateurs', 'userRelation', $listUsers, $allRelations); ?>
                                 <div class="my-4"></div>
-                                <?= \App\Form::target('RELATIONUSERS'); ?>
-                                <?= \App\Form::submit('Associer', 'RELATIONUSERSSUBMIT'); ?>
+                                <?= Form::target('RELATIONUSERS'); ?>
+                                <?= Form::submit('Associer', 'RELATIONUSERSSUBMIT'); ?>
                             </form>
                         </div>
                     </div>
@@ -290,25 +291,25 @@ if (!empty($_GET['id'])):
                             <input type="hidden" name="id" value="<?= $Article->getId(); ?>">
                             <div class="row my-2">
                                 <div class="col-12 my-2">
-                                    <?= \App\Form::text('Nom', 'name', 'text', $Article->getName(), true, 70, 'data-seo="title"'); ?>
+                                    <?= Form::text('Nom', 'name', 'text', $Article->getName(), true, 70, 'data-seo="title"'); ?>
                                 </div>
                                 <div class="col-12 my-2">
-                                    <?= \App\Form::textarea('Description', 'description', $Article->getDescription(), 2, true, 'maxlength="158" data-seo="description"'); ?>
+                                    <?= Form::textarea('Description', 'description', $Article->getDescription(), 2, true, 'maxlength="158" data-seo="description"'); ?>
                                 </div>
                                 <div class="col-12 my-2">
-                                    <?= \App\Form::text('Nom du lien URL' . ' (slug)', 'slug', 'text', $Article->getSlug(), true, 100, 'data-seo="slug"'); ?>
+                                    <?= Form::text('Nom du lien URL' . ' (slug)', 'slug', 'text', $Article->getSlug(), true, 100, 'data-seo="slug"'); ?>
                                 </div>
                                 <hr class="hrStyle">
                                 <div class="col-12 my-2">
-                                    <?= \App\Form::text('Date de création', 'createdAt', 'date', $Article->getCreatedAt(), true, 10); ?>
+                                    <?= Form::text('Date de création', 'createdAt', 'date', $Article->getCreatedAt(), true, 10); ?>
                                 </div>
                                 <div class="col-12 my-2">
-                                    <?= \App\Form::radio('Statut de l\'article', 'statut', array_map('trans', ITEMGLUE_ARTICLES_STATUS), $Article->getStatut(), true); ?>
+                                    <?= Form::radio('Statut de l\'article', 'statut', array_map('trans', ITEMGLUE_ARTICLES_STATUS), $Article->getStatut(), true); ?>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <?= \App\Form::target('UPDATEARTICLEHEADERS'); ?>
+                            <?= Form::target('UPDATEARTICLEHEADERS'); ?>
                             <button type="submit" name="UPDATEARTICLEHEADERSSUBMIT"
                                     class="btn btn-outline-info"><?= trans('Enregistrer'); ?></button>
                         </div>

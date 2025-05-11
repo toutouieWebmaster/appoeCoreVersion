@@ -7,7 +7,7 @@
  *
  * @package   Html2pdf
  * @author    Laurent MINGUET <webmaster@html2pdf.fr>
- * @copyright 2017 Laurent MINGUET
+ * @copyright 2025 Laurent MINGUET
  */
 namespace Spipu\Html2Pdf\Tag\Svg;
 
@@ -51,7 +51,7 @@ class Polyline extends AbstractSvgTag
 
             $amountPath = count($path);
 
-            $actions = [];
+            $actions = array();
             for ($k=0; $k<$amountPath; $k+=2) {
                 $actions[] = array(
                     ($k ? 'L' : 'M') ,

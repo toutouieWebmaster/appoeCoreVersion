@@ -8,11 +8,11 @@ if (!defined('CACHE_PATH')) {
 class CmsCache
 {
 
-    public $dirname = CACHE_PATH . LANG . DIRECTORY_SEPARATOR;
+    public string $dirname = CACHE_PATH . LANG . DIRECTORY_SEPARATOR;
     public $filename;
     public $file;
     public $htmlFile;
-    public $duration = CACHE_DURATION; // In minutes
+    public $duration = CACHE_DURATION; // In seconds
 
     private $buffer = false;
 
@@ -28,9 +28,9 @@ class CmsCache
 
     /**
      * Read from cache file
-     * @return bool|false|string
+     * @return false|string
      */
-    public function read()
+    public function read(): false|string
     {
 
         if (file_exists($this->htmlFile)) {
@@ -50,7 +50,7 @@ class CmsCache
      *
      * @param $content
      */
-    public function write($content)
+    public function write($content): void
     {
         file_put_contents($this->htmlFile, $content);
     }
@@ -59,10 +59,10 @@ class CmsCache
      * Starting write in cache file if APPOE isn't in maintenance mode
      * @return bool
      */
-    public function start()
+    public function start(): bool
     {
-        $maintenance = getOptionPreference('maintenance');
-        $cacheProcess = getOptionPreference('cacheProcess');
+        $maintenance = getOption('PREFERENCE', 'maintenance');
+        $cacheProcess = getOption('PREFERENCE', 'cacheProcess');
         if ('false' === $cacheProcess || 'true' === $maintenance) {
             return false;
         }
@@ -82,7 +82,7 @@ class CmsCache
      * end writing in cache file
      * @return bool
      */
-    public function end()
+    public function end(): bool
     {
         if (!$this->buffer) {
             return false;
@@ -95,22 +95,21 @@ class CmsCache
     }
 
     /**
-     * @param $buffer
-     * @return string
+     * @param array|string $buffer
+     * @return array|null|string|string[]
      */
-    public function minifyHtml($buffer)
+    public function minifyHtml(array|string $buffer): array|string|null
     {
         $search = array('/<!--(.*)-->/Uis', '/[[:blank:]]+/');
         $replace = array('', ' ');
-        $buffer = preg_replace($search, $replace, $buffer);
-        return $buffer;
+        return preg_replace($search, $replace, $buffer);
     }
 
 
     /**
      * delete cache file
      */
-    public function delete()
+    public function delete(): void
     {
 
         if (file_exists($this->htmlFile)) {

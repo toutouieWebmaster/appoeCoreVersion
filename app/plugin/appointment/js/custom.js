@@ -1,10 +1,10 @@
 (function () {
     if ('undefined' == typeof window.jQuery) {
-        var jqueryScript = document.createElement("script");
+        let jqueryScript = document.createElement("script");
         jqueryScript.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
         jqueryScript.type = 'text/javascript';
         jqueryScript.onload = function () {
-            var $ = window.jQuery;
+            let $ = window.jQuery;
         };
         document.getElementsByTagName("head")[0].appendChild(jqueryScript);
     }
@@ -96,7 +96,7 @@ function owlCarouselInit() {
     });
 
     owl.on('changed.owl.carousel', function (property) {
-        var current = property.item.index;
+        let current = property.item.index;
         let currentDate = jQuery(property.target).find(".owl-item").eq(current).find('div.dayBox');
         let lastDate = jQuery(property.target).find(".owl-item").last().find('div.dayBox');
         //let prevDate = jQuery(property.target).find(".owl-item").eq(current-7).find('div.dayBox');
@@ -125,7 +125,7 @@ jQuery(window).on('load', function () {
         || $('section#agendaDatesRdv.appointmentAppoe').length) {
 
         appointment_getLoader();
-        var loadedTimer = setInterval(function () {
+        let loadedTimer = setInterval(function () {
             if (jQuery.isFunction(jQuery.fn.owlCarousel)) {
                 owlCarouselInit();
                 clearInterval(loadedTimer);
@@ -133,7 +133,7 @@ jQuery(window).on('load', function () {
             }
 
             if($('script[src*="owl.carousel.min.js"]').length === 0) {
-                var owlScript = document.createElement("script");
+                let owlScript = document.createElement("script");
                 owlScript.src = '/app/plugin/appointment/assets/owl.carousel.min.js';
                 owlScript.type = 'text/javascript';
                 document.getElementsByTagName("head")[0].appendChild(owlScript);
@@ -141,7 +141,7 @@ jQuery(window).on('load', function () {
 
         }, 300);
 
-        var idAgenda, idClient, idRdvType, rdvDateReminder, rdvDate, rdvDuration, rdvBegin, rdvEnd;
+        let idAgenda, idClient, idRdvType, rdvDateReminder, rdvDate, rdvDuration, rdvBegin, rdvEnd;
 
         $(document.body).on('click', 'button.agendaChoice', function () {
 

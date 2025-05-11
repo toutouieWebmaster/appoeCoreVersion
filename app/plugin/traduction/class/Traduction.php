@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Plugin\Traduction;
+use App\DB;
+
 class Traduction
 {
 
@@ -16,7 +18,7 @@ class Traduction
     public function __construct($lang = null)
     {
         if (is_null($this->dbh)) {
-            $this->dbh = \App\DB::connect();
+            $this->dbh = DB::connect();
         }
 
         if (!is_null($lang) && is_null($this->data)) {

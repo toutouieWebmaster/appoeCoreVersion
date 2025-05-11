@@ -1,5 +1,6 @@
 <?php
 
+use App\Form;
 use App\Plugin\Shop\Product;
 use App\Plugin\Shop\Stock;
 
@@ -18,21 +19,21 @@ if (!empty($_GET['id'])):
             <div class="row">
 
                 <div class="col-12 col-lg-6 my-2">
-                    <?= \App\Form::text('Quantité limitée', 'limit_quantity', 'number', $Stock->getLimitQuantity(), false, 10, 'aria-describedby="limit_quantity_help"'); ?>
+                    <?= Form::text('Quantité limitée', 'limit_quantity', 'number', $Stock->getLimitQuantity(), false, 10, 'aria-describedby="limit_quantity_help"'); ?>
                     <small id="limit_quantity_help" class="form-text text-muted">
                         <?= trans('Quantité restante'); ?> <?= $Product->getRemainingQuantity(); ?>
                     </small>
                 </div>
 
                 <div class="col-12 col-lg-6 my-2">
-                    <?= \App\Form::text('Date limitée (au format année-mois-jour, ex. 2025-01-31)', 'date_limit', 'text', $Stock->getDateLimit(), false, 10, '', '', 'datepicker'); ?>
+                    <?= Form::text('Date limitée (au format année-mois-jour, ex. 2025-01-31)', 'date_limit', 'text', $Stock->getDateLimit(), false, 10, '', '', 'datepicker'); ?>
                 </div>
 
             </div>
             <div class="row">
                 <div class="col-12 my-2">
-                    <?= \App\Form::target('UPDATESTOCK'); ?>
-                    <?= \App\Form::submit('Enregistrer', 'UPDATESTOCKSUBMIT'); ?>
+                    <?= Form::target('UPDATESTOCK'); ?>
+                    <?= Form::submit('Enregistrer', 'UPDATESTOCKSUBMIT'); ?>
                 </div>
             </div>
         </form>
