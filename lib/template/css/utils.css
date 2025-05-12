@@ -1,0 +1,177 @@
+/************ PRINT ****************/
+@media print {
+
+    @page {
+        size: auto;
+        margin-bottom: 0;
+    }
+
+    * {
+        -webkit-print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+
+    .noPrint, .noPrint > *,
+    header, footer, nav, form,
+    input, label, button {
+        display: none !important;
+    }
+
+    a[href]:after {
+        content: none !important;
+    }
+
+    img {
+        border: 0;
+        max-width: 300px;
+        max-height: 300px;
+    }
+
+    h1 {
+        page-break-before: always !important;
+        margin: 0;
+        padding: 0;
+        font-size: 250%;
+    }
+
+    h2 {
+        font-size: 175%;
+    }
+
+    h3 {
+        font-size: 150%;
+    }
+
+    p, small, span {
+        font-size: 100% !important;
+    }
+}
+
+/************ LOADER SPINNER ***************/
+.spinnerAppoe {
+    display: inline-block;
+    vertical-align: middle;
+    width: 50px;
+    height: 40px;
+    text-align: center;
+    font-size: 10px;
+}
+
+.spinnerAppoe > div {
+    background-color: #333;
+    height: 100%;
+    width: 6px;
+    display: inline-block;
+
+    -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+    animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.spinnerAppoe .rect2 {
+    -webkit-animation-delay: -1.1s;
+    animation-delay: -1.1s;
+}
+
+.spinnerAppoe .rect3 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+}
+
+.spinnerAppoe .rect4 {
+    -webkit-animation-delay: -0.9s;
+    animation-delay: -0.9s;
+}
+
+.spinnerAppoe .rect5 {
+    -webkit-animation-delay: -0.8s;
+    animation-delay: -0.8s;
+}
+
+
+@keyframes sk-stretchdelay {
+    0%, 40%, 100% {
+        transform: scaleY(0.4);
+    }
+    20% {
+        transform: scaleY(1.0);
+    }
+}
+
+/************ RESPONSIVE MAP ON IFRAME ***************/
+.map-responsive {
+    overflow: hidden;
+    padding-bottom: 56.25%;
+    position: relative;
+    height: 0;
+}
+
+.map-responsive iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+/************** GOOGLE RECAPTCHA V3 ***************/
+.grecaptcha-badge {
+    bottom: 65px !important;
+}
+
+/************** IFRAME *******************/
+.hideElementInFrame {
+    display: none !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    position: absolute !important;
+    z-index: 0 !important;
+}
+
+/*************** ADMIN DASHBOARD *****************/
+#adminDashPublic {
+    position: fixed;
+    bottom: 20%;
+    left: 0;
+    transform: translateY(-20%);
+    box-sizing: border-box;
+    z-index: 999999;
+    text-align: left;
+}
+
+#adminDashPublic a,
+#adminDashPublic button {
+    width: 35px;
+    transition: all 0.2s;
+    display: block;
+    color: #FFF;
+    background: rgba(0, 0, 0, 0.3);
+    font-size: 13px;
+    border: 0;
+    padding: 10px 0;
+    line-height: 16px;
+    text-align: center;
+}
+
+#adminDashPublic a img,
+#adminDashPublic button img {
+    width: 17px;
+}
+
+#adminDashPublic hr {
+    width: 35px;
+    display: block;
+    color: #FFF;
+    background: #FFF;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    height: 1px;
+}
+
+#adminDashPublic a:focus,
+#adminDashPublic a:hover,
+#adminDashPublic button:focus,
+#adminDashPublic button:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
