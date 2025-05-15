@@ -49,7 +49,7 @@ $defaultEmail = getOption('DATA', 'defaultEmail'); ?>
                                                 <span class="btnArchive"><i class="fas fa-ban"></i></span>
                                             </button>
                                         <?php endif;
-                                        if ($user->id != getUserIdSession() && getUserRoleId() > getRoleId($user->role) && $user->statut == 0 && isTechnicien($user->role)): ?>
+                                        if ($user->id != getUserIdSession() && getUserRoleId() > getRoleId($user->role) && $user->statut == 0 && isTechnicien(getUserRoleId())): ?>
                                             <button type="button" class="btn btn-sm valideUser"
                                                     title="<?= trans('Valider'); ?>"
                                                     data-iduser="<?= $user->id ?>">
