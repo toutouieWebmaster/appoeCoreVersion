@@ -3046,12 +3046,12 @@ function groupMultipleKeysArray(array $data, string $keyName): array
 }
 
 /**
- * @param array|object|null $allContentArr
+ * @param mixed $allContentArr
  * @param mixed $key
  *
  * @return array
  */
-function extractFromObjArr(null|array|object $allContentArr, mixed $key): array
+function extractFromObjArr(mixed $allContentArr, mixed $key): array
 {
     $allContent = [];
     if (!empty($allContentArr)) {
