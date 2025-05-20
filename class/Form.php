@@ -25,15 +25,14 @@ class Form
             $html .= '<option disabled="disabled" selected="selected" value="0">' . trans('Choisissez') . '...</option>';
         }
 
-            for ($m = 0; $m <= $maxMin; $m += $jumpMin) {
-                $minutes = sprintf('%02d', $m);
-                $minutes = $m < 10 ? '0' . $m : $m;
-                $heures = ($h == 0) ? '' : $h . 'h';
-                $duree = $heures . $minutes;
-                $html .= '<option value="' . $duree . '" ' . ($chosenValue == $duree ? 'selected' : '') . '>' . $duree . '</option>';
-            }
-
-        }
+	for ($h = $hourBegin; $h < $hourEnd; $h++) {
+    		for ($m = 0; $m <= $maxMin; $m += $jumpMin) {
+        		$minutes = sprintf('%02d', $m);
+        		$heures = ($h == 0) ? '' : $h . 'h';
+        		$duree = $heures . $minutes;
+        		$html .= '<option value="' . $duree . '" ' . ($chosenValue == $duree ? 'selected' : '') . '>' . $duree . '</option>';
+    		}
+	}
 
         $html .= '</select></div>';
 
