@@ -5107,12 +5107,12 @@ function fichierType(string $file): void
 /**
  * Get APPOE logo. if $appoelogo is true, return only appoe logo
  *
- * @param bool $appoeLogo
+ * @param mixed $appoeLogo
  * @param bool $onlySrc
  *
  * @return string
  */
-function getLogo(bool $appoeLogo = false, bool $onlySrc = false): string
+function getLogo(mixed $appoeLogo = false, bool $onlySrc = false): string
 {
     $src = APP_IMG_URL . 'appoe-logo-black-sm.png';
     if (true === $appoeLogo) {
