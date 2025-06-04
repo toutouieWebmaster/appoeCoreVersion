@@ -773,7 +773,7 @@ function trans(string $key, string $doc = 'general'): mixed
  */
 function trad(string $text, bool $tradToOrigin = false, string $lang = LANG): mixed
 {
-    if (class_exists('App\Plugin\Traduction\Traduction')) {
+    if (class_exists('App\Plugin\Traduction\Traduction') && !file_exists(WEB_PLUGIN_PATH . 'traduction/setup.php')) {
 
         $Traduction = new Traduction($lang);
 
