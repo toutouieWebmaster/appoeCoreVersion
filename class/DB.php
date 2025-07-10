@@ -281,47 +281,11 @@ final class DB
      * @param string $name
      * DataBase BuckUp
      */
-    //ATTENTION ADAPTE POUR LOCAL
-    public static function backup(string $folder, string $name = 'db'): bool
+    public static function backup(string $folder, string $name = 'db'): void
     {
-        $backupDir = __DIR__ . '/../backup/' . $folder;
-        if (!is_dir($backupDir)) {
-            mkdir($backupDir, 0775, true);
-        }
-
-        $file = $backupDir . '/' . $name . '.sql.gz';
-
-        $file = str_replace('/', DIRECTORY_SEPARATOR, $file);
-        $file = realpath(dirname($file)) . DIRECTORY_SEPARATOR . basename($file);
-
-        $dbHost = escapeshellarg(DBHOST);
-        $dbUser = escapeshellarg(DBUSER);
-        $dbName = escapeshellarg(DBNAME);
-        $dbPass = escapeshellarg(DBPASS);
-        $fileEscaped = escapeshellarg($file);
-
-        $mysqldumpPath = "mysqldump";
-
-        $command = sprintf(
-            '"%s" --no-tablespace --opt -h%s -u%s --password=%s %s | gzip > %s',
-            $mysqldumpPath,
-            $dbHost,
-            $dbUser,
-            $dbPass,
-            $dbName,
-            $fileEscaped
-        );
-
-        exec($command . ' 2>&1', $output, $returnVar);
-
-        // Facultatif pour débugger
-        error_log('Command: ' . $command);
-        error_log('Return var: ' . $returnVar);
-        error_log('Output: ' . print_r($output, true));
-
-        return $returnVar === 0;
+        $file = getenv('DOCUMENT_ROOT') . '/app/backup/' . $folder . '/' . $name . '.sql.gz';
+        system('mysqldump --no-tablespace --opt -h' . DBHOST . ' -u' . DBUSER . ' -p"' . DBPASS . '" ' . DBNAME . ' | gzip > ' . $file);
     }
-
 
 
     /**
