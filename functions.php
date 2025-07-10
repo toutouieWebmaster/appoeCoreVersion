@@ -1557,7 +1557,7 @@ function saveFiles(string $folder = 'public'): array|false
 {
 
     // Get real path for our folder
-    $rootPath = realpath(getenv('DOCUMENT_ROOT') . DIRECTORY_SEPARATOR . 'APPOE' . DIRECTORY_SEPARATOR . $folder);
+    $rootPath = realpath(getenv('DOCUMENT_ROOT') . DIRECTORY_SEPARATOR . $folder);
 
     $dest = ROOT_PATH . 'app/backup/' . date('Y-m-d');
 
