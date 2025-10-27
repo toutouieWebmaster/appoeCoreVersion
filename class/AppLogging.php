@@ -4,13 +4,13 @@ namespace App;
 class AppLogging
 {
     /**
-     * @var false|string
+     * @var string
      */
-    private string|false $date;
+    private string $date;
     /**
-     * @var bool
+     * @var mixed
      */
-    private bool $user;
+    private mixed $user;
     /**
      * @var string
      */
@@ -21,7 +21,7 @@ class AppLogging
      */
     private string $logFile = 'applog.log';
     /**
-     * @var string|null
+     * @var ?string
      */
     private ?string $pathLogFile = null;
 
@@ -55,10 +55,10 @@ class AppLogging
     }
 
     /**
-     * @param $text
+     * @param string $text
      * @return bool
      */
-    public function write($text): bool
+    public function write(string $text): bool
     {
         if (!is_null($this->pathLogFile)) {
             $message = '[' . $this->date . '] | ' . $this->user . ' | ' . $this->userName . ' | ' . $text . ';' . PHP_EOL;
@@ -81,10 +81,10 @@ class AppLogging
     }
 
     /**
-     * @param mixed $line
+     * @param string $line
      * @return array|bool
      */
-    public function getLineInfos(mixed $line): bool|array
+    public function getLineInfos(string $line): bool|array
     {
 
         if (!empty($line) && str_contains($line, '|')) {

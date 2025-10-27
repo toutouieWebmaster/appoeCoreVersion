@@ -24,11 +24,15 @@ require_once WEB_PHPMAILER_PATH . 'SMTP.php';
 
 
 /**
- * @return string
+ * @return string|bool
  */
-function pageSlug(): string
+function pageSlug(): string|bool
 {
-    return str_replace('/', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+    if ($_SERVER['REQUEST_URI']) {
+        $path = (string)parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        return str_replace('/', '', $path);
+    }
+    return false;
 }
 
 
@@ -1853,7 +1857,6 @@ function deleteAllFolderContent(string $dirPath): void
                 }
             }
         }
-        reset($objects);
         rmdir($dirPath);
     } elseif (is_file($dirPath)) {
         unlink($dirPath);
@@ -2355,7 +2358,6 @@ function thumb(string $filename, int $desired_width = 100, int $quality = 80, bo
     );
 
     // Sauvegarde
-    $saved = false;
     if ($webp) {
         $saved = function_exists('imagewebp') && imagewebp($virtual_image, $dest, $quality);
     } else {
@@ -2530,7 +2532,7 @@ function updateDB(): bool
             $updateError = false;
             appLog('Updating db...');
 
-            foreach ($sqlToUpdate as $num => $sql) {
+            foreach ($sqlToUpdate as $sql) {
 
                 //Send sql request
                 $stmt = DB::exec($sql);
@@ -5049,7 +5051,7 @@ function getMonth(string|int $month = ''): array|string
         12 => "Décembre",
     ];
 
-    $month = (int) $month;
+    $month = (int) ltrim((string)$month, '0');
     return $month >= 1 && $month <= 12 ? $monthArr[$month] : $monthArr;
 }
 

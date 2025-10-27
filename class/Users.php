@@ -6,15 +6,15 @@ use PDO;
 
 class Users
 {
-    private $id;
-    private $login;
-    private $password;
-    private $role;
-    private $email;
-    private $nom;
-    private $prenom = '';
+    private int $id;
+    private string $login;
+    private string $password;
+    private int $role;
+    private string $email;
+    private string $nom;
+    private string $prenom = '';
     private $options = null;
-    private $statut = 1;
+    private int $statut = 1;
 
     private $dbh = null;
 
@@ -27,17 +27,17 @@ class Users
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id): void
     {
-        $this->id = intval($id);
+        $this->id = $id;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -67,9 +67,9 @@ class Users
     }
 
     /**
-     * @param mixed $password
+     * @param string $password
      */
-    public function setPassword($password)
+    public function setPassword(string $password)
     {
         $this->password = $password;
     }
@@ -171,7 +171,7 @@ class Users
     }
 
 
-    public function createTable()
+    public function createTable(): bool
     {
         $sql = 'CREATE TABLE IF NOT EXISTS `' . TABLEPREFIX . 'appoe_users` (
   					`id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -197,7 +197,7 @@ class Users
      * Require email & password
      * @return bool
      */
-    public function authUser()
+    public function authUser(): bool
     {
         $sql = 'SELECT * FROM ' . TABLEPREFIX . 'appoe_users WHERE BINARY login = :login AND statut = TRUE';
         $params = array(':login' => $this->login);
@@ -227,7 +227,7 @@ class Users
      *
      * @return bool
      */
-    public function show()
+    public function show(): bool
     {
         $sql = 'SELECT * FROM ' . TABLEPREFIX . 'appoe_users WHERE id = :id';
         $params = array(':id' => $this->id);
@@ -239,10 +239,10 @@ class Users
     }
 
     /**
-     * @param $minStatus
-     * @return bool|array
+     * @param bool $minStatus
+     * @return bool|array|object
      */
-    public function showAll($minStatus = true)
+    public function showAll(bool $minStatus = true): bool|array|object
     {
 
         $sqlStatus = $minStatus ? ' statut >= :statut ' : ' statut = :statut ';
@@ -258,7 +258,7 @@ class Users
      * Insert User into DataBase
      * @return bool
      */
-    public function save()
+    public function save(): bool
     {
         $hash_password = password_hash($this->password, PASSWORD_DEFAULT);
         $sql = 'INSERT INTO ' . TABLEPREFIX . 'appoe_users (login, email, password, role,  nom, prenom, options, created_at) 
@@ -281,7 +281,7 @@ class Users
         return false;
     }
 
-    public function update()
+    public function update(): bool
     {
         $sql = 'UPDATE ' . TABLEPREFIX . 'appoe_users 
         SET login = :login, email = :email, nom = :nom, prenom = :prenom, role = :role, statut = :statut 
@@ -308,7 +308,7 @@ class Users
      *
      * @return bool
      */
-    public function exist($login = false)
+    public function exist(bool $login = false): bool
     {
         $sql = 'SELECT login FROM ' . TABLEPREFIX . 'appoe_users WHERE BINARY login = :login';
         $params = array(':login' => $this->login);
@@ -333,7 +333,7 @@ class Users
      * Update user Password with new hash algorithme
      * @return bool
      */
-    public function updatePassword()
+    public function updatePassword(): bool
     {
         $hash_password = password_hash($this->password, PASSWORD_DEFAULT);
         $sql = 'UPDATE ' . TABLEPREFIX . 'appoe_users SET password = :password WHERE BINARY login = :login';
@@ -345,7 +345,7 @@ class Users
         return false;
     }
 
-    public function delete()
+    public function delete(): bool
     {
         $this->statut = 0;
         if ($this->update()) {
@@ -360,7 +360,7 @@ class Users
      *
      * @param $data
      */
-    public function feed($data)
+    public function feed($data): void
     {
         foreach ($data as $attribut => $value) {
             $method = 'set' . str_replace(' ', '', ucwords(str_replace('_', ' ', $attribut)));

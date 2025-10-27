@@ -3,8 +3,8 @@
 namespace App;
 class Hook
 {
-    private static $defaultPriority = 100;
-    private static $HOOKS = array(
+    private static int $defaultPriority = 100;
+    private static array $HOOKS = array(
         'cron' => [],
         'core_admin_before_dashboard' => [],
         'core_admin_after_dashboard' => [],
@@ -12,9 +12,9 @@ class Hook
     );
 
     /**
-     * @param $hook
+     * @param int|string $hook
      */
-    public static function addHook($hook)
+    public static function addHook(int|string $hook): void
     {
         if (!array_key_exists($hook, self::$HOOKS)) {
             self::$HOOKS[$hook] = [];
@@ -22,11 +22,11 @@ class Hook
     }
 
     /**
-     * @param $hook
+     * @param string $hook
      * @param array $args
      * @return bool
      */
-    public static function apply($hook, array $args = []): bool
+    public static function apply(string $hook, array $args = []): bool
     {
         if (!empty(self::$HOOKS[$hook])) {
             foreach (array_sort(self::$HOOKS[$hook], 'priority') as $f) {
@@ -42,19 +42,19 @@ class Hook
      * @param int $priority
      * @return bool
      */
-    public static function add_action($hook, $function, $priority = 0)
+    public static function add_action($hook, $function, int $priority = 0): bool
     {
         if (!isset($function)) {
             return false;
         }
 
-        if (!isset($priority) || !(intval($priority) > 0)) {
+        if (!isset($priority) || !($priority > 0)) {
             $priority = self::$defaultPriority;
         }
 
         self::$HOOKS[$hook][] = array(
             'function' => $function,
-            'priority' => intval($priority)
+            'priority' => $priority
         );
         return true;
     }

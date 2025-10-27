@@ -6,8 +6,8 @@ use PDO;
 
 class Page
 {
-    private $slug;
-    private $name;
+    private string $slug;
+    private string $name;
     private $min_role_id;
     private $statut;
     private $parent_id;
@@ -15,7 +15,7 @@ class Page
 
     private $dbh = null;
 
-    public function __construct($slug)
+    public function __construct(string $slug)
     {
         if (is_null($this->dbh)) {
             $this->dbh = DB::connect();
@@ -26,33 +26,33 @@ class Page
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }
 
     /**
-     * @param mixed $slug
+     * @param string $slug
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug): void
     {
         $this->slug = $slug;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -123,9 +123,9 @@ class Page
 
     /**
      * Get page informations
-     * @return array|bool
+     * @return bool
      */
-    public function getPageInfo()
+    public function getPageInfo(): bool
     {
         $sql = 'SELECT * FROM '.TABLEPREFIX.'appoe_menu WHERE slug = :slug';
         $stmt = $this->dbh->prepare($sql);
@@ -153,7 +153,7 @@ class Page
      * Feed class attributs
      * @param $data
      */
-    public function feed($data)
+    public function feed($data): void
     {
         if (isset($data)) {
             foreach ($data as $attribut => $value) {

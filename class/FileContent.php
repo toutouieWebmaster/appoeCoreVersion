@@ -122,7 +122,7 @@ class FileContent
     /**
      * @return bool
      */
-    public function createTable()
+    public function createTable(): bool
     {
         $sql = 'CREATE TABLE IF NOT EXISTS `'.TABLEPREFIX.'appoe_filesContent` (
   					`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -150,7 +150,7 @@ class FileContent
     /**
      * @return bool
      */
-    public function show()
+    public function show(): bool
     {
 
         $sql = 'SELECT * FROM '.TABLEPREFIX.'appoe_filesContent WHERE id = :id';
@@ -171,9 +171,9 @@ class FileContent
     }
 
     /**
-     * @return array|bool
+     * @return bool
      */
-    public function showByFile()
+    public function showByFile(): bool
     {
         $sql = 'SELECT * FROM '.TABLEPREFIX.'appoe_filesContent WHERE fileId = :fileId AND lang = :lang';
         $stmt = $this->dbh->prepare($sql);
@@ -238,7 +238,7 @@ class FileContent
      *
      * @return bool
      */
-    public function update()
+    public function update(): bool
     {
         $sql = 'UPDATE '.TABLEPREFIX.'appoe_filesContent 
         SET fileId = :fileId, title = :title, description = :description, lang = :lang, userId = :userId 
@@ -266,7 +266,7 @@ class FileContent
      *
      * @return bool
      */
-    public function delete()
+    public function delete(): bool
     {
 
         $sql = 'DELETE FROM '.TABLEPREFIX.'appoe_filesContent WHERE id = :id';
@@ -290,7 +290,7 @@ class FileContent
      *
      * @param $data
      */
-    public function feed($data)
+    public function feed($data): void
     {
         foreach ($data as $attribut => $value) {
             $method = 'set' . str_replace(' ', '', ucwords(str_replace('_', ' ', $attribut)));

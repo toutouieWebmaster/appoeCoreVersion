@@ -9,7 +9,7 @@ if (checkAjaxRequest() && !empty($_GET['fileId']) && is_numeric($_GET['fileId'])
 
     $Category = new Category();
     $Category->setType('MEDIA');
-    $listCatgories = extractFromObjToArrForList($Category->showByType(), 'id');
+    $listCategories = extractFromObjToArrForList($Category->showByType(), 'id');
 
     $Media = new Media();
     $Media->setId($_GET['fileId']);
@@ -114,7 +114,7 @@ if (checkAjaxRequest() && !empty($_GET['fileId']) && is_numeric($_GET['fileId'])
                     </div>
                     <?php if ($Media->getType() === 'MEDIA'): ?>
                         <div class="mb-2">
-                            <?= Form::select('Bibliothèques', 'typeId', $listCatgories, $Media->getTypeId(), true, ' data-old-type="' . $Media->getTypeId() . '" ', '', '', 'custom-select-sm imageTypeId upImgForm'); ?>
+                            <?= Form::select('Bibliothèques', 'typeId', $listCategories, $Media->getTypeId(), true, ' data-old-type="' . $Media->getTypeId() . '" ', '', '', 'custom-select-sm imageTypeId upImgForm'); ?>
                         </div>
                     <?php else: ?>
                         <input type="hidden" name="typeId" class="imageTypeId" value="<?= $Media->getTypeId(); ?>">

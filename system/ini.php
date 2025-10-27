@@ -74,6 +74,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', defined('DEBUG') && DEBUG ? 1 : 0);
 ini_set('log_errors', 1);
 ini_set('error_log', ROOT_PATH . 'error.log');
+const  ERROR_LOG_PATH = ROOT_PATH . 'error.log';
 
 /**
  * Set App Interface lang

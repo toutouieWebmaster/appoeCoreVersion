@@ -53,7 +53,7 @@ if (DB::checkTable(TABLEPREFIX . 'appoe_plugin_cms')) {
         }
 
     } else {
-        $existPage = $Cms->showDefaultSlug(LANG);
+        $existPage = $Cms->showDefaultSlug();
     }
 
     //Check if Page exist and accessible
@@ -108,7 +108,7 @@ if (DB::checkTable(TABLEPREFIX . 'appoe_plugin_cms')) {
                             setPageParam('currentPageType','SHOP');
                             setPageParam('currentPageName', $ProductPage->getName());
                             setPageParam('currentPageSlug', $ProductPage->getSlug());
-                            setPageParam('currentPageDescription', $ProductPageContent->getResume());
+                            setPageParam('currentPageDescription', $ProductPageContent->getResume() ?? '');
                         }
                     }
                 }

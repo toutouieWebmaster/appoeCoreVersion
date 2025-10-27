@@ -88,7 +88,7 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                     <hr>
                     <div>
                         <strong class="text-secondary">Ajouté manuellement</strong>
-                        <div id="allPersimissions">
+                        <div id="allPermissions">
                             <div class="slimScroll">
                                 <?php if ($ipAccess):
                                     foreach ($ipAccess as $ip): ?>
@@ -145,7 +145,7 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                 <div class="card-body">
                     <div class="media mb-3 align-items-center">
                         <div class="file-thumbnail">
-                            <a target="_blank" href="https://aoe-communication.com/utils-TUTO.pdf">
+                            <a target="_blank" href="https://tout-ouie.com/utils/APPOE-TUTO.pdf">
                                 <img class="border h-100 w-100 fit-cover"
                                      src="<?= getImgAccordingExtension('pdf'); ?>" alt="Tutoriel">
                             </a>
@@ -153,7 +153,7 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                         <div class="media-body ml-3">
                             <h6 class="mb-1">
                                 <a class="font-weight-bold" target="_blank"
-                                   href="https://aoe-communication.com/utils-TUTO.pdf">Tutoriel</a>
+                                   href="https://tout-ouie.com/utils/APPOE-TUTO.pdf">Tutoriel</a>
                             </h6>
                             <div>Tutoriel d'utilisation d'APPOE</div>
                         </div>
@@ -207,7 +207,7 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                                 </div>
                             </div>
                         </div>
-                        <?php if ($color != 'Tertiary'): ?>
+                        <?php if ($color !== 'Tertiary'): ?>
                             <hr>
                         <?php endif;
                     endforeach; ?>
@@ -224,7 +224,7 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                 <div class="card-body p-0" id="allLoggedMails">
                     <div class="slimScroll p-3">
                         <?php
-                        if ($allMails):
+                        if (!isArrayEmpty($allMails)):
                             $numMails = count($allMails);
                             $i = 0;
                             foreach ($allMails as $mail): ?>

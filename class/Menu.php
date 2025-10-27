@@ -6,14 +6,14 @@ use PDO;
 
 class Menu
 {
-    private $id;
-    private $slug;
-    private $name;
+    private int $id;
+    private string $slug;
+    private string $name;
     private $minRoleId;
     private $statut;
     private $parentId;
-    private $orderMenu = null;
-    private $pluginName = null;
+    private ?string $orderMenu = null;
+    private ?string $pluginName = null;
 
     private $dbh = null;
 
@@ -25,49 +25,49 @@ class Menu
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }
 
     /**
-     * @param mixed $slug
+     * @param string $slug
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug)
     {
         $this->slug = $slug;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -248,7 +248,7 @@ class Menu
     }
 
 
-    public function displayMenuBySlug($slug)
+    public function displayMenuBySlug(string $slug): object|array|false
     {
 
         $sql = 'SELECT * FROM '.TABLEPREFIX.'appoe_menu WHERE slug = :slug';
@@ -267,10 +267,6 @@ class Menu
     public function insertMenu()
     {
 
-        /*if ($this->parentId == 10) {
-            $this->orderMenu = $this->ordonnerMenu();
-        }*/
-
         $sql = 'INSERT INTO '.TABLEPREFIX.'appoe_menu (id, slug, name, min_role_id, statut, parent_id, order_menu, pluginName) 
         VALUES (:id, :slug, :name, :min_role_id, :statut, :parent_id, :order_menu, :pluginName)';
 
@@ -287,17 +283,17 @@ class Menu
         $error = $stmt->errorInfo();
 
         if ($error[0] != '00000') {
-            showDebugData($error); //return false;
+            showDebugData($error);
         } else {
             appLog('Creating menu -> id: ' . $this->id . ' slug: ' . $this->slug . ' name: ' . $this->name . ' 
             min role id: ' . $this->minRoleId . ' statut: ' . $this->statut . ' parent id: ' . $this->parentId . ' 
             order: ' . $this->orderMenu . ' plugin: ' . $this->pluginName);
             return true;
         }
-
+		return false;
     }
 
-    public function updateMenu()
+    public function updateMenu(): bool
     {
 
         $sql = 'UPDATE '.TABLEPREFIX.'appoe_menu 
@@ -317,18 +313,18 @@ class Menu
         $error = $stmt->errorInfo();
 
         if ($error[0] != '00000') {
-            showDebugData($error); //return false;
+            showDebugData($error);
         } else {
             appLog('Updating menu -> id: ' . $this->id . ' slug: ' . $this->slug . ' name: ' . $this->name . ' 
             min role id: ' . $this->minRoleId . ' statut: ' . $this->statut . ' parent id: ' . $this->parentId . ' 
             order: ' . $this->orderMenu . ' plugin: ' . $this->pluginName);
             return true;
         }
-
+		return false;
     }
 
 
-    public function deleteMenu($id)
+    public function deleteMenu(int $id): bool
     {
         $sql = 'DELETE FROM '.TABLEPREFIX.'appoe_menu WHERE id = :id';
 
@@ -345,7 +341,7 @@ class Menu
         }
     }
 
-    public function deletePluginMenu($pluginName)
+    public function deletePluginMenu(string $pluginName): bool
     {
 
         $sql = 'DELETE FROM '.TABLEPREFIX.'appoe_menu WHERE pluginName = :pluginName';
@@ -365,7 +361,7 @@ class Menu
     }
 
 
-    public function checkUserPermission($user_session_role, $slug)
+    public function checkUserPermission(int|string $user_session_role, string $slug): bool
     {
         $sql = 'SELECT slug, min_role_id FROM '.TABLEPREFIX.'appoe_menu WHERE slug = :slug';
         $stmt = $this->dbh->prepare($sql);
@@ -387,7 +383,7 @@ class Menu
         }
     }
 
-    public function ordonnerMenu()
+    public function ordonnerMenu(): int
     {
         $num = 3;
         $sql = 'SELECT order_menu FROM '.TABLEPREFIX.'appoe_menu WHERE parent_id = 10 ORDER BY order_menu ASC';
@@ -408,7 +404,7 @@ class Menu
         }
     }
 
-    public function cleanText($filename)
+    public function cleanText(string $filename): string
     {
 
         $special = array(
@@ -432,7 +428,7 @@ class Menu
      * Feed class attributs
      * @param $data
      */
-    public function feed($data)
+    public function feed($data): void
     {
         if (isset($data)) {
             foreach ($data as $attribut => $value) {

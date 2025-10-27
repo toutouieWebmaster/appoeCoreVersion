@@ -4,14 +4,12 @@ namespace App;
 class Shinoui
 {
     //key length must be equal to 64
-    private static $clef = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-";
+    private static string $clef = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-";
 
-    //private static $clef = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-
-    public static function Crypter($a, $b = 'APPOE', $d = 'Aoe*', $xx = 2)
+    public static function Crypter(mixed $a, string $b = 'APPOE', string $d = 'Aoe*', int $xx = 2): mixed
     {
         $a = strval($a);
-        if ($a == "" || $b == "" || $d == "" || !is_int($xx)) return $a;
+        if ($a == "" || $b == "" || $d == "") return $a;
         $e = self::$clef;
         $u = $t = $g = "";
         $lb = self::Unorder($e, mt_rand(0, 2147483647) . $b);
@@ -49,13 +47,12 @@ class Shinoui
         return substr_replace($t, $u, -$r, -$r);
     }
 
-    public static function Decrypter($a, $b = 'APPOE', $d = 'Aoe*', $xx = 2)
+    public static function Decrypter(mixed $a, string $b = 'APPOE', string $d = 'Aoe*', int $xx = 2): mixed
     {
         $a = strval($a);
 
         if (!preg_match("/^[A-z0-9_-]+$/", $a) || $b == "") return $a;
 
-        //if (!preg_match("/^[A-z0-9\/+]+$/", $a) || $b == "" || $d == "" || !is_int($xx)) return $a;
         $c = strlen($a) - $xx;
         $mm = self::Seed($c - 1, $b . $c);
         $u = substr($a, $mm, -($c - $mm));
@@ -97,7 +94,7 @@ class Shinoui
         return $d;
     }
 
-    private static function Passpass($l, $b, $c, $e, $d, $r)
+    private static function Passpass(string $l, int $b, int $c, int $e, int $d, int $r): string
     {
         $i = $l[$b];
         $l[$b] = $l[$r & 63];
@@ -114,7 +111,7 @@ class Shinoui
         return $l;
     }
 
-    private static function Unorder($x, $b, $c = 64)
+    private static function Unorder(string $x, string $b, int $c = 64): string
     {
         $w = 0;
         $y = strlen($b);
@@ -127,7 +124,7 @@ class Shinoui
         return $x;
     }
 
-    private static function Seed($b, $c)
+    private static function Seed($b, string $c): float
     {
         return round(((hexdec(substr(md5($c), -8)) & 2147483647) / 2147483647.0) * $b);
     }

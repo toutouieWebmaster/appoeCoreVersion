@@ -36,9 +36,9 @@ class CategoryRelations
     }
 
     /**
-     * @param null $id
+     * @param int|string $id
      */
-    public function setId($id)
+    public function setId(int|string $id): void
     {
         $this->id = $id;
     }
@@ -107,7 +107,7 @@ class CategoryRelations
         $this->data = $data;
     }
 
-    public function createTable()
+    public function createTable(): bool
     {
         $sql = 'CREATE TABLE IF NOT EXISTS `' . TABLEPREFIX . 'appoe_categoryRelations` (
   					`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -130,9 +130,9 @@ class CategoryRelations
     }
 
     /**
-     * @return array|bool
+     * @return array|object|bool
      */
-    public function show()
+    public function show(): array|object|bool
     {
 
         $sql = 'SELECT CR.*, C.name AS name, C.parentId AS parentId FROM ' . TABLEPREFIX . 'appoe_categoryRelations AS CR 
@@ -155,12 +155,12 @@ class CategoryRelations
     }
 
     /**
-     * @return array|bool
+     * @return array|object|bool
      */
-    public function showAll()
+    public function showAll(): array|object|bool
     {
 
-        $sql = 'SELECT CR.id, CR.type, CR.typeId, CR.categoryId, ART.name, ART.statut 
+        $sql = 'SELECT CR.id, CR.type, CR.typeId, CR.categoryId, ART.statut 
         FROM ' . TABLEPREFIX . 'appoe_categoryRelations AS CR 
         RIGHT JOIN ' . TABLEPREFIX . 'appoe_plugin_itemGlue_articles AS ART 
         ON(CR.typeId = ART.id) 
@@ -184,7 +184,7 @@ class CategoryRelations
      *
      * @return bool
      */
-    public function save()
+    public function save(): bool
     {
         $sql = 'INSERT INTO ' . TABLEPREFIX . 'appoe_categoryRelations (type, typeId, categoryId) VALUES(:type, :typeId, :categoryId)';
         $stmt = $this->dbh->prepare($sql);
@@ -206,7 +206,7 @@ class CategoryRelations
      *
      * @return bool
      */
-    public function update()
+    public function update(): bool
     {
         $sql = 'UPDATE ' . TABLEPREFIX . 'appoe_categoryRelations SET type = :type, typeId = :typeId, categoryId = :categoryId WHERE id = :id';
         $stmt = $this->dbh->prepare($sql);
@@ -228,7 +228,7 @@ class CategoryRelations
     /**
      * @return bool
      */
-    public function delete()
+    public function delete(): bool
     {
         $sql = 'DELETE FROM ' . TABLEPREFIX . 'appoe_categoryRelations WHERE id = :id';
 
@@ -250,7 +250,7 @@ class CategoryRelations
      * Feed class attributs
      * @param $data
      */
-    public function feed($data)
+    public function feed($data): void
     {
         if (isset($data)) {
             foreach ($data as $attribut => $value) {

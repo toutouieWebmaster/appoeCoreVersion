@@ -4,24 +4,24 @@ namespace App;
 
 class MailLogger
 {
-    private $tableName = '`' . TABLEPREFIX . 'appoe_mailLogger`';
-    private $date;
-    private $ip;
-    private $source;
-    private $object;
-    private $toEmail;
-    private $toName;
-    private $fromEmail;
-    private $fromName;
-    private $message;
+    private string $tableName = '`' . TABLEPREFIX . 'appoe_mailLogger`';
+    private string $date;
+    private string $ip;
+    private string $source;
+    private string $object;
+    private string $toEmail;
+    private string $toName;
+    private string $fromEmail;
+    private string $fromName;
+    private string $message;
 
-    public $sent = true;
+    public bool $sent = true;
 
     public function __construct(array $data = [])
     {
         if (!isArrayEmpty($data)) {
             $this->date = date('Y-m-d H:i:s');
-            $this->ip = getIP();
+            $this->ip = getIP() ?: '';
             $this->source = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $_SERVER['HTTP_HOST'];
 
             $this->object = $data['object'];
@@ -33,7 +33,7 @@ class MailLogger
         }
     }
 
-    public function createTable()
+    public function createTable(): bool
     {
         $sql = 'CREATE TABLE IF NOT EXISTS ' . $this->tableName . ' (
                 `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -54,9 +54,9 @@ class MailLogger
     }
 
     /**
-     * @param bool|mixed $sent
+     * @param bool $sent
      */
-    public function setSent($sent)
+    public function setSent(bool $sent): void
     {
         $this->sent = $sent;
     }
@@ -64,7 +64,7 @@ class MailLogger
     /**
      * @return bool
      */
-    public function save()
+    public function save(): bool
     {
         $sql = 'INSERT INTO ' . $this->tableName . ' (`date`, `object`, `toEmail`, `toName`, `fromEmail`, `fromName`, `message`, `ip`, `source`, `sent`) 
                 VALUES (:date, :object, :toEmail, :toName, :fromEmail, :fromName, :message, :ip, :source, :sent)';
@@ -89,11 +89,15 @@ class MailLogger
 
 
     /**
-     * @return mixed
+     * @param ?int $limit
+     *
+     * @return array|object|bool
      */
-    public function showAll()
+    public function showAll(?int $limit = null): array|object|bool
     {
         $sql = 'SELECT * FROM ' . $this->tableName . ' ORDER BY `date` DESC';
-        return (DB::exec($sql))->fetchAll(\PDO::FETCH_OBJ);
+        $sql .= $limit ? ' LIMIT ' . $limit : '';
+        $result = DB::exec($sql);
+        return $result ? $result->fetchAll(\PDO::FETCH_OBJ) : false;
     }
 }

@@ -27,7 +27,8 @@ $defaultEmail = getOption('DATA', 'defaultEmail'); ?>
                                     <td><?= $user->email ?></td>
                                     <td><?= getRoleName($user->role) ?></td>
                                     <td>
-                                        <?php if ($user->statut > 0 && isEmail($user->email)): ?>
+<!--                                        L'utilisateur actuel doit être au moins admin pour changer l'email par défaut-->
+                                        <?php if ($user->statut > 0 && isEmail($user->email) && getUserRoleId() > 3): ?>              
                                             <button type="button" class="btn btn-sm defaultEmailUser"
                                                     title="<?= trans('Définir comme adresse Email par défaut'); ?>"
                                                 <?= $defaultEmail == $user->email ? 'disabled="true"' : ''; ?>

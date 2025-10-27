@@ -4,7 +4,7 @@ use App\Flash;
 use App\Shinoui;
 use App\Users;
 
-if (pageSlug() == 'hibour') {
+if (pageSlug() === 'hibour') {
     if ((isUserSessionExist() || isUserCookieExist()) && !bot_detected()) {
 
         if (!empty($_GET['forwardPage'])) {

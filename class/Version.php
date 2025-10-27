@@ -3,10 +3,10 @@
 namespace App;
 class Version
 {
-    private static $file;
-    private static $date;
-    private static $version;
-    private static $renew = false;
+    private static string $file;
+    private static string $date;
+    private static string $version;
+    private static bool $renew = false;
     private static $data;
 
     /**
@@ -17,7 +17,7 @@ class Version
     private static $simple;
 
     /**
-     * @return mixed
+     * @return string
      */
     public static function getFile()
     {
@@ -25,17 +25,17 @@ class Version
     }
 
     /**
-     * @param mixed $file
+     * @param string $file
      */
-    public static function setFile($file)
+    public static function setFile($file): void
     {
         self::$file = $file;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public static function getDate()
+    public static function getDate(): string
     {
         return self::$date;
     }
@@ -43,7 +43,7 @@ class Version
     /**
      *
      */
-    public static function initializeDate()
+    public static function initializeDate(): void
     {
         self::$date = date('Y-m-d H:i');
     }
@@ -89,9 +89,9 @@ class Version
     }
 
     /**
-     *
+     * @return void
      */
-    public static function initializeData()
+    public static function initializeData(): void
     {
         self::$data = array('date' => self::$date, 'version' => self::$version, 'renew' => self::$renew);
     }
@@ -99,7 +99,7 @@ class Version
     /**
      *
      */
-    public static function show()
+    public static function show(): bool
     {
         if (!empty(self::$file)) {
             $json_file = file_get_contents(self::$file);
@@ -124,7 +124,7 @@ class Version
     /**
      * @return bool
      */
-    public static function save()
+    public static function save(): bool
     {
         $json_file = fopen(self::$file, 'w');
 
@@ -142,7 +142,7 @@ class Version
     /**
      * @param String $X (maj, min, sim)
      */
-    public static function updateVersion($X = 'sim')
+    public static function updateVersion(string $X = 'sim'): void
     {
         list(self::$major, self::$minor, self::$simple) = explode('.', self::$version);
 

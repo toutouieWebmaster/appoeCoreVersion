@@ -324,8 +324,8 @@ class Form
     }
 
     /**
-     * @param $title
-     * @param $name
+     * @param string $title
+     * @param string $name
      * @param string $value
      * @param int $rows
      * @param bool $require
@@ -334,7 +334,7 @@ class Form
      * @param string $placeholder
      * @return string
      */
-    public static function textarea($title, $name, $value = '', $rows = 5, $require = false, $otherAttr = '', $otherClass = '', $placeholder = '')
+    public static function textarea(string $title, string $name, string $value = '', int $rows = 5, bool $require = false, string $otherAttr = '', string $otherClass = '', string $placeholder = ''): string
     {
 
         $require = $require ? 'required="true"' : '';
@@ -361,7 +361,7 @@ class Form
      * @param bool $noTitleWithPlaceholder
      * @return string
      */
-    public static function file($title, $name, $require = false, $otherAttr = '', $otherClass = '', $placeholder = 'Choisissez...', $noTitleWithPlaceholder = true)
+    public static function file(string $title, string $name, bool $require = false, string $otherAttr = '', string $otherClass = '', string $placeholder = 'Choisissez...', bool $noTitleWithPlaceholder = true): string
     {
 
         $require = $require ? 'required="true"' : '';
@@ -382,14 +382,14 @@ class Form
     }
 
     /**
-     * @param $title
-     * @param $name
+     * @param string $title
+     * @param string $name
      * @param array $data
-     * @param string $compare
+     * @param array $compare
      * @param string $otherClasses
      * @return string
      */
-    public static function checkbox($title, $name, array $data, $compare = [], $otherClasses = '')
+    public static function checkbox(string $title, string $name, array $data, array $compare = [], string $otherClasses = ''): string
     {
 
         $html = '<div class="form-group"><strong class="inputLabel border-bottom pb-1 mb-3">' . trans($title) . '</strong>';
@@ -414,8 +414,8 @@ class Form
     }
 
     /**
-     * @param $title
-     * @param $name
+     * @param string $title
+     * @param string $name
      * @param array $data
      * @param string $compare
      * @param bool $require
@@ -423,7 +423,7 @@ class Form
      * @param string $otherAttr
      * @return string
      */
-    public static function radio($title, $name, array $data, $compare = '', $require = false, $otherClass = '', $otherAttr = '')
+    public static function radio(string $title, string $name, array $data, string $compare = '', bool $require = false, string $otherClass = '', string $otherAttr = ''): string
     {
 
         $require = $require ? 'required="true"' : '';
@@ -448,13 +448,13 @@ class Form
     }
 
     /**
-     * @param $title
-     * @param $name
+     * @param string $title
+     * @param string $name
      * @param string $otherClass
      * @param string $otherAttr
      * @return string
      */
-    public static function submit($title, $name, $otherClass = 'btn-outline-primary', $otherAttr = '')
+    public static function submit(string $title, string $name, string $otherClass = 'btn-outline-primary', string $otherAttr = ''): string
     {
         $html = '<div class="form-group"><button type="submit" ';
         $html .= ' id="' . $name . '" name="' . $name . '" ';
@@ -466,10 +466,10 @@ class Form
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return string
      */
-    public static function target($name): string
+    public static function target(string $name): string
     {
         return '<input type="hidden" name = "' . $name . '" id = "' . $name . '" value="' . $name . '">';
     }
@@ -480,7 +480,7 @@ class Form
      * @param $comparator
      * @return bool
      */
-    public static function compareValue($val1, $val2, $comparator)
+    public static function compareValue($val1, $val2, $comparator): bool
     {
 
         return match ($comparator) {

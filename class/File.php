@@ -11,20 +11,20 @@ class File
     protected $type;
     protected $typeId;
     protected $name;
-    protected $link = null;
-    protected $position = 999;
+    protected ?string $link = null;
+    protected int|string $position = 999;
     protected $options = null;
 
-    protected $title;
-    protected $description;
+    protected string $title;
+    protected string $description;
     protected $categoryId;
-    protected $categoryName;
-    protected $lang = LANG;
+    protected string $categoryName;
+    protected string $lang = LANG;
     protected $maxSize = 5621440;
-    protected $filePath = FILE_DIR_PATH;
-    protected $fileUrl = WEB_DIR_INCLUDE;
+    protected string $filePath = FILE_DIR_PATH;
+    protected string $fileUrl = WEB_DIR_INCLUDE;
     protected $uploadFiles = null;
-    protected $dbh = null;
+    protected ?PDO $dbh = null;
 
     public function __construct()
     {

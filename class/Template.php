@@ -1,18 +1,19 @@
 <?php
 
 namespace App;
+use Random\RandomException;
 class Template
 {
-    protected $pageDbData;
-    protected $pageSlug;
-    protected $pageHtmlContent;
-    protected $pageHtmlZones;
+    protected array $pageDbData;
+    protected string $pageSlug;
+    protected string $pageHtmlContent;
+    protected array $pageHtmlZones;
 
-    protected $defaultCol = '12';
-    protected $allMetaKeys = [];
-    protected $html = '';
+    protected string $defaultCol = '12';
+    protected array $allMetaKeys = [];
+    protected string $html = '';
 
-    public function __construct($pageSlug, $pageDbData, $getHtmlContent = false)
+    public function __construct(string $pageSlug, mixed $pageDbData, bool $getHtmlContent = false)
     {
         $this->pageSlug = $pageSlug;
         $this->pageDbData = extractFromObjArr($pageDbData, 'metaKey');
@@ -23,7 +24,7 @@ class Template
     /**
      * Show content
      */
-    public function show()
+    public function show(): void
     {
         echo !empty($this->html) ? $this->html : '';
     }
@@ -31,15 +32,16 @@ class Template
     /**
      * @return string
      */
-    public function get()
+    public function get(): string
     {
         return !empty($this->html) ? $this->html : $this->pageHtmlContent;
     }
 
     /**
      * @param bool $getHtmlContent
+	 * @throws RandomException
      */
-    public function set($getHtmlContent = false)
+    public function set(bool $getHtmlContent = false): void
     {
 
         //Check zones types
@@ -67,9 +69,9 @@ class Template
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function buildHtmlFrontZone()
+    public function buildHtmlFrontZone(): string
     {
 
         foreach ($this->pageHtmlZones[1] as $i => $adminZone) {
@@ -102,10 +104,10 @@ class Template
     }
 
     /**
-     * @param $zone
+     * @param string $zone
      * @return string
      */
-    public function buildHtmlAdminZone($zone)
+    public function buildHtmlAdminZone(string $zone): string
     {
         $html = '';
         $col = $this->defaultCol;
@@ -173,8 +175,9 @@ class Template
     /**
      * @param array $zones
      * @return array
+	 * @throws RandomException
      */
-    public function getZones(array $zones)
+    public function getZones(array $zones): array
     {
         //Clean data
         $zones = cleanRequest($zones);
@@ -182,7 +185,7 @@ class Template
         //Zones types array
         $pageHtmlZonesTypes = [];
 
-        foreach ($zones as $i => $adminZone) {
+        foreach ($zones as $adminZone) {
 
             //Check for form type
             if (str_contains($adminZone, '_')) {
@@ -250,12 +253,12 @@ class Template
     }
 
     /**
-     * @param $formType
-     * @param $options
-     * @param $value
+     * @param string $formType
+     * @param array $options
+     * @param string $value
      * @return string
      */
-    public function buildHtmlFrontAdded($formType, $options, $value)
+    public function buildHtmlFrontAdded(string $formType, array $options, string $value): string
     {
 
         if ($formType === 'urlFile') {
@@ -279,12 +282,12 @@ class Template
     }
 
 
-    public function getParams($match)
+    public function getParams(string $match): array
     {
 
         $options = [];
         $params = array_filter(explode(';', $match));
-        foreach ($params as $p => $param) {
+        foreach ($params as $param) {
             list($key, $val) = explode('=', $param);
             $options[$key] = $val;
         }
@@ -299,10 +302,10 @@ class Template
     }
 
     /**
-     * @param $formType
+     * @param mixed $formType
      * @return bool
      */
-    public function isAuthorisedFormType($formType)
+    public function isAuthorisedFormType(mixed $formType): bool
     {
 
         //Authorised form manage data
@@ -312,10 +315,10 @@ class Template
     }
 
     /**
-     * @param $formType
+     * @param mixed $formType
      * @return bool
      */
-    public function isAuthorisedHtmlContainer($formType)
+    public function isAuthorisedHtmlContainer(mixed $formType): bool
     {
 
         //Authorised HTML Container
@@ -328,7 +331,7 @@ class Template
      * @param string $htmlTag
      * @return array
      */
-    public function extractClassFromHtmlTag($htmlTag = '')
+    public function extractClassFromHtmlTag(string $htmlTag = ''): array
     {
         $class = '';
         if (strpos($htmlTag, '.')) {
@@ -344,7 +347,7 @@ class Template
     /**
      * @return string
      */
-    public function showErrorPage()
+    public function showErrorPage(): string
     {
         return '<div class="container"><h4>' . trans('Cette page n\'existe pas') . '</h4></div>';
     }

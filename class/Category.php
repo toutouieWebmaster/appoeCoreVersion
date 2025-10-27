@@ -35,12 +35,12 @@ class Category
     private int $status = 1;
 
     /**
-     * @var PDO|null
+     * @var ?PDO
      */
     private ?PDO $dbh = null;
 
     /**
-     * @param int|null $idCategory
+     * @param ?int $idCategory
      */
     public function __construct(?int $idCategory = null)
     {
@@ -217,9 +217,9 @@ class Category
 
     /**
      * @param ?int $parentId
-     * @return array|bool
+     * @return array|object|bool
      */
-    public function showByType(?int $parentId = null): mixed
+    public function showByType(?int $parentId = null): array|object|bool
     {
 
         $params = array(':type' => $this->type);
@@ -241,9 +241,9 @@ class Category
 
     /**
      * @param bool $categoriesCount
-     * @return array|bool
+     * @return array|object|bool|int
      */
-    public function showAll(bool $categoriesCount = false): false|array
+    public function showAll(bool $categoriesCount = false): array|object|bool|int
     {
 
         $sql = 'SELECT * FROM ' . TABLEPREFIX . 'appoe_categories WHERE status = 1 ORDER BY name ASC';

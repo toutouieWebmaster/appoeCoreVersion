@@ -5,6 +5,7 @@ require(WEB_PROCESS_PATH . 'media.php');
 use App\Category;
 use App\Media;
 use App\Form;
+use App\Flash;
 
 $Media = new Media();
 $Media->setLang(APP_LANG);
@@ -13,7 +14,7 @@ $Category = new Category();
 $Category->setType('MEDIA');
 $allCategory = $Category->showByType();
 
-$listCatgories = extractFromObjToArrForList($allCategory, 'id');
+$listCategories = extractFromObjToArrForList($allCategory, 'id');
 $allLibrary = extractFromObjToSimpleArr($allCategory, 'id', 'name');
 $allLibraryParent = extractFromObjToSimpleArr($allCategory, 'id', 'parentId');
 
@@ -37,6 +38,7 @@ foreach ($allLibraryParent as $id => $parentId) {
 
 echo getTitle(getAppPageName(), getAppPageSlug()); ?>
     <div id="mediaContainer">
+		<?php Flash::constructAndDisplay(); ?>
         <nav>
             <div class="float-right">
                 <input type="range" class="custom-range" style="width: 150px;" min="2" max="10" step="1" value="5"
@@ -108,6 +110,7 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
             </div>
             <div class="tab-pane fade" id="nav-newFiles" role="tabpanel" aria-labelledby="nav-profile-tab">
                 <div class="container-fluid">
+                    <p><b>Attention : le choix d'une bibliothèque est obligatoire pour l'import d'un média</b></p>
                     <form class="row" id="galleryForm" action="" method="post" enctype="multipart/form-data">
                         <?= getTokenField(); ?>
                         <div class="col-12 col-lg-6 my-2">
@@ -119,7 +122,7 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
                             <?= Form::text('Choisissez dans la bibliothèque', 'inputSelectFiles', 'text', '0 fichiers', false, 300, 'readonly data-toggle="modal" data-target="#allMediasModal"'); ?>
                         </div>
                         <div class="col-12 col-lg-3 my-2">
-                            <?= Form::select('Bibliothèques', 'library', $listCatgories, '', true); ?>
+                            <?= Form::select('Bibliothèques', 'library', $listCategories, '', true); ?>
                         </div>
                         <div class="col-12">
                             <?= Form::target('ADDIMAGES'); ?>

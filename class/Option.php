@@ -6,13 +6,13 @@ use PDO;
 
 class Option
 {
-    private $tableName = '`' . TABLEPREFIX . 'appoe_options`';
-    private $id;
-    private $type;
-    private $description = null;
-    private $key;
-    private $val;
-    private $updated_at;
+    private string $tableName = '`' . TABLEPREFIX . 'appoe_options`';
+    private int $id;
+    private string $type;
+    private ?string $description = null;
+    private string $key;
+    private string $val;
+    private string $updated_at;
 
     /**
      * Option constructor.
@@ -38,7 +38,7 @@ class Option
     /**
      * @return bool
      */
-    public function createTable()
+    public function createTable(): bool
     {
         $sql = 'CREATE TABLE IF NOT EXISTS ' . $this->tableName . ' (
                 `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -71,71 +71,71 @@ class Option
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
     /**
-     * @param mixed $type
+     * @param string $type
      */
-    public function setType($type)
+    public function setType(string $type): void
     {
         $this->type = $type;
     }
 
     /**
-     * @return null
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
-     * @param null $description
+     * @param ?string $description
      */
-    public function setDescription($description)
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
 
     /**
-     * @param mixed $key
+     * @param string $key
      */
-    public function setKey($key)
+    public function setKey(string $key): void
     {
         $this->key = $key;
     }
 
     /**
-     * @return null
+     * @return string
      */
     public function getVal()
     {
@@ -143,33 +143,33 @@ class Option
     }
 
     /**
-     * @param null $val
+     * @param string $val
      */
-    public function setVal($val)
+    public function setVal(string $val): void
     {
         $this->val = $val;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): string
     {
         return $this->updated_at;
     }
 
     /**
-     * @param mixed $updated_at
+     * @param string $updated_at
      */
-    public function setUpdatedAt($updated_at)
+    public function setUpdatedAt(string $updated_at): void
     {
         $this->updated_at = $updated_at;
     }
 
     /**
-     * @return bool|array
+     * @return bool|array|object
      */
-    public function show()
+    public function show(): bool|array|object
     {
         $sql = 'SELECT * FROM ' . $this->tableName . ' WHERE `id` = :id';
         $params = array(':id' => $this->id);
@@ -180,9 +180,9 @@ class Option
     }
 
     /**
-     * @return bool|array
+     * @return bool|array|object
      */
-    public function showByType()
+    public function showByType(): bool|array|object
     {
         $sql = 'SELECT * FROM ' . $this->tableName . ' WHERE `type` = :type';
         $params = array(':type' => $this->type);
@@ -193,9 +193,9 @@ class Option
     }
 
     /**
-     * @return bool|object
+     * @return bool|array|object
      */
-    public function showByKey()
+    public function showByKey(): bool|array|object
     {
         $sql = 'SELECT * FROM ' . $this->tableName . ' WHERE `type` = :type AND `key` = :key';
         $params = array(':type' => $this->type, ':key' => $this->key);
@@ -206,9 +206,9 @@ class Option
     }
 
     /**
-     * @return mixed|false
+     * @return string|false
      */
-    public function getValByKey(): mixed
+    public function getValByKey(): string|false
     {
         if ($option = $this->showByKey()) {
             return $option->val;
@@ -219,7 +219,7 @@ class Option
     /**
      * @return bool
      */
-    public function save()
+    public function save(): bool
     {
         $sql = 'INSERT INTO ' . $this->tableName . ' (`type`, `description`, `key`, `val`) VALUES (:type, :description, :key, :val)';
         $params = array(':type' => $this->type, ':description' => $this->description, ':key' => $this->key, ':val' => $this->val);
@@ -233,7 +233,7 @@ class Option
     /**
      * @return bool
      */
-    public function update()
+    public function update(): bool
     {
         $sql = 'UPDATE ' . $this->tableName . ' SET `val` = :val WHERE `type` = :type AND `key` = :key';
         $params = array(':type' => $this->type, ':key' => $this->key, ':val' => $this->val);
@@ -245,9 +245,9 @@ class Option
     }
 
     /**
-     * @return bool
+     * @return bool|array|object
      */
-    public function exist()
+    public function exist(): bool|array|object
     {
         $sql = 'SELECT `id` FROM ' . $this->tableName . ' WHERE `type` = :type AND `key` = :key';
         $params = array(':type' => $this->type, ':key' => $this->key);
@@ -260,7 +260,7 @@ class Option
     /**
      * @return bool
      */
-    public function delete()
+    public function delete(): bool
     {
         $sql = 'DELETE FROM ' . $this->tableName . ' WHERE `id` = :id';
         if (DB::exec($sql, [':id' => $this->id])) {
@@ -273,7 +273,7 @@ class Option
     /**
      * @return bool
      */
-    public function deleteByTypeAndKey()
+    public function deleteByTypeAndKey(): bool
     {
         $sql = 'DELETE FROM ' . $this->tableName . ' WHERE `type` = :type AND `key` = :key';
         if (DB::exec($sql, [':type' => $this->type, ':key' => $this->key])) {

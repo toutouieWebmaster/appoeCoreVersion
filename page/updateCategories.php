@@ -9,10 +9,10 @@ $Category = new Category();
 $allCategories = $Category->showAll();
 $allTypes = getAppTypes();
 
-$separetedCategories = [];
+$separatedCategories = [];
 if ($allCategories) {
     foreach ($allCategories as $category) {
-        $separetedCategories[$allTypes[$category->type]][$category->parentId][] = $category;
+        $separatedCategories[$allTypes[$category->type]][$category->parentId][] = $category;
     }
 }
 echo getTitle(getAppPageName(), getAppPageSlug());
@@ -23,50 +23,50 @@ showPostResponse(getDataPostResponse()); ?>
             <?= trans('Nouvelle Catégorie'); ?>
         </button>
         <div class="my-4"></div>
-        <?php if ($separetedCategories): ?>
+        <?php if ($separatedCategories): ?>
             <div class="row my-3 categoriesMenu">
-                <?php foreach ($separetedCategories as $key => $categoryType): ?>
+                <?php foreach ($separatedCategories as $key => $categoryType): ?>
                     <div class="col-12 col-lg-4">
                         <h2 class="subTitle"><?= $key; ?></h2>
-                        <?php foreach ($categoryType[10] as $separetedCategory): ?>
-                            <div data-idcategory="<?= $separetedCategory->id; ?>"
+                        <?php foreach ($categoryType[10] as $separatedCategory): ?>
+                            <div data-idcategory="<?= $separatedCategory->id; ?>"
                                  class="m-0 mt-3 py-0 px-3 jumbotron bg-warning text-white fileContent">
                                 <input type="tel" class="categoryInput positionMenuSpan"
-                                       data-column="position" value="<?= $separetedCategory->position; ?>">
+                                       data-column="position" value="<?= $separatedCategory->position; ?>">
                                 <input type="text" class="categoryInput"
-                                       data-column="name" value="<?= $separetedCategory->name; ?>">
-                                <small class="inputInfo"><?= $separetedCategory->id; ?></small>
-                                <?php if (empty($categoryType[$separetedCategory->id])): ?>
+                                       data-column="name" value="<?= $separatedCategory->name; ?>">
+                                <small class="inputInfo"><?= $separatedCategory->id; ?></small>
+                                <?php if (empty($categoryType[$separatedCategory->id])): ?>
                                     <button type="button" class="close deleteCategory">
                                         <span class="fas fa-times"></span>
                                     </button>
                                 <?php endif; ?>
                             </div>
-                            <?php if (!empty($categoryType[$separetedCategory->id])):
-                                foreach ($categoryType[$separetedCategory->id] as $separetedSubCategory): ?>
+                            <?php if (!empty($categoryType[$separatedCategory->id])):
+                                foreach ($categoryType[$separatedCategory->id] as $separatedSubCategory): ?>
                                     <div class="px-3 py-0 m-0 ml-4 mt-1 jumbotron fileContent"
-                                         data-idcategory="<?= $separetedSubCategory->id; ?>">
+                                         data-idcategory="<?= $separatedSubCategory->id; ?>">
                                         <input type="tel" class="categoryInput positionMenuSpan"
-                                               data-column="position" value="<?= $separetedSubCategory->position; ?>">
+                                               data-column="position" value="<?= $separatedSubCategory->position; ?>">
                                         <input type="text" class="categoryInput"
-                                               data-column="name" value="<?= $separetedSubCategory->name; ?>">
-                                        <small class="inputInfo"><?= $separetedSubCategory->id; ?></small>
-                                        <?php if (empty($categoryType[$separetedSubCategory->id])): ?>
+                                               data-column="name" value="<?= $separatedSubCategory->name; ?>">
+                                        <small class="inputInfo"><?= $separatedSubCategory->id; ?></small>
+                                        <?php if (empty($categoryType[$separatedSubCategory->id])): ?>
                                             <button type="button" class="close deleteCategory">
                                                 <span class="fas fa-times"></span>
                                             </button>
                                         <?php endif; ?>
                                     </div>
-                                    <?php if (!empty($categoryType[$separetedSubCategory->id])):
-                                        foreach ($categoryType[$separetedSubCategory->id] as $separetedSubSubCategory): ?>
+                                    <?php if (!empty($categoryType[$separatedSubCategory->id])):
+                                        foreach ($categoryType[$separatedSubCategory->id] as $separatedSubSubCategory): ?>
                                             <div class="px-3 py-0 m-0 ml-5 mt-1 jumbotron fileContent"
-                                                 data-idcategory="<?= $separetedSubSubCategory->id; ?>">
+                                                 data-idcategory="<?= $separatedSubSubCategory->id; ?>">
                                                 <input type="tel" class="categoryInput positionMenuSpan"
                                                        data-column="position"
-                                                       value="<?= $separetedSubSubCategory->position; ?>">
+                                                       value="<?= $separatedSubSubCategory->position; ?>">
                                                 <input type="text" class="categoryInput" data-column="name"
-                                                       value="<?= $separetedSubSubCategory->name; ?>">
-                                                <small class="inputInfo"><?= $separetedSubSubCategory->id; ?></small>
+                                                       value="<?= $separatedSubSubCategory->name; ?>">
+                                                <small class="inputInfo"><?= $separatedSubSubCategory->id; ?></small>
                                                 <button type="button" class="close deleteCategory">
                                                     <span class="fas fa-times"></span>
                                                 </button>

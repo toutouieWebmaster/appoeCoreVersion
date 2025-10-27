@@ -67,7 +67,7 @@ if (checkAjaxRequest()) {
             }
         }
 
-        if (!empty($_POST['clearServerCache']) && $_POST['clearServerCache'] == 'OK') {
+        if (!empty($_POST['clearServerCache']) && $_POST['clearServerCache'] === 'OK') {
 
             if (purgeVarnishCache()) {
 
