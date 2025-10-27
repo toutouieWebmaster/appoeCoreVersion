@@ -9,7 +9,7 @@ class Users
     private int $id;
     private string $login;
     private string $password;
-    private int $role;
+    private mixed $role;
     private string $email;
     private string $nom;
     private string $prenom = '';
