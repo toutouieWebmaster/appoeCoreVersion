@@ -114,7 +114,7 @@ if (checkAjaxRequest()) {
             $Media->setId($_POST['idImage']);
             if ($Media->show()) {
 
-                if (!empty($_POST['thumbWidth'])) {
+                if ($Media->getName() && !empty($_POST['thumbWidth'])) {
                     deleteThumb($Media->getName(), $_POST['thumbWidth']);
                 }
 
