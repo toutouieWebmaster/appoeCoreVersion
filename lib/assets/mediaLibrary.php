@@ -7,7 +7,7 @@ $Category = new Category();
 $Category->setType('MEDIA');
 $allCategory = $Category->showByType();
 
-$listCatgories = extractFromObjToArrForList($allCategory, 'id');
+$listCategories = extractFromObjToArrForList($allCategory, 'id');
 ?>
 <div class="modal fade" id="libraryModal" tabindex="-1" role="dialog"
      aria-labelledby="mediaLibraryModalTitle" aria-hidden="true" data-inputid="">
@@ -56,7 +56,7 @@ $listCatgories = extractFromObjToArrForList($allCategory, 'id');
                                         <?= Form::text('Choisissez des médias', 'inputSelectFiles', 'text', '0 fichiers', false, 300, 'readonly data-toggle="modal" data-target="#allMediasModal"'); ?>
                                     </div>
                                     <div class="col-12 col-lg-3 my-2">
-                                        <?= Form::select('Bibliothèques', 'library', $listCatgories, '', true); ?>
+                                        <?= Form::select('Bibliothèques', 'library', $listCategories, '', true); ?>
                                     </div>
                                     <div class="col-12">
                                         <?= Form::target('ADDIMAGES'); ?>
