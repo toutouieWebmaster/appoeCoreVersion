@@ -1,42 +1,76 @@
-:root{--colorPrimary: #719de1;--colorPrimaryOpacity: rgba(113,157,225,0.7);--colorSecondary: #f9686b;--colorSecondaryOpacity: rgba(249,104,107,0.7);--textBgColorPrimary: #fcfcfc;--textBgColorSecondary: #ffffff;}/************** PRIMARY COLOR **************/
+:root{--colorPrimary: #6767B8;--colorPrimaryOpacity: rgba(103,103,184,0.7);--colorSecondary: #26263c;--colorSecondaryOpacity: rgba(38,38,60,0.7);--colorTertiary: #F2CF64;--colorTertiaryOpacity: rgba(242,207,100,0.7);--textBgColorPrimary: #FFFFFF;--textBgColorSecondary: #FFFFFF;--textBgColorTertiary: #58595B;}
 
 [class*="colorPrimary"],
-[class*="colorSecondary"] {
+[class*="colorSecondary"],
+[class*="colorTertiary"] {
     transition: all 0.3s;
 }
 
+/************** PRIMARY COLOR **************/
 .colorPrimary {
-    color: var(--colorPrimary);
+    color: var(--colorPrimary) !important;
 }
 
 .borderColorPrimary {
-    border-color: var(--colorPrimary);
+    border-color: var(--colorPrimary) !important;
 }
 
 .bgColorPrimary, a[class*="colorPrimary"]:focus, a[class*="colorPrimary"]:hover,
 button[class*="colorPrimary"]:focus, button[class*="colorPrimary"]:hover {
-    background: var(--colorPrimary);
-    color: var(--textBgColorPrimary);
+    background: var(--colorPrimary) !important;
+    color: var(--textBgColorPrimary) !important;
 }
 
 /************** SECONDARY COLOR **************/
 
 .colorSecondary {
-    color: var(--colorSecondary);
+    color: var(--colorSecondary) !important;
 }
 
 .borderColorSecondary {
-    border-color: var(--colorSecondary);
+    border-color: var(--colorSecondary) !important;
 }
 
 .bgColorSecondary, #sidebar ul li.active > a, .dashboardCard:focus, .dashboardCard:hover, table.table th,
 a[class*="colorSecondary"]:focus, a[class*="colorSecondary"]:hover, button[class*="colorSecondary"]:focus,
 button[class*="colorSecondary"]:hover {
-    background: var(--colorSecondary);
-    color: var(--textBgColorSecondary);
+    background: var(--colorSecondary) !important;
+    color: var(--textBgColorSecondary) !important;
+}
+
+/************** TERTIARY COLOR **************/
+.colorTertiary {
+    color: var(--colorTertiary);
+}
+
+.borderColorTertiary {
+    border-color: var(--colorTertiary);
+}
+
+.bgColorTertiary, a[class*="colorTertiary"]:focus, a[class*="colorTertiary"]:hover,
+button[class*="colorTertiary"]:focus, button[class*="colorTertiary"]:hover {
+    background: var(--colorTertiary);
+    color: var(--textBgColorTertiary);
 }
 
 /************** DASHBOARD **************/
+.dashboardCard a {
+    color: var(--colorSecondary);
+}
+
+.dashboardCard h2 a:before {
+    color: var(--colorSecondary);
+    position: absolute;
+    top: 0;
+    left: 10px;
+    font-size: 100px;
+    opacity: 0.1;
+}
+
+.dashboardCard:focus a, .dashboardCard:hover a,
+.dashboardCard:focus h2 a:before, .dashboardCard:hover h2 a:before {
+    color: var(--textBgColorSecondary);
+}
 
 .dashboardNum {
     background: var(--colorSecondary);
@@ -52,4 +86,13 @@ button[class*="colorSecondary"]:hover {
 /************* MEDIA *************/
 .view > .mask {
     background-color: var(--colorSecondaryOpacity);
+}
+
+/************* TABLE *************/
+table.table tr:hover {
+    background: var(--colorSecondary) !important;
+}
+
+table.table tr:hover td {
+    color: var(--textBgColorSecondary) !important;
 }

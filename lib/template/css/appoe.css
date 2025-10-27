@@ -438,8 +438,8 @@ input.themeColorChange:hover {
     max-height: 380px !important;
 }
 
-#allPersimissions .slimScrollDiv,
-#allPersimissions .slimScroll {
+#allPermissions .slimScrollDiv,
+#allPermissions .slimScroll {
     max-height: 150px !important;
     height: auto !important;
 }

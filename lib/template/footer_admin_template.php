@@ -28,9 +28,8 @@
 <!-- MODAL INFO END -->
 
 <?php use App\Flash;
-
-includePluginsFilesForAppInFooter();
-Flash::constructAndDisplay(); ?>
+Flash::constructAndDisplay();
+includePluginsFilesForAppInFooter(); ?>
 <div id="overlay">
     <div id="overlayContent" class="overlayContent"></div>
 </div>
