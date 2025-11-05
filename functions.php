@@ -1113,7 +1113,9 @@ function checkRecaptcha(?string $secret, ?string $token): bool
         $g_response = json_decode($recap_response);
 
         if (property_exists($g_response, 'success') && $g_response->success === true) {
-            return true;
+            if (isset($g_response->score) && $g_response->score >= 0.5) {
+                return true;
+            }
         }
     }
 
