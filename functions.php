@@ -4900,7 +4900,7 @@ function approveEmail(array $get, int $timeLimit = 5): string|false
  * @return bool
  * @throws Exception
  */
-function sendMail(array $data, array $otherAddr = [], array $options = []): bool
+function sendMail(array $data, array $otherAddr = [], array $options = []): string|bool
 {
     $Mail = new PHPMailer();
 
