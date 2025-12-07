@@ -101,16 +101,16 @@ if (checkAjaxRequest() && !empty($_GET['fileId']) && is_numeric($_GET['fileId'])
                     <input type="hidden" name="id" value="<?= $Media->getId(); ?>">
                     <input type="hidden" name="imageType" value="<?= $Media->getType(); ?>">
                     <div class="mb-2">
-                        <?= Form::text('Titre (texte alternatif)', 'title', 'text', $Media->getTitle(), false, 255, '', '', 'form-control-sm imageTitle upImgForm'); ?>
+                        <?= Form::text('Titre (texte alternatif)', 'title', 'text', $Media->getTitle() ?? '', false, 255, '', '', 'form-control-sm imageTitle upImgForm'); ?>
                     </div>
                     <div class="mb-2">
-                        <?= Form::textarea('Description', 'description', $Media->getDescription(), 1, false, '', 'form-control-sm imageDescription upImgForm'); ?>
+                        <?= Form::textarea('Description', 'description', $Media->getDescription() ?? '', 1, false, '', 'form-control-sm imageDescription upImgForm'); ?>
                     </div>
                     <div class="mb-2">
-                        <?= Form::text('Lien', 'link', 'url', $Media->getLink(), false, 255, '', '', 'form-control-sm imagelink upImgForm'); ?>
+                        <?= Form::text('Lien', 'link', 'url', $Media->getLink() ?? '', false, 255, '', '', 'form-control-sm imagelink upImgForm'); ?>
                     </div>
                     <div class="mb-2">
-                        <?= Form::text('Position', 'position', 'text', $Media->getPosition(), false, 5, '', '', 'form-control-sm imagePosition upImgForm'); ?>
+                        <?= Form::text('Position', 'position', 'text', $Media->getPosition() ?? '', false, 5, '', '', 'form-control-sm imagePosition upImgForm'); ?>
                     </div>
                     <?php if ($Media->getType() === 'MEDIA'): ?>
                         <div class="mb-2">
