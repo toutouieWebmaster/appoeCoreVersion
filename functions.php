@@ -2306,6 +2306,9 @@ function thumb(string $filename, int $desired_width = 100, int $quality = 80, bo
     $fileInfo = pathinfo($filename);
     $nameWithoutExt = $fileInfo['filename'];
 
+    if (empty($fileInfo['extension'])) {
+        return false;
+    }
     $destDir = FILE_DIR_PATH . ($webp ? 'webp' : 'thumb') . DIRECTORY_SEPARATOR;
     $destExt = $webp ? '.webp' : '.' . strtolower($fileInfo['extension']);
     $dest = $destDir . "{$desired_width}_{$nameWithoutExt}{$destExt}";
