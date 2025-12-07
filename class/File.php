@@ -10,15 +10,15 @@ class File
     protected $userId;
     protected $type;
     protected $typeId;
-    protected $name;
+    protected ?string $name;
     protected ?string $link = null;
     protected int|string $position = 999;
     protected $options = null;
 
-    protected string $title;
-    protected string $description;
+    protected ?string $title;
+    protected ?string $description;
     protected $categoryId;
-    protected string $categoryName;
+    protected ?string $categoryName;
     protected string $lang = LANG;
     protected $maxSize = 5621440;
     protected string $filePath = FILE_DIR_PATH;
