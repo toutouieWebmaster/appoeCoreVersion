@@ -155,5 +155,13 @@ echo getTitle(getAppPageName(), getAppPageSlug()); ?>
         </div>
 
         <script type="text/javascript" src="/app/lib/template/js/media.js"></script>
+        <script>
+            // Supprime le POST précédent de l’historique pour éviter la re-soumission
+            window.addEventListener('load', function() {
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, null, window.location.href);
+                }
+            });
+        </script>
     </div>
 <?php require('footer.php'); ?>
