@@ -19,7 +19,7 @@ class AppLogging
     /**
      * @var string
      */
-    private string $logFile = 'applog.log';
+    private string $logFile;
     /**
      * @var ?string
      */
@@ -31,9 +31,25 @@ class AppLogging
      */
     public function __construct()
     {
+        $logsDir = WEB_SYSTEM_PATH . 'logs/';
+        if (!is_dir($logsDir)) {
+            mkdir($logsDir, 0775, true);
+        }
         $this->date = date('Y-m-d H:i:s');
         $this->user = getUserIdSession();
         $this->userName = getUserEntitled();
+        $today = date('Y-m-d');
+        $this->logFile = "applog-$today.log";
+
+        $yesterday = date('Y-m-d', strtotime('-1 day'));
+        $yesterdayFile = WEB_SYSTEM_PATH . "applog-$yesterday.log";
+
+        if (file_exists($yesterdayFile)) {
+            rename(
+                $yesterdayFile,
+                WEB_SYSTEM_PATH . 'logs/' . "applog-$yesterday.log"
+            );
+        }
 
         if ($this->checkLogFile()) {
             $this->pathLogFile = WEB_SYSTEM_PATH . $this->logFile;
