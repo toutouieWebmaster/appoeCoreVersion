@@ -97,7 +97,7 @@ final class DB
         $sql = 'SELECT * FROM ' . self::collect($class, 'tableName') . ' WHERE ' . self::buildWhereClause($where, $params, $class);
 
         $result = self::exec($sql, $params);
-        if ($result) {
+        if ($result && $result->rowCount() > 0) {
             self::feed($class, $result->fetch(PDO::FETCH_OBJ));
             return true;
         }
