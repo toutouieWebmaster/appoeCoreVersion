@@ -4842,14 +4842,9 @@ function emailVerification(array $data, array $otherAddr = [], array $options = 
     $Option->setType('CONFIRMATIONMAIL');
     $Option->setKey($data['toEmail']);
     $Option->setVal($key);
-    if ($Option->save()) {
-
-        //Sanding confirmation mail
-        if (sendMail($data, $otherAddr, $options)) {
-            return true;
-        }
-    }
-    return false;
+    
+    $success = !$Option->exist() ? $Option->save() : $Option->update();
+    return $success && sendMail($data, $otherAddr, $options);
 }
 
 /**
