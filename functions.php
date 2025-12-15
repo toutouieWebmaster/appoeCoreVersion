@@ -4387,14 +4387,14 @@ function getFileTemplatePosition(array $filesArray, mixed $position, bool|int $f
 /**
  * @param array $imageArray
  * @param string $otherClass
- * @param bool $thumbSize
+ * @param bool|int $thumbSize
  * @param bool $onlyUrl
  * @param bool $onlyPath
  * @param bool $webp
  *
  * @return bool|string
  */
-function getFirstImage(array $imageArray, string $otherClass = '', bool $thumbSize = false, bool $onlyUrl = false, bool $onlyPath = false, bool $webp = false):  bool|string
+function getFirstImage(array $imageArray, string $otherClass = '', bool|int $thumbSize = false, bool $onlyUrl = false, bool $onlyPath = false, bool $webp = false):  bool|string
 {
     if ($imageArray) {
         $firstImage = current($imageArray);
@@ -4525,14 +4525,14 @@ function getOnlyImages(array $imageArray): array
  * @param stdClass $media
  * @param string $class
  * @param string $attr
- * @param bool $thumbSize
+ * @param bool|int $thumbSize
  * @param int $quality
  * @param bool $webp
  * @param bool $onlyUrl
  *
  * @return string
  */
-function showImage(stdClass $media, string $class = '', string $attr = '', bool $thumbSize = false, int $quality = 80, bool $webp = false, bool $onlyUrl = false): string
+function showImage(stdClass $media, string $class = '', string $attr = '', bool|int $thumbSize = false, int $quality = 80, bool $webp = false, bool $onlyUrl = false): string
 {
     if (property_exists($media, 'name') && property_exists($media, 'title')) {
 
@@ -4548,13 +4548,13 @@ function showImage(stdClass $media, string $class = '', string $attr = '', bool 
 
 /**
  * @param stdClass $media
- * @param bool $thumbSize
+ * @param bool|int $thumbSize
  * @param int $quality
  * @param bool $webp
  *
  * @return ?string
  */
-function imgUrl(stdClass $media, bool $thumbSize = false, int $quality = 80, bool $webp = false): ?string
+function imgUrl(stdClass $media, bool|int $thumbSize = false, int $quality = 80, bool $webp = false): ?string
 {
     if (property_exists($media, 'name')) {
         return !$thumbSize ? WEB_DIR_INCLUDE . $media->name : getThumb($media->name, $thumbSize, $webp, $quality);
